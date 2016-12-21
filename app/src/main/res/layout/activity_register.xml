@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/material_blue"
+        android:minHeight="?attr/actionBarSize"
+        android:id="@+id/toolbar"
+        >
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/registerCancle"
+            android:background="@android:color/transparent"
+            style="@style/cancleButton"
+            android:src="@mipmap/arrow_left"/>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.example.root.experimentassistant.SecondLevel.RegisterActivity">
+
+
+        <TextView
+            style="@style/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="注 册" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:id="@+id/regText1"
+                style="@style/grayText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="学号：" />
+
+            <EditText
+                style="@style/grayText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/regText1"
+                android:background="@drawable/edittext"
+                android:hint="请输入你的学号"
+                android:inputType="number"
+                android:minWidth="100dp"
+                android:id="@+id/regId"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="13dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:id="@+id/regText2"
+                style="@style/grayText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="姓名：" />
+
+            <EditText
+                style="@style/grayText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/regText2"
+                android:background="@drawable/edittext"
+                android:hint="请输入姓名"
+                android:inputType="text"
+                android:minWidth="100dp"
+                android:id="@+id/regName"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="13dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:id="@+id/regText3"
+                style="@style/grayText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="密码：" />
+
+            <EditText
+                style="@style/grayText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/regText3"
+                android:background="@drawable/edittext"
+                android:hint="输入密码"
+                android:inputType="textPassword"
+                android:minWidth="100dp"
+                android:id="@+id/regPass1"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="13dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:id="@+id/regText4"
+                style="@style/grayText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="确认：" />
+
+            <EditText
+                style="@style/grayText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/regText4"
+                android:background="@drawable/edittext"
+                android:hint="确认密码"
+                android:inputType="textPassword"
+                android:minWidth="100dp"
+                android:id="@+id/regPass2"/>
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="前后密码不一致"
+            style="@style/errorMessage"
+            android:visibility="invisible"
+            android:id="@+id/passDiff"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:id="@+id/regText5"
+                style="@style/grayText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="电话：" />
+
+            <EditText
+                style="@style/grayText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/regText5"
+                android:background="@drawable/edittext"
+                android:hint="请输入号码"
+                android:inputType="phone"
+                android:minWidth="100dp"
+                android:id="@+id/regPhone"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="13dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:id="@+id/regText6"
+                style="@style/grayText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="验证码：" />
+
+            <EditText
+                android:id="@+id/vertifyCode"
+                style="@style/grayText"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/regText6"
+                android:background="@drawable/edittext"
+                android:inputType="number"
+                android:maxLength="6"
+                android:minWidth="100dp" />
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/vertifyCode"
+                android:text="获取验证码"
+                android:id="@+id/regVertifyBtn" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="13dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="注  册"
+            android:textSize="25dp"
+            android:id="@+id/regBtn"
+            android:enabled="false"/>
+
+    </LinearLayout>
+</LinearLayout>

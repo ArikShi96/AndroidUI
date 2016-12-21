@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout style="@android:style/Theme.Light.NoTitleBar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/material_blue"
+        android:minHeight="?attr/actionBarSize"
+        android:id="@+id/toolbar"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:id="@+id/bottom_bar"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Course"
+            android:layout_weight="1"
+            style="@style/bigText"
+            android:gravity="center"
+            android:textColor="@drawable/menu_text"
+            android:background="@drawable/menu_bg"
+            android:clickable="true"
+            android:id="@+id/test1"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Exper"
+            android:layout_weight="1"
+            style="@style/bigText"
+            android:gravity="center"
+            android:textColor="@drawable/menu_text"
+            android:background="@drawable/menu_bg"
+            android:clickable="true"
+            android:id="@+id/test2"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Person"
+            android:layout_weight="1"
+            style="@style/bigText"
+            android:gravity="center"
+            android:textColor="@drawable/menu_text"
+            android:background="@drawable/menu_bg"
+            android:clickable="true"
+            android:id="@+id/test3"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#505050"
+        android:id="@+id/bottom_space"
+        android:layout_above="@id/bottom_bar"
+        ></ImageView>
+
+<FrameLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_below="@id/toolbar"
+    android:layout_above="@id/bottom_space"
+    android:id="@+id/content">
+</FrameLayout>
+</RelativeLayout>

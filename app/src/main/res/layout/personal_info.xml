@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="#e0e0e0">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/StudentName"
+        android:layout_margin="5dp"
+        android:text="姓名："
+        style="@style/bigText"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/StudentId"
+        android:layout_below="@id/StudentName"
+        android:layout_margin="5dp"
+        android:text="学号:"
+        style="@style/bigText"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/LogNote"
+        android:layout_margin="5dp"
+        android:text="请先登录"
+        style="@style/bigText"
+        android:visibility="gone"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/LoginButton"
+        android:layout_below="@id/LogNote"
+        android:text="登录"
+        style="@style/bigText"
+        android:visibility="gone"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/RegisterButton"
+        android:layout_toRightOf="@id/LoginButton"
+        android:layout_below="@id/LogNote"
+        android:text="注册"
+        style="@style/bigText"
+        android:visibility="gone"/>
+</RelativeLayout>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/personMenu"
+        android:layout_margin="10dp"/>
+</LinearLayout>
