@@ -8,5 +8,5 @@ import android.widget.ArrayAdapter;
 public interface MySearchViewListener {
     public void search(String searchText);
 
-    public ArrayAdapter<String> getMatching(String matchText);
+    public void getMatching(String matchText);
 }

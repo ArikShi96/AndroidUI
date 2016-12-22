@@ -154,7 +154,7 @@ public class User {
     //登录
 //    Activity callActivity;
 
-    public boolean Login(String Id,String Pass){
+    public boolean Login(String Id,String Pass,final RequestCallBack callBack){
         if(isLogin()) return true;
 
         //设置参数
@@ -178,19 +178,16 @@ public class User {
                     catch(Exception e){
                         e.printStackTrace();
                     }
+                    if(callBack!=null) callBack.onRequestSuccess(null);
                 }
             }
             @Override
             public void onFailure(int v1, Header[] v2, String v3, Throwable v4){
                 Log.d("Login","status"+v1);
+                if(callBack!=null) callBack.onRequestFailure(null);
             }
         });
-        if(isLogin()) {
-            Log.d("bool", "true");
-        }
-        else{
-            Log.d("bool","false");
-        }
+
         return isLogin();
     }
 
@@ -217,7 +214,7 @@ public class User {
     //注册
     private int flag;
 
-    public int Register(String Id,String Name,String PhoneNum,String VertifyCode,String Pass) {
+    public int Register(String Id,String Name,String PhoneNum,String VertifyCode,String Pass,final RequestCallBack callBack) {
         RequestParams params = new RequestParams();
 
         params.put("id", Id);
@@ -230,6 +227,9 @@ public class User {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.d("reg","statusCode"+statusCode);
+                if(callBack!=null){
+                    callBack.onRequestFailure(null);
+                }
                 flag=-1;
             }
 
@@ -237,31 +237,39 @@ public class User {
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 if(statusCode==200){
                     flag=Integer.parseInt(responseString);
+                    if(callBack!=null){
+                        callBack.onRequestSuccess(new Integer(flag));
+                    }
                 }
             }
         });
-        Log.d("status",flag+"");
         return flag;
     }
 
                 //登出
-        public void Logoff(){
-        if(isLogin()==false) return;
+                public void Logoff(SharedPreferences preferences) {
+                    if (isLogin() == false) return;
 
-        id="";
-        name="";
-        phoneNum="";
+                    id = "";
+                    name = "";
+                    phoneNum = "";
 
-        ExperimentHttpClient.getInstance().post("student/logoff", null, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-            }
+                    SharedPreferences.Editor editor=preferences.edit();
+                    editor.putString("userId",User.getInstance().getId());
+                    editor.putString("userPhoneNum",User.getInstance().getPhoneNum());
+                    editor.putString("userName",User.getInstance().getName());
+                    editor.commit();
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            }
-        });
-    }
+                    ExperimentHttpClient.getInstance().post("student/logoff", null, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        }
+                    });
+                }
 
     //获取本周实验
     private List<ViewExper> expers;
@@ -299,7 +307,7 @@ public class User {
                     Log.d("User get expers","no such key");
                     e.printStackTrace();
                 }
-                if(callBack!=null) callBack.onRequestSuccess(User.getInstance());
+                if(callBack!=null) callBack.onRequestSuccess(User.this);
             }
 
             @Override

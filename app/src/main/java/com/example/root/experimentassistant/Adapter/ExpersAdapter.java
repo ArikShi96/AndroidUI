@@ -73,8 +73,6 @@ public class ExpersAdapter extends BaseAdapter{
             holder = (ViewHolder) convertView.getTag();
         }
 
-        // set item values to the viewHolder:
-
         ViewExper exper = getItem(position);
         if (null != exper)
         {

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -23,7 +24,7 @@ import java.util.Map;
 /**
  * Created by root on 2016/12/6.
  */
-public class PersonInfo extends Fragment implements LoginOffCallback{
+public class PersonInfo extends Fragment{
     private TextView idText;
 
     private TextView nameText;
@@ -37,6 +38,17 @@ public class PersonInfo extends Fragment implements LoginOffCallback{
     private ListView menuList;
 
     @Override
+    public void onStart(){
+        super.onStart();
+        if(User.getInstance().isLogin()){
+            onLogin();
+        }
+        else{
+            onLogoff();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view =inflater.inflate(R.layout.personal_info,container,false);
 
@@ -46,8 +58,8 @@ public class PersonInfo extends Fragment implements LoginOffCallback{
         btnLogin=(Button)view.findViewById(R.id.LoginButton);
         btnRegister=(Button)view.findViewById(R.id.RegisterButton);
         menuList=(ListView)view.findViewById(R.id.personMenu);
+        Log.d("PersonInfo","id"+User.getInstance().getId());
         //获取USER信息
-        User.getInstance().Init(getContext().getSharedPreferences("user", Context.MODE_PRIVATE));
         if(User.getInstance().isLogin()){
             onLogin();
         }
@@ -91,11 +103,23 @@ public class PersonInfo extends Fragment implements LoginOffCallback{
         menuList.setAdapter(new SimpleAdapter(this.getContext(),list,R.layout.menuitem,new String[]{"text"},new int[] {R.id.menuItemText}));
 
         // 绑定菜单项点击事件
+        menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch(position){
+                    case 3:
+                        onLogoff();
+                        User.getInstance().Logoff(getContext().getSharedPreferences("user", Context.MODE_PRIVATE));
+                        break;
+                    default:
+                }
+            }
+        });
 
         return view;
     }
 
-    public void onLogin(){
+    private void onLogin(){
         if(User.getInstance().isLogin()){
             idText.setVisibility(View.VISIBLE);
             nameText.setVisibility(View.VISIBLE);
@@ -108,7 +132,7 @@ public class PersonInfo extends Fragment implements LoginOffCallback{
         }
     }
 
-    public void onLogoff(){
+    private void onLogoff(){
         idText.setVisibility(View.GONE);
         nameText.setVisibility(View.GONE);
         note.setVisibility(View.VISIBLE);

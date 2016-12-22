@@ -21,7 +21,7 @@ import com.example.root.experimentassistant.ViewModel.ViewExper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExperimentList extends Fragment implements LoginOffCallback{
+public class ExperimentList extends Fragment{
     ListView experimentList;
 
     private MaterialRefreshLayout myMaterialRefreshLayout;

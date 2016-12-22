@@ -13,6 +13,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,6 +22,8 @@ import android.content.Context;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.List;
 
 /**
  * Created by root on 2016/12/9.
@@ -39,8 +42,6 @@ public class SearchView extends LinearLayout{
     private Context myContext;
 
     private MySearchViewListener myListener;
-
-    private ArrayAdapter<String> matchingList;
 
     public void bindListener(MySearchViewListener listener){
         myListener=listener;
@@ -102,20 +103,16 @@ public class SearchView extends LinearLayout{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length()==0){
+                if(s.length()<2){
                     searchList.setVisibility(GONE);
+                }
+                if(s.length()==0){
                     searchCancle.setVisibility(GONE);
                 }
                 else{
-                    searchCancle.setVisibility(VISIBLE);
-                    //更新matchingList数据和searchList
-                    if(myListener!=null){
-                        matchingList=myListener.getMatching(s.toString());
-                        if(searchList.getAdapter()==null){
-                            searchList.setAdapter(matchingList);
-                        }
-                        if(matchingList.isEmpty()) searchList.setVisibility(GONE);
-                        else searchList.setVisibility(VISIBLE);
+                    //获取匹配搜索项
+                    if(myListener!=null&&s.length()>=2){
+                        myListener.getMatching(s.toString());
                     }
                 }
             }
@@ -146,4 +143,10 @@ public class SearchView extends LinearLayout{
         initViews();
     }
 
+    public void setSuggestList(BaseAdapter suggest){
+        if(suggest==null) return;
+        if(suggest.getCount()==0) searchList.setVisibility(GONE);
+        else searchList.setVisibility(VISIBLE);
+        searchList.setAdapter(suggest);
+    }
 }

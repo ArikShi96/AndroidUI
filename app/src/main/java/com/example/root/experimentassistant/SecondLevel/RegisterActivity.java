@@ -46,12 +46,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private TextView note;
 
-    static final private int internetError=-1;
-    static final private int regSuccess=0;
-    static final private int errorParams=1;
-    static final private int phoneRepeat=2;
-    static final private int errorVer=3;
-
     public Context getcontext(){return this;}
 
     @Override
@@ -91,16 +85,12 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getcontext(),"请先输入电话号码",Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                Log.d("getVer","start");
                 btnGetCode.setEnabled(false);
 
-                Log.d("getVer","before schedule");
                 TimerTask task=new TimerTask() {
                     private int count=60;
                     @Override
                     public void run() {
-                        Log.d("schedule",""+count);
                         Message mess=new Message();
                         mess.what=count;
                         handler.sendMessage(mess);
@@ -122,13 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //注册网络事件
                 int status=User.getInstance().Register(regId.getText().toString(),regName.getText().toString(),regPhone.getText().toString()
-                        ,vertifyCode.getText().toString() ,regPass1.getText().toString());
-                switch(status){
-                    case regSuccess:
-                        finish();
-                        break;
-                    default:
-                }
+                        ,vertifyCode.getText().toString() ,regPass1.getText().toString(),new RegisterCallBack());
             }
         });
 
@@ -208,4 +192,37 @@ public class RegisterActivity extends AppCompatActivity {
             super.handleMessage(mess);
         }
     };
+
+    private class RegisterCallBack implements RequestCallBack {
+        public void onRequestSuccess(Object sender) {
+            int status = ((Integer) sender).intValue();
+            switch (status) {
+                case 0:
+                    //注册成功
+                    Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT);
+                    setResult(RESULT_OK);
+                    finish();
+                    break;
+                //参数不匹配
+                case 1:
+                    Toast.makeText(RegisterActivity.this, "网络参数错误", Toast.LENGTH_SHORT);
+                    break;
+                //手机号重复使用
+                case 2:
+                    Toast.makeText(RegisterActivity.this, "手机号已被注册", Toast.LENGTH_SHORT);
+                    regPhone.setText("");
+                    break;
+                //验证码错误
+                case 3:
+                    Toast.makeText(RegisterActivity.this,"验证码错误",Toast.LENGTH_SHORT);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void onRequestFailure(Object sender){
+            Toast.makeText(RegisterActivity.this,"网络错误 ",Toast.LENGTH_SHORT);
+        }
+    }
 }

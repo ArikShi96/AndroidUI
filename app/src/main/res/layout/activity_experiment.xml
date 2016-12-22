@@ -15,51 +15,82 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="66dp"
         android:id="@+id/bottom_bar"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
+        android:layout_marginBottom="4dp"
         >
-        <TextView
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Course"
             android:layout_weight="1"
+            android:orientation="vertical"
             style="@style/bigText"
             android:gravity="center"
-            android:textColor="@drawable/menu_text"
-            android:background="@drawable/menu_bg"
             android:clickable="true"
-            android:id="@+id/test1"/>
-        <TextView
+            android:id="@+id/courseBtn"
+            >
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/course_icon"
+                android:id="@+id/courseIcon"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="校内课程"
+                android:textColor="@drawable/menu_text"
+                android:id="@+id/courseText"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Exper"
             android:layout_weight="1"
-            style="@style/bigText"
+            android:orientation="vertical"
             android:gravity="center"
-            android:textColor="@drawable/menu_text"
-            android:background="@drawable/menu_bg"
             android:clickable="true"
-            android:id="@+id/test2"
-            />
-        <TextView
+            android:id="@+id/experBtn"
+            >
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/exper_icon"
+                android:id="@+id/experIcon"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我的实验"
+                android:textColor="@drawable/menu_text"
+                android:id="@+id/experText"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Person"
             android:layout_weight="1"
+            android:orientation="vertical"
             style="@style/bigText"
             android:gravity="center"
-            android:textColor="@drawable/menu_text"
-            android:background="@drawable/menu_bg"
             android:clickable="true"
-            android:id="@+id/test3"
-            />
+            android:id="@+id/personBtn"
+            >
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/person_icon"
+                android:id="@+id/personIcon"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="个人中心"
+                android:textColor="@drawable/menu_text"
+                android:id="@+id/personText"/>
+        </LinearLayout>
     </LinearLayout>
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:background="#505050"
         android:id="@+id/bottom_space"
         android:layout_above="@id/bottom_bar"

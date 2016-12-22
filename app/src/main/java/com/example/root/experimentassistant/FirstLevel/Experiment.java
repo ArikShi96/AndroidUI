@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.*;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.root.experimentassistant.Model.User;
@@ -21,11 +24,18 @@ public class Experiment extends AppCompatActivity {
     private Fragment fragment1;
     private Fragment fragment2;
     private Fragment fragment3;
-    private List<LoginOffCallback> observers=new ArrayList<>();
 
-    TextView test1;
-    TextView test2;
-    TextView test3;
+    LinearLayout courseBtn;
+    LinearLayout experBtn;
+    LinearLayout personBtn;
+
+    ImageView courseIcon;
+    ImageView experIcon;
+    ImageView personIcon;
+
+    TextView courseText;
+    TextView experText;
+    TextView personText;
 
     Toolbar toolbar;
 
@@ -36,19 +46,28 @@ public class Experiment extends AppCompatActivity {
         User.getInstance().Init(getSharedPreferences("user", Context.MODE_PRIVATE));
         Log.d("main","create");
 
-        test1=(TextView)findViewById(R.id.test1);
-        test2=(TextView)findViewById(R.id.test2);
-        test3=(TextView)findViewById(R.id.test3);
+        courseBtn=(LinearLayout)findViewById(R.id.courseBtn);
+        experBtn=(LinearLayout)findViewById(R.id.experBtn);
+        personBtn=(LinearLayout)findViewById(R.id.personBtn);
+
+        courseIcon=(ImageView)findViewById(R.id.courseIcon);
+        experIcon=(ImageView)findViewById(R.id.experIcon);
+        personIcon=(ImageView)findViewById(R.id.personIcon);
+
+        courseText=(TextView)findViewById(R.id.courseText);
+        experText=(TextView)findViewById(R.id.experText);
+        personText=(TextView)findViewById(R.id.personText);
 
         toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("Experiments");
 
-        test1.setOnClickListener(testClickListener);
-        test2.setOnClickListener(testClickListener);
-        test3.setOnClickListener(testClickListener);
+        courseBtn.setOnClickListener(testClickListener);
+        experBtn.setOnClickListener(testClickListener);
+        personBtn.setOnClickListener(testClickListener);
 
-        test2.setSelected(true);
+        experText.setSelected(true);
+        experIcon.setSelected(true);
         initFragement2();
     }
 
@@ -76,7 +95,6 @@ public class Experiment extends AppCompatActivity {
 
         if(fragment2==null){
             fragment2=new ExperimentList();
-            observers.add((LoginOffCallback)fragment2);
             transaction.add(R.id.content,fragment2);
         }
         hideAllFragement(transaction);
@@ -90,7 +108,6 @@ public class Experiment extends AppCompatActivity {
 
         if(fragment3==null){
             fragment3=new PersonInfo();
-            observers.add((LoginOffCallback) fragment3);
             transaction.add(R.id.content,fragment3);
         }
         hideAllFragement(transaction);
@@ -99,34 +116,49 @@ public class Experiment extends AppCompatActivity {
         transaction.commit();
     }
 
+    private void setCourseSelect(boolean select){
+        courseIcon.setSelected(select);
+        courseText.setSelected(select);
+    }
+
+    private void setExperSelect(boolean select){
+        experIcon.setSelected(select);
+        experText.setSelected(select);
+    }
+
+    private void setPersonSelect(boolean select){
+        personIcon.setSelected(select);
+        personText.setSelected(select);
+    }
+
      View.OnClickListener testClickListener=new View.OnClickListener() {
          @Override
          public void onClick(View v) {
 
              switch (v.getId()) {
-                 case R.id.test1:
-                     if (test1.isSelected() == false) {
-                         test1.setSelected(true);
-                         test2.setSelected(false);
-                         test3.setSelected(false);
+                 case R.id.courseBtn:
+                     if (courseIcon.isSelected() == false) {
+                         setCourseSelect(true);
+                         setExperSelect(false);
+                         setPersonSelect(false);
                          initFragement1();
                          toolbar.setTitle("Courses");
                      }
                      break;
-                 case R.id.test2:
-                     if (test2.isSelected() == false) {
-                         test2.setSelected(true);
-                         test1.setSelected(false);
-                         test3.setSelected(false);
+                 case R.id.experBtn:
+                     if (experIcon.isSelected() == false) {
+                         setCourseSelect(false);
+                         setExperSelect(true);
+                         setPersonSelect(false);
                          initFragement2();
                          toolbar.setTitle("Experiments");
                      }
                      break;
-                 case R.id.test3:
-                     if (test3.isSelected() == false) {
-                         test3.setSelected(true);
-                         test1.setSelected(false);
-                         test2.setSelected(false);
+                 case R.id.personBtn:
+                     if (personIcon.isSelected() == false) {
+                         setCourseSelect(false);
+                         setExperSelect(false);
+                         setPersonSelect(true);
                          initFragement3();
                          toolbar.setTitle("Personal Info");
                      }
@@ -139,15 +171,10 @@ public class Experiment extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
+        switch (requestCode) {
             //登录
             case 100:
-                if(resultCode==RESULT_OK){
-                    if(User.getInstance().isLogin()){
-                        for(LoginOffCallback callback:observers){
-                            callback.onLogin();
-                        }
-                    }
+                if (resultCode == RESULT_OK) {
                 }
                 break;
             //注册

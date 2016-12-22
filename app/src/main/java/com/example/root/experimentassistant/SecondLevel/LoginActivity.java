@@ -1,11 +1,11 @@
 package com.example.root.experimentassistant.SecondLevel;
 
-import com.example.root.experimentassistant.FirstLevel.LoginOffCallback;
 import com.example.root.experimentassistant.Model.RequestCallBack;
 import com.example.root.experimentassistant.Model.User;
 import com.example.root.experimentassistant.R;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -52,19 +52,19 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User.getInstance().Login(id.getText().toString(),pass.getText().toString());
+                User.getInstance().Login(id.getText().toString(),pass.getText().toString(),new LoginCallBack());
             }
         });
     }
 
     class LoginCallBack implements RequestCallBack{
-        private Context mContext;
-
-        public LoginCallBack(Context context){
-            mContext=context;
-        }
-
         public void onRequestSuccess(Object sender){
+            SharedPreferences preferences= getSharedPreferences("user", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("userId",User.getInstance().getId());
+            editor.putString("userPhoneNum",User.getInstance().getPhoneNum());
+            editor.putString("userName",User.getInstance().getName());
+            editor.commit();
             setResult(RESULT_OK);
             finish();
         }
@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         public void onRequestFailure(Object sender){
             id.setText("");
             pass.setText("");
-            Toast.makeText(mContext,"登录失败",Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
         }
     }
 }
