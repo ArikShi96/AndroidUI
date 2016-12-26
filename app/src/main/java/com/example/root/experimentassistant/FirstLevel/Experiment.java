@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.root.experimentassistant.Model.User;
 import com.example.root.experimentassistant.R;
+import com.example.root.experimentassistant.SecondLevel.ExperDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -21,6 +21,7 @@
             android:scrollbars="vertical"
             android:id="@+id/weekSpinner"
             ></Spinner>
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="2dp"
