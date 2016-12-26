@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".SecondLevel.LoginActivity" />
         <activity android:name=".SecondLevel.RegisterActivity"></activity>
+        <activity android:name=".SecondLevel.ExperDetailActivity"></activity>
     </application>
 
 </manifest>

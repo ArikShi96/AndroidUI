@@ -4,6 +4,10 @@ android {
     compileSdkVersion 24
     buildToolsVersion "24.0.3"
 
+    repositories {
+        maven { url 'http://repo1.maven.org/maven2' }
+    }
+
     defaultConfig {
         applicationId "com.example.root.experimentassistant"
         minSdkVersion 20
