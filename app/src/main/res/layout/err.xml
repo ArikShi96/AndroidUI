@@ -14,7 +14,7 @@
             android:minHeight="?attr/actionBarSize">
 
             <ImageButton
-                android:id="@+id/exper_back"
+                android:id="@+id/err_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/cancleButton"
@@ -23,7 +23,7 @@
                 />
 
             <TextView
-                android:id="@+id/exper_detail_title"
+                android:id="@+id/err_title"
                 android:textSize="30sp"
                 android:textColor="#fff"
                 android:layout_width="wrap_content"
@@ -42,8 +42,11 @@
         android:src="@mipmap/error"/>
 
     <TextView
+        android:id="@+id/err_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="20sp"
         />
 
 </LinearLayout>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/exper_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/skyBlue"
+            android:minHeight="?attr/actionBarSize">
+
+            <ImageButton
+                android:id="@+id/exper_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/cancleButton"
+                android:background="@android:color/transparent"
+                android:src="@mipmap/arrow_left"
+                />
+
+            <TextView
+                android:id="@+id/exper_detail_title"
+                android:textSize="30sp"
+                android:textColor="#fff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:text="实验详情"
+                />
+        </android.support.v7.widget.Toolbar>
+    </RelativeLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/exper_pic"
+            android:layout_width="160dp"
+            android:layout_height="140dp"
+            fresco:placeholderImage="@color/iconGray"
+            />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="30sp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="20dp"
+                android:textColor="#000000"
+                android:id="@+id/exper_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp">
+                <TextView
+                    android:textSize="25sp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#808080"
+                    android:id="@+id/exper_begin_time"
+                    android:layout_width="120sp"
+                    android:layout_height="wrap_content"
+                    />
+
+                <Button
+                    android:layout_width="64dp"
+                    android:layout_height="32dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/material_blue"
+                    android:textColor="#fff"
+                    android:text="开始"
+                    android:textSize="25sp"
+                    android:id="@+id/exper_begin"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </GridLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:text="简介"
+            android:textSize="30sp"
+            android:id="@+id/exper_description"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:text="附件"
+            android:textSize="30sp"
+            android:id="@+id/exper_attach"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:textSize="25sp"
+        android:textColor="@color/gray"
+        android:id="@+id/exper_content"
+        />
+
+</LinearLayout>

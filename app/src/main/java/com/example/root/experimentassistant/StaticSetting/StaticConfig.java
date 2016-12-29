@@ -3,6 +3,8 @@ package com.example.root.experimentassistant.StaticSetting;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +22,7 @@ import static com.example.root.experimentassistant.R.layout.dialog_loading;
  * Created by Json on 2016/12/26.
  */
 public class StaticConfig {
-    public static final String BASIC_URL="localhost/";
+    public static final String BASIC_URL="101.200.61.252:8080/";
 
     public static Dialog createLoadingDialog(Context context, String msg) {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -67,8 +69,10 @@ public class StaticConfig {
     public static Intent errorPage(Context context, String title, String err_msg){
         Intent err=new Intent();
         err.setClass(context, LoadingFailedActivity.class);
-        err.putExtra("title",title);
-        err.putExtra("err_msg", err_msg);
+        Bundle bundle=new Bundle();
+        bundle.putCharSequence("title", title);
+        bundle.putCharSequence("err_msg", err_msg);
+        err.putExtras(bundle);
         return err;
     }
 

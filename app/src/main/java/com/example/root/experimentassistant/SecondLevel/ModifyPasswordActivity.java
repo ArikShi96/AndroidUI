@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +26,7 @@ import cz.msebera.android.httpclient.Header;
  * Created by Json on 2016/12/26.
  */
 public class ModifyPasswordActivity extends AppCompatActivity {
-    private static final String mdf_pw_url="user/modify_password/";
+    private static final String mdf_pw_url="user/modify_password";
     private String user_id;
     private EditText old_password;
     private EditText new_password;
@@ -41,6 +42,8 @@ public class ModifyPasswordActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.modify_password);
+
+        user_id=getIntent().getStringExtra("user_id");
 
         old_password     = (EditText)     findViewById(R.id.mdf_pw_old);
         new_password     = (EditText)     findViewById(R.id.mdf_pw_new);
@@ -82,7 +85,8 @@ public class ModifyPasswordActivity extends AppCompatActivity {
                 params.put("identify",user_id);
                 params.put("old_password",old_password);
                 params.put("new_password",new_password);
-                ExperimentHttpClient.getInstance().post(StaticConfig.BASIC_URL+mdf_pw_url,params,new TextHttpResponseHandler()
+                waitting_dialog=StaticConfig.createLoadingDialog(ModifyPasswordActivity.this,"处理中...");
+                ExperimentHttpClient.getInstance().post(mdf_pw_url,params,new TextHttpResponseHandler()
                 {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String response) {
@@ -98,7 +102,7 @@ public class ModifyPasswordActivity extends AppCompatActivity {
                             }
                             catch(Exception e){
                                 Toast.makeText(ModifyPasswordActivity.this,"未知返回码:"+response,Toast.LENGTH_LONG).show();
-                                e.printStackTrace();
+                                Log.d("Request:Exper_detail",e.getMessage());
                             }
                         }
                         else{
@@ -111,7 +115,6 @@ public class ModifyPasswordActivity extends AppCompatActivity {
                         Toast.makeText(ModifyPasswordActivity.this,"连接失败",Toast.LENGTH_LONG).show();
                     }
                 });
-                waitting_dialog=StaticConfig.createLoadingDialog(ModifyPasswordActivity.this,"处理中...");
             }
         });
     }

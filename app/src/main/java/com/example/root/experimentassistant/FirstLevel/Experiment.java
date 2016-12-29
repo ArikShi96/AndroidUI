@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.example.root.experimentassistant.Model.User;
 import com.example.root.experimentassistant.R;
 import com.example.root.experimentassistant.SecondLevel.ExperDetailActivity;
+import com.example.root.experimentassistant.SecondLevel.ModifyPasswordActivity;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +72,12 @@ public class Experiment extends AppCompatActivity {
         experText.setSelected(true);
         experIcon.setSelected(true);
         initFragement2();
+
+        //test activity
+        Intent test=new Intent();
+        test.setClass(Experiment.this,ModifyPasswordActivity.class);
+        test.putExtra("user_id","1452792");
+        startActivity(test);
     }
 
     private void hideAllFragement(FragmentTransaction transaction){
@@ -183,5 +191,14 @@ public class Experiment extends AppCompatActivity {
                 break;
             default:
         }
+    }
+
+
+    /**
+     * this is the main activity, so we do the project initialization here
+     */
+
+    public void init(){
+        Fresco.initialize(Experiment.this);
     }
 }

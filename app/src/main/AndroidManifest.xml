@@ -21,8 +21,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".SecondLevel.LoginActivity" />
-        <activity android:name=".SecondLevel.RegisterActivity"></activity>
-        <activity android:name=".SecondLevel.ExperDetailActivity"></activity>
+        <activity android:name=".SecondLevel.RegisterActivity" />
+        <activity android:name=".SecondLevel.ExperDetailActivity" />
+        <activity android:name=".MyView.LoadingFailedActivity" />
+        <activity android:name=".SecondLevel.ModifyPasswordActivity" />
+        <activity android:name=".SecondLevel.CourseDetailActivity" />
+        <activity android:name=".SecondLevel.ForgetPasswordActivity"></activity>
     </application>
 
 </manifest>

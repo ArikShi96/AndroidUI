@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,14 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/exper_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/skyBlue"
             android:minHeight="?attr/actionBarSize">
 
             <ImageButton
-                android:id="@+id/exper_back"
+                android:id="@+id/cs_dtl_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/cancleButton"
@@ -23,14 +23,14 @@
                 />
 
             <TextView
-                android:id="@+id/exper_detail_title"
+                android:id="@+id/cs_dtl_title"
                 android:textSize="30sp"
                 android:textColor="#fff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                android:text="实验详情"
+                android:text="课程详情"
                 />
         </android.support.v7.widget.Toolbar>
     </RelativeLayout>
@@ -39,11 +39,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/exper_pic"
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/cs_dtl_pic"
             android:layout_width="160dp"
             android:layout_height="140dp"
-            android:background="@color/seaBlue" />
+            fresco:placeholderImage="@color/iconGray"
+            />
 
         <LinearLayout
             android:orientation="vertical"
@@ -55,72 +56,63 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="20dp"
                 android:textColor="#000000"
-                android:id="@+id/exper_name"
+                android:id="@+id/cs_dtl_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="计算机组成实验"
+                />
+            <TextView
+                android:textSize="25sp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="15dp"
+                android:textColor="#363636"
+                android:id="@+id/cs_dtl_teacher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 />
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
                 <TextView
                     android:textSize="25sp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="20dp"
                     android:textColor="#808080"
-                    android:id="@+id/exper_begin_time"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/cs_dtl_time"
+                    android:layout_width="125sp"
                     android:layout_height="wrap_content"
-                    android:text="周三 10:00"
                     />
 
                 <Button
                     android:layout_width="64dp"
                     android:layout_height="32dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@color/material_blue"
-                    android:text="开始"
+                    android:textColor="#fff"
                     android:textSize="25sp"
-                    android:id="@+id/exper_begin"/>
+                    android:id="@+id/cs_dtl_join"/>
 
             </LinearLayout>
         </LinearLayout>
 
     </GridLayout>
 
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            android:text="简介"
-            android:textSize="30sp"
-            android:id="@+id/exper_description"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            android:text="附件"
-            android:textSize="30sp"
-            android:id="@+id/exper_attach"/>
-    </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:textSize="28sp"
+        android:textColor="#2b2b2b"
+        android:text="课程简介"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:textSize="25sp"
-        android:textColor="@color/gray"
-        android:text="本次实验内容为通过JTAG连接嵌入式实验系统以及PC"
-        android:id="@+id/exper_content"
+        android:textColor="#363636"
+        android:id="@+id/cs_dtl_desc"
         />
 
 </LinearLayout>
