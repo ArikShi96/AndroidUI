@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="test"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/testSpinner"
+        android:layout_alignParentTop="true"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:id="@+id/topSpinner"
+        android:layout_below="@id/testSpinner"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/deepGray"/>
+    </LinearLayout>
+
+    <com.cjj.MaterialRefreshLayout
+        android:layout_below="@id/topSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:overlay="false"
+        app:wave_show="true"
+        android:id="@+id/experiment_refresh"
+        >
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/experiment_list" />
+    </com.cjj.MaterialRefreshLayout>
+</RelativeLayout>
