@@ -52,13 +52,11 @@ public class ExperimentHttpClient  {
 
     public void get(String rPath, RequestParams params, AsyncHttpResponseHandler responseHandler){
         bindCookie();
-        Log.d("*******************get",getAbsoluteUrl(rPath));
         myClient.get(getAbsoluteUrl(rPath),params,responseHandler);
     }
 
     public void post(String rPath, RequestParams params, AsyncHttpResponseHandler responseHandler){
         bindCookie();
-        Log.d("*******************post",getAbsoluteUrl(rPath));
         myClient.post(getAbsoluteUrl(rPath),params,responseHandler);
     }
 }

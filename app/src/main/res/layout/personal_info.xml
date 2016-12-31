@@ -1,58 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:background="#e0e0e0">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/StudentName"
-        android:layout_margin="5dp"
-        android:text="姓名："
-        style="@style/bigText"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/StudentId"
-        android:layout_below="@id/StudentName"
-        android:layout_margin="5dp"
-        android:text="学号:"
-        style="@style/bigText"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/LogNote"
-        android:layout_margin="5dp"
-        android:text="请先登录"
-        style="@style/bigText"
-        android:visibility="gone"
-        />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/LoginButton"
-        android:layout_below="@id/LogNote"
-        android:text="登录"
-        style="@style/bigText"
-        android:visibility="gone"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/RegisterButton"
-        android:layout_toRightOf="@id/LoginButton"
-        android:layout_below="@id/LogNote"
-        android:text="注册"
-        style="@style/bigText"
-        android:visibility="gone"/>
-</RelativeLayout>
+    android:layout_height="match_parent"
+    android:background="#f0f0f0"
+    android:orientation="vertical">
 
-    <ListView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        android:id="@+id/loginLayout">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/head_portrait" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/StudentName"
+                style="@style/bigText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="某某某" />
+
+            <TextView
+                android:id="@+id/StudentId"
+                style="@style/smallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/StudentName"
+                android:layout_margin="5dp"
+                android:text="学号:111111" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#f0f0f0"
+        android:visibility="gone"
+        android:id="@+id/noLoginLayout">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/RegisterButton"
+                style="@style/btnText"
+                android:layout_width="180dp"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/rec_btn_white"
+                android:text="注册"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/LoginButton"
+                style="@style/btnTextSelect"
+                android:layout_width="180dp"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/rec_btn_select"
+                android:text="登录"
+                android:visibility="visible" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/personMenu"
-        android:layout_margin="10dp"/>
+        android:background="#ffffff"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#c0c0c0" />
+
+        <ListView
+            android:id="@+id/personMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:divider="#00000000"
+            android:dividerHeight="0dp"
+            android:footerDividersEnabled="false" />
+    </LinearLayout>
 </LinearLayout>

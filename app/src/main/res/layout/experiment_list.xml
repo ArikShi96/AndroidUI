@@ -5,23 +5,22 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="test"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/testSpinner"
+        android:layout_alignParentTop="true"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_alignParentTop="true"
         android:gravity="center"
         android:orientation="vertical"
         android:id="@+id/topSpinner"
+        android:layout_below="@id/testSpinner"
         >
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:entries="@array/week"
-            android:layout_centerInParent="true"
-            android:scrollbars="vertical"
-            android:id="@+id/weekSpinner"
-            ></Spinner>
-
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -31,7 +30,7 @@
     <com.cjj.MaterialRefreshLayout
         android:layout_below="@id/topSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:overlay="false"
         app:wave_show="true"
         android:id="@+id/experiment_refresh"

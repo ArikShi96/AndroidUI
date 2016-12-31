@@ -1,6 +1,8 @@
 package com.example.root.experimentassistant.Internet;
 
 
+import android.content.Context;
+
 import com.loopj.android.http.PersistentCookieStore;
 
 import java.util.ArrayList;
@@ -19,7 +21,14 @@ public class CookieUnits {
         mCookieStore=cookieStore;
     }
 
+    private static Context appContext;
+
+    public static void setAppContext(Context context){
+        appContext=context;
+    }
+
     public static PersistentCookieStore getCookieStore(){
+        mCookieStore=new PersistentCookieStore(appContext);
         return mCookieStore;
     }
 }

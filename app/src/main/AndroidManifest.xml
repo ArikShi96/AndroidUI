@@ -28,8 +28,10 @@
         <activity android:name=".SecondLevel.CourseDetailActivity" />
         <activity android:name=".ThirdLevel.ForgetPasswordActivity" />
         <activity android:name=".ThirdLevel.StepActivity" />
-        <activity android:name=".ThirdLevel.TakePhotoActivity" android:theme="@style/"></activity>
-
+        <activity android:name=".ThirdLevel.TakePhotoActivity" android:theme="@style/MyDialogStyleBottom"></activity>
+        <activity android:name=".SecondLevel.MyCourseActivity" />
+        <activity android:name=".SecondLevel.HistoryCourseActivity" />
+        <activity android:name=".SecondLevel.MyScoreActivity"></activity>
     </application>
 
 </manifest>

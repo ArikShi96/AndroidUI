@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import com.example.root.experimentassistant.R;
@@ -37,6 +40,10 @@ public class PersonInfo extends Fragment{
 
     private ListView menuList;
 
+    private LinearLayout loginLayout;
+
+    private RelativeLayout noLoginLayout;
+
     @Override
     public void onStart(){
         super.onStart();
@@ -54,10 +61,12 @@ public class PersonInfo extends Fragment{
 
         idText=(TextView) view.findViewById(R.id.StudentId);
         nameText=(TextView) view.findViewById(R.id.StudentName);
-        note=(TextView) view.findViewById(R.id.LogNote);
         btnLogin=(Button)view.findViewById(R.id.LoginButton);
         btnRegister=(Button)view.findViewById(R.id.RegisterButton);
         menuList=(ListView)view.findViewById(R.id.personMenu);
+        loginLayout=(LinearLayout)view.findViewById(R.id.loginLayout) ;
+        noLoginLayout=(RelativeLayout)view.findViewById(R.id.noLoginLayout);
+
         Log.d("PersonInfo","id"+User.getInstance().getId());
         //获取USER信息
         if(User.getInstance().isLogin()){
@@ -85,28 +94,45 @@ public class PersonInfo extends Fragment{
         //绑定菜单内容
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
+        map.put("pic",R.mipmap.mcourse_blue);
         map.put("text","我的课程");
         list.add(map);
 
         map=new HashMap<String, Object>();
-        map.put("text","历史记录");
+        map.put("pic",R.mipmap.mhistory_yellow);
+        map.put("text","历史课程");
         list.add(map);
 
         map=new HashMap<String, Object>();
+        map.put("pic",R.mipmap.mscore_green);
         map.put("text","我的成绩");
         list.add(map);
 
         map=new HashMap<String, Object>();
+        map.put("pic",R.mipmap.mexit_orange);
         map.put("text","退出登录");
         list.add(map);
 
-        menuList.setAdapter(new SimpleAdapter(this.getContext(),list,R.layout.menuitem,new String[]{"text"},new int[] {R.id.menuItemText}));
+        menuList.setAdapter(new SimpleAdapter(this.getContext(),list,R.layout.menuitem,new String[]{"text","pic"},new int[]{R.id.menuItemText,R.id.menuItemIcon}));
 
         // 绑定菜单项点击事件
         menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch(position){
+                    //我的课程
+                    case 0:
+                        startActivity(new Intent(getContext(),MyCourseActivity.class));
+                        break;
+                    //历史课程
+                    case 1:
+                        startActivity(new Intent(getContext(),HistoryCourseActivity.class));
+                        break;
+                    //我的成绩
+                    case 2:
+                        startActivity(new Intent(getContext(),MyScoreActivity.class));
+                        break;
+                    //登出
                     case 3:
                         onLogoff();
                         User.getInstance().Logoff(getContext().getSharedPreferences("user", Context.MODE_PRIVATE));
@@ -121,22 +147,16 @@ public class PersonInfo extends Fragment{
 
     private void onLogin(){
         if(User.getInstance().isLogin()){
-            idText.setVisibility(View.VISIBLE);
-            nameText.setVisibility(View.VISIBLE);
-            note.setVisibility(View.GONE);
-            btnLogin.setVisibility(View.GONE);
-            btnRegister.setVisibility(View.GONE);
+            loginLayout.setVisibility(View.VISIBLE);
+            noLoginLayout.setVisibility(View.GONE);
 
             idText.setText(" 学号："+User.getInstance().getId());
-            nameText.setText("姓名："+User.getInstance().getName());
+            nameText.setText(User.getInstance().getName());
         }
     }
 
     private void onLogoff(){
-        idText.setVisibility(View.GONE);
-        nameText.setVisibility(View.GONE);
-        note.setVisibility(View.VISIBLE);
-        btnLogin.setVisibility(View.VISIBLE);
-        btnRegister.setVisibility(View.VISIBLE);
+        loginLayout.setVisibility(View.GONE);
+        noLoginLayout.setVisibility(View.VISIBLE);
     }
 }

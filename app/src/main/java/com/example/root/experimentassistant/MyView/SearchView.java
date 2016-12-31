@@ -105,9 +105,12 @@ public class SearchView extends LinearLayout{
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.length()<2){
                     searchList.setVisibility(GONE);
-                }
-                if(s.length()==0){
-                    searchCancle.setVisibility(GONE);
+                    if(s.length()==0){
+                        searchCancle.setVisibility(GONE);
+                    }
+                    else{
+                        searchCancle.setVisibility(VISIBLE);
+                    }
                 }
                 else{
                     //获取匹配搜索项

@@ -19,6 +19,12 @@ import com.example.root.experimentassistant.R;
 import com.example.root.experimentassistant.SecondLevel.ExperDetailActivity;
 import com.example.root.experimentassistant.SecondLevel.ModifyPasswordActivity;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.example.root.experimentassistant.Adapter.MySpinnerAdapter;
+import com.example.root.experimentassistant.Internet.CookieUnits;
+import com.example.root.experimentassistant.Model.User;
+import com.example.root.experimentassistant.R;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +47,6 @@ public class Experiment extends AppCompatActivity {
     TextView personText;
 
     Toolbar toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,11 +78,7 @@ public class Experiment extends AppCompatActivity {
         experIcon.setSelected(true);
         initFragement2();
 
-        //test activity
-        Intent test=new Intent();
-        test.setClass(Experiment.this,ModifyPasswordActivity.class);
-        test.putExtra("user_id","1452792");
-        startActivity(test);
+        CookieUnits.setAppContext(getApplicationContext());
     }
 
     private void hideAllFragement(FragmentTransaction transaction){

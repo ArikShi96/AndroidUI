@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.root.experimentassistant.SecondLevel.LoginActivity">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/toolbar"
@@ -12,98 +13,136 @@
         android:layout_height="wrap_content"
         android:background="@color/material_blue"
         android:minHeight="?attr/actionBarSize">
-
-        <ImageButton
-            android:id="@+id/loginCancle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/cancleButton"
-            android:background="@android:color/transparent"
-            android:src="@mipmap/arrow_left"
-            />
-    </android.support.v7.widget.Toolbar>
-
-    <LinearLayout
-        style="@style/AppTheme"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="com.example.root.experimentassistant.SecondLevel.LoginActivity">
-
-
+        
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:id="@+id/loginCancle"
+            style="@style/cancleButton"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/back_icon" />
 
         <TextView
-            style="@style/titleText"
-            android:layout_width="match_parent"
+            style="@style/menuText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="实验助手" />
+            android:layout_gravity="center"
+            android:text="登录"
+            android:textColor="#ffffff" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+    </android.support.v7.widget.Toolbar>
 
-            <TextView
-                android:id="@+id/loginText1"
-                style="@style/smallText"
-                android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="实验助手"
+        android:gravity="center_horizontal"
+        android:textSize="30dp"
+        android:textColor="@color/deepGray"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_margin="40dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/exper_logo"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="学号：" />
+                >
+
+                <EditText
+                    android:id="@+id/LoginId"
+                    style="@style/smallText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext"
+                    android:drawableLeft="@drawable/id_icon"
+                    android:hint="在这里输入学号"
+                    android:inputType="number"
+                    android:drawablePadding="12dp"
+                    android:maxLength="10"/>
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="right|center_vertical"
+                    android:src="@mipmap/cancle"
+                    android:id="@+id/id_delete"
+                    android:layout_marginRight="10dp"/>
+            </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
 
             <EditText
+                android:id="@+id/LoginPass"
                 style="@style/smallText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/loginText1"
-                android:background="@drawable/edittext"
-                android:inputType="number"
-                android:id="@+id/LoginId"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
-
-            <TextView
-                android:id="@+id/loginText2"
-                style="@style/smallText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="密码：" />
-
-            <EditText
-                style="@style/smallText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/loginText2"
                 android:background="@drawable/edittext"
                 android:inputType="textPassword"
-                android:id="@+id/LoginPass"/>
-        </RelativeLayout>
+                android:drawableLeft="@drawable/pass_icon"
+                android:drawablePadding="12dp"
+                android:hint="在这里输入密码"
+                android:maxLength="30" />
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="right|center_vertical"
+                android:src="@mipmap/cancle"
+                android:id="@+id/pass_delete"
+                android:layout_marginRight="10dp"/>
+        </FrameLayout>
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="登  录"
-            android:textSize="25dp"
-            android:id="@+id/LoginBtn"/>
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="40dp">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="忘 记 密 码"
-            android:textSize="25dp" />
+            <Button
+                android:id="@+id/LoginBtn"
+                style="@style/btnTextSelect"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/rec_btn_select"
+                android:text="登录"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/RegisterButton"
+                style="@style/btnText"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rec_btn_white"
+                android:text="注册"
+                android:visibility="gone" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:text="忘记密码?"
+                android:textColor="@color/material_blue" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
