@@ -19,6 +19,8 @@ import com.example.root.experimentassistant.StaticSetting.StaticConfig;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+import java.io.File;
+
 import cz.msebera.android.httpclient.Header;
 
 

@@ -26,7 +26,10 @@
         <activity android:name=".MyView.LoadingFailedActivity" />
         <activity android:name=".SecondLevel.ModifyPasswordActivity" />
         <activity android:name=".SecondLevel.CourseDetailActivity" />
-        <activity android:name=".SecondLevel.ForgetPasswordActivity"></activity>
+        <activity android:name=".ThirdLevel.ForgetPasswordActivity" />
+        <activity android:name=".ThirdLevel.StepActivity" />
+        <activity android:name=".ThirdLevel.TakePhotoActivity" android:theme="@style/"></activity>
+
     </application>
 
 </manifest>

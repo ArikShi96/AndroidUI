@@ -10,6 +10,7 @@ import java.util.Calendar;
 import android.util.Log;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 
 import com.example.root.experimentassistant.FirstLevel.Experiment;
@@ -36,11 +37,17 @@ public class User {
 
     private int currentWeek;
 
+    private ExperModel model;
+
     public String getId(){return id;}
 
     public String getName(){return name;}
 
     public String getPhoneNum(){return phoneNum;}
+
+    public ExperModel getExperiment(){
+        return model;
+    }
 
     public void setCurrentWeek(SharedPreferences preferences, int week) {
         if (week <= 0) week = 1;
