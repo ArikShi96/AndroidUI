@@ -2,6 +2,7 @@ package com.example.root.experimentassistant.ThirdLevel;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -123,7 +125,10 @@ public class StepActivity extends AppCompatActivity {
 
         content.setText(step_item.getContent());
         //image
-        image.setImageURI(StaticConfig.TEST_IMAGE_URL);
+        ArrayList<String> images=step_item.getImage_list();
+        if(images.size()>0) {
+            image.setImageURI(Uri.parse(StaticConfig.BASE_URL + step_item.getImage_list().get(0)));
+        }
 
         note.setText(step_item.getNote());
 
@@ -277,6 +282,7 @@ public class StepActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
+                StaticConfig.closeDialog(loading_dialog);
                 Intent err=StaticConfig.errorPage(StepActivity.this,title.getText().toString(),"发送失败");
                 startActivity(err);
             }

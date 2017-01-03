@@ -81,6 +81,10 @@ public class ExperimentList extends Fragment {
             @Override
             public void onRefresh(final MaterialRefreshLayout materialRefreshLayout) {
                 if (User.getInstance().isLogin()) bindExperiment();
+                else {
+                    myMaterialRefreshLayout.finishRefresh();
+                    Toast.makeText(ExperimentList.this.getContext(),"请先登录",Toast.LENGTH_SHORT);
+                }
             }
 
             @Override

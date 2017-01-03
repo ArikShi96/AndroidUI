@@ -46,43 +46,20 @@ public class CourseList extends Fragment implements MySearchViewListener{
 
         searchView.bindListener(this);
 
+        getDefaultList();
+
         //刷新回调函数
         myMaterialRefreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
             @Override
             public void onRefresh(final MaterialRefreshLayout materialRefreshLayout) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        myMaterialRefreshLayout.finishRefresh();
-                    }
-                },3000);
+                getDefaultList();
             }
             @Override
             public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
-                super.onRefreshLoadMore(materialRefreshLayout);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        myMaterialRefreshLayout.finishRefreshLoadMore();
-                    }
-                },3000);
+                myMaterialRefreshLayout.finishRefreshLoadMore();
             }
         });
 
-        //获取课程数据
-        courses.getDefault(new RequestCallBack() {
-            @Override
-            public void onRequestSuccess(Object sender) {
-                List<ViewCourse> viewCourses=(List<ViewCourse>)sender;
-                CoursesAdapter adapter=new CoursesAdapter(getContext(),viewCourses);
-                courseList.setAdapter(adapter);
-            }
-
-            @Override
-            public void onRequestFailure(Object sender) {
-
-            }
-        });
 
         courseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -97,6 +74,24 @@ public class CourseList extends Fragment implements MySearchViewListener{
             }
         });
         return view;
+    }
+
+    public void getDefaultList(){
+        //获取课程数据
+        courses.getDefault(new RequestCallBack() {
+            @Override
+            public void onRequestSuccess(Object sender) {
+                List<ViewCourse> viewCourses=(List<ViewCourse>)sender;
+                CoursesAdapter adapter=new CoursesAdapter(getContext(),viewCourses);
+                courseList.setAdapter(adapter);
+                myMaterialRefreshLayout.finishRefresh();
+            }
+
+            @Override
+            public void onRequestFailure(Object sender) {
+                myMaterialRefreshLayout.finishRefresh();
+            }
+        });
     }
 
     @Override
@@ -122,7 +117,10 @@ public class CourseList extends Fragment implements MySearchViewListener{
         courses.getSuggest(matchText, new RequestCallBack() {
             @Override
             public void onRequestSuccess(Object sender) {
-                ArrayAdapter<String> adapter=new ArrayAdapter<String>(CourseList.this.getContext(),android.R.layout.simple_list_item_1,(List<String>)sender);
+
+//                ArrayAdapter<String> adapter=new ArrayAdapter<String>(CourseList.this.getContext(),android.R.layout.simple_list_item_1,(List<String>)sender);
+
+                ArrayAdapter<String> adapter=new ArrayAdapter<String>(CourseList.this.getContext(),android.R.layout.simple_expandable_list_item_1,(List<String>)sender);
                 searchView.setSuggestList(adapter);
             }
 

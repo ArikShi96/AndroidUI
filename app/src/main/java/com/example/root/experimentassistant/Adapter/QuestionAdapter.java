@@ -67,10 +67,15 @@ public class QuestionAdapter extends BaseAdapter{
             LayoutInflater inflater=LayoutInflater.from(activity);
             view=inflater.inflate(R.layout.question_item,null);
 
+            holder.question_title=(TextView) view.findViewById(R.id.question_title);
             holder.question_type=(TextView) view.findViewById(R.id.question_type);
             holder.question_content=(TextView) view.findViewById(R.id.question_content);
             holder.question_answer=(EditText) view.findViewById(R.id.question_answer);
             holder.photo_button=(ImageView) view.findViewById(R.id.photo_image);
+
+            //加粗
+            holder.question_title.getPaint().setFakeBoldText(true);
+            holder.question_type.getPaint().setFakeBoldText(true);
 
             ViewGroup.LayoutParams params = holder.photo_button.getLayoutParams();
             params.width=params.height;
@@ -136,6 +141,8 @@ public class QuestionAdapter extends BaseAdapter{
 }
 
 class ComponentHolder{
+
+    public TextView question_title;
     public TextView question_type;
     public TextView question_content;
     public EditText question_answer;

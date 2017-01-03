@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
     android:fillViewport="true"
@@ -37,7 +39,7 @@
 
                     <TextView
                         android:id="@+id/step_title"
-                        android:textSize="30sp"
+                        android:textSize="20sp"
                         android:textColor="#fff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -73,8 +75,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="25dp"
+                        android:textSize="18dp"
                         android:text="步骤内容"
+                        android:textColor="#000"
                         android:id="@+id/step_content_title"
                         android:background="@drawable/bottomborder"
                         />
@@ -82,7 +85,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:textSize="18dp"
+                        android:textSize="15dp"
                         android:id="@+id/step_content"
                         android:text="编写程序，当用户在实验箱上按下 KEY1 键或KEY2 键时在中断服务子程序中将相关信息打印到串口中，显示在超级终端上"
                         />
@@ -92,7 +95,12 @@
                     android:id="@+id/step_images"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
-                    android:background="@color/iconGray"/>
+                    fresco:placeholderImage="@mipmap/placeholder"
+                    fresco:progressBarImage="@mipmap/progress_ing"
+                    fresco:progressBarImageScaleType="centerInside"
+                    fresco:progressBarAutoRotateInterval="1000"
+                    fresco:failureImage="@mipmap/icon_progress_fail"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -104,8 +112,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="25dp"
+                    android:textSize="18dp"
                     android:text="注意事项"
+                    android:textColor="#000"
                     android:id="@+id/step_note_title"
                     android:background="@drawable/bottomborder"
                     />
@@ -114,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:textSize="18dp"
+                    android:textSize="15dp"
                     android:id="@+id/step_note"
                     android:text="编写程序，当用户在实验箱上按下 KEY1 键或KEY2 键时在中断服务子程序中将相关信息打印到串口中，显示在超级终端上"
                     />
@@ -129,8 +138,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="25dp"
+                    android:textSize="18dp"
                     android:text="相关问题"
+                    android:textColor="#000"
                     android:id="@+id/step_question_title"
                     android:background="@drawable/bottomborder"
                     />
@@ -153,7 +163,7 @@
             android:background="#0099ff"
             android:text="下一步"
             android:textColor="#ffffff"
-            android:textSize="25dp"
+            android:textSize="18dp"
             android:id="@+id/step_next_button"
             />
     </LinearLayout>

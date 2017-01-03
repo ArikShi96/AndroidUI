@@ -3,6 +3,7 @@ package com.example.root.experimentassistant.SecondLevel;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -112,7 +113,7 @@ public class ExperDetailActivity extends AppCompatActivity{
     public void init(JSONObject response) throws org.json.JSONException{
         expername.setText(response.getString("name"));
         begin_time.setText(response.getString("time"));
-        exper_pic.setImageURI(StaticConfig.TEST_IMAGE_URL);
+        exper_pic.setImageURI(Uri.parse(StaticConfig.BASE_URL+response.getString("pic_url")));
         desc = response.getString("descbibe");
         attach_url = response.getString("attach_url");
         content.setText(desc);
@@ -120,7 +121,7 @@ public class ExperDetailActivity extends AppCompatActivity{
         //set begin button
         if(/*response.getBoolean("enable")*/true){
             begin.setClickable(true);
-            begin.setBackgroundColor(Color.parseColor("#0099ff"));
+            begin.setBackgroundResource(R.drawable.rec_btn_select);
             begin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -160,7 +161,7 @@ public class ExperDetailActivity extends AppCompatActivity{
         }
         else{
             begin.setClickable(false);
-            begin.setBackgroundColor(Color.LTGRAY);
+            begin.setBackgroundResource(R.drawable.rec_btn_gray);
         }
 
         //set description button and attach button

@@ -24,7 +24,7 @@
 
             <TextView
                 android:id="@+id/cs_dtl_title"
-                android:textSize="30sp"
+                android:textSize="20sp"
                 android:textColor="#fff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -35,72 +35,82 @@
         </android.support.v7.widget.Toolbar>
     </RelativeLayout>
 
-    <GridLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <lib.lhh.fiv.library.FrescoZoomImageView
             android:id="@+id/cs_dtl_pic"
             android:layout_width="160dp"
             android:layout_height="140dp"
-            fresco:placeholderImage="@color/iconGray"
-            />
+            fresco:placeholderImage="@mipmap/placeholder"
+            fresco:progressBarImage="@mipmap/progress_ing"
+            fresco:progressBarImageScaleType="centerInside"
+            fresco:progressBarAutoRotateInterval="1000"
+            fresco:failureImage="@mipmap/icon_progress_fail"/>
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content">
 
             <TextView
-                android:textSize="30sp"
+                android:textSize="18sp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="20dp"
                 android:textColor="#000000"
                 android:id="@+id/cs_dtl_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="计算机网络实验"
                 />
             <TextView
-                android:textSize="25sp"
+                android:textSize="15sp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="15dp"
                 android:textColor="#363636"
                 android:id="@+id/cs_dtl_teacher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="罗衣柜"
                 />
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp">
                 <TextView
-                    android:textSize="25sp"
+                    android:textSize="15sp"
+                    android:text="周一 10:00"
                     android:layout_marginLeft="5dp"
                     android:textColor="#808080"
                     android:id="@+id/cs_dtl_time"
-                    android:layout_width="125sp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     />
 
                 <Button
                     android:layout_width="64dp"
                     android:layout_height="32dp"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:textColor="#fff"
-                    android:textSize="25sp"
+                    android:textSize="12sp"
+                    android:background="@drawable/rec_btn_gray"
                     android:id="@+id/cs_dtl_join"/>
 
             </LinearLayout>
         </LinearLayout>
 
-    </GridLayout>
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:textSize="28sp"
+        android:textSize="18sp"
         android:textColor="#2b2b2b"
         android:text="课程简介"
         />
@@ -110,7 +120,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:textSize="25sp"
+        android:textSize="16sp"
         android:textColor="#363636"
         android:id="@+id/cs_dtl_desc"
         />

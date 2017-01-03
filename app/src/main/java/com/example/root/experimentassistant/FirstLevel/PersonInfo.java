@@ -124,33 +124,34 @@ public class PersonInfo extends Fragment{
         menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(User.getInstance().isLogin()==false){
-                    startActivity(new Intent(PersonInfo.this.getContext(),LoginActivity.class));
-                }
+                if (User.getInstance().isLogin() == false) {
+                    startActivity(new Intent(PersonInfo.this.getContext(), LoginActivity.class));
+                } else {
 
-                switch(position){
-                    //我的课程
-                    case 0:
-                        startActivity(new Intent(getContext(),MyCourseActivity.class));
-                        break;
-                    //历史课程
-                    case 1:
-                        startActivity(new Intent(getContext(),HistoryCourseActivity.class));
-                        break;
-                    //我的成绩
-                    case 2:
-                        startActivity(new Intent(getContext(),MyScoreActivity.class));
-                        break;
-                    //修改密码
-                    case 3:
-                        startActivity(new Intent(PersonInfo.this.getContext(),ModifyPasswordActivity.class));
-                        break;
-                    //登出
-                    case 4:
-                        onLogoff();
-                        User.getInstance().Logoff(getContext().getSharedPreferences("user", Context.MODE_PRIVATE));
-                        break;
-                    default:
+                    switch (position) {
+                        //我的课程
+                        case 0:
+                            startActivity(new Intent(getContext(), MyCourseActivity.class));
+                            break;
+                        //历史课程
+                        case 1:
+                            startActivity(new Intent(getContext(), HistoryCourseActivity.class));
+                            break;
+                        //我的成绩
+                        case 2:
+                            startActivity(new Intent(getContext(), MyScoreActivity.class));
+                            break;
+                        //修改密码
+                        case 3:
+                            startActivity(new Intent(PersonInfo.this.getContext(), ModifyPasswordActivity.class));
+                            break;
+                        //登出
+                        case 4:
+                            onLogoff();
+                            User.getInstance().Logoff(getContext().getSharedPreferences("user", Context.MODE_PRIVATE));
+                            break;
+                        default:
+                    }
                 }
             }
         });

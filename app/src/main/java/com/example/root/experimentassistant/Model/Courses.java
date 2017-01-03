@@ -86,7 +86,7 @@ public class Courses {
 
         try{
             if(!file.exists()) file.createNewFile();
-Log.d("cache","file "+file.getAbsolutePath());
+            Log.d("cache","file "+file.getAbsolutePath());
             ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream(file.getAbsolutePath()));
             oos.writeObject(defaultCourses);
             oos.flush();
@@ -94,12 +94,15 @@ Log.d("cache","file "+file.getAbsolutePath());
         }
         catch (Exception e){
             e.printStackTrace();
+            Log.d("cache","save excpt");
         }
     }
 
     private void readRecentCourses(){
         File file=new File(mContext.getFilesDir(),fileName);
+        Log.d("cache","file: "+file.getAbsolutePath());
         if(!file.exists()) {
+            Log.d("cache","no file");
             return;
         }
 
@@ -109,6 +112,7 @@ Log.d("cache","file "+file.getAbsolutePath());
         }
         catch(Exception e){
             e.printStackTrace();
+            Log.d("cache","except");
         }
     }
 
@@ -133,9 +137,20 @@ Log.d("cache","file "+file.getAbsolutePath());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                saveRecentCourses();
                 if(callBack!=null){
                     callBack.onRequestSuccess(defaultCourses);
                 }
+            }
+
+            @Override
+            public void onFailure(int v1, Header[] v2, String v3, Throwable v4){
+                Log.d("Courses default fail","status"+v1);
+                if(defaultCourses.size()==0){
+                    Log.d("Course","read cacheData");
+                    readRecentCourses();
+                }
+                if(callBack!=null) callBack.onRequestSuccess(defaultCourses);
             }
 
             @Override
@@ -176,6 +191,10 @@ Log.d("cache","file "+file.getAbsolutePath());
                 if(callBack!=null){
                     callBack.onRequestSuccess(suggest);
                 }
+            }
+            @Override
+            public void onFailure(int v1, Header[] v2, String v3, Throwable v4){
+                Log.d("getSuggest",""+v1);
             }
         });
     }
