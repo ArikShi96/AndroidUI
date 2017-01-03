@@ -47,6 +47,8 @@ public class SearchView extends LinearLayout{
         myListener=listener;
     }
 
+    private boolean suggestClick=false;
+
     private void processSearch(){
         if(myListener!=null) myListener.search(searchText.getText().toString());
         searchList.setVisibility(GONE);
@@ -70,6 +72,7 @@ public class SearchView extends LinearLayout{
         searchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                suggestClick=true;
                 String text=searchList.getAdapter().getItem(position).toString();
                 searchText.setText(text);
                 searchText.setSelection(text.length());
@@ -103,6 +106,11 @@ public class SearchView extends LinearLayout{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(suggestClick){
+                    suggestClick=false;
+                    return;
+                }
+
                 if(s.length()<2){
                     searchList.setVisibility(GONE);
                     if(s.length()==0){

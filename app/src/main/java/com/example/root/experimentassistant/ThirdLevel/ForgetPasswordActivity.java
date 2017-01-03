@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
     private Dialog waitting_dialog;
 
+    private ImageView back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,11 +64,19 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         send_button = (Button) findViewById(R.id.fg_pw_send);
         global_layout = (LinearLayout) findViewById(R.id.fg_pw_globallayout);
         err_msg = (TextView) findViewById(R.id.fg_pw_err_msg);
+        back=(ImageView)findViewById(R.id.fg_pw_back);
 
         init();
     }
 
     public void init() {
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         //listener for send
         global_layout.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ public class ModifyPasswordActivity extends AppCompatActivity {
     private Button send;
 
     private Dialog waitting_dialog;
+    private ImageView back;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,10 +55,18 @@ public class ModifyPasswordActivity extends AppCompatActivity {
         send             = (Button)       findViewById(R.id.mdf_pw_send);
         error_message    = (TextView)     findViewById(R.id.mdf_pw_err_msg);
         global_layout    = (LinearLayout) findViewById(R.id.mdf_pw_globallayout);
+        back=(ImageView)findViewById(R.id.mdf_pw_back);
         init();
     }
 
     public void init(){
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         global_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

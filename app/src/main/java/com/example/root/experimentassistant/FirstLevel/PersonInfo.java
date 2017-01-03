@@ -109,7 +109,7 @@ public class PersonInfo extends Fragment{
         list.add(map);
 
         map=new HashMap<String, Object>();
-        map.put("pic",R.mipmap.mexit_orange);
+        map.put("pic",R.mipmap.pass_icon);
         map.put("text","修改密码");
         list.add(map);
 

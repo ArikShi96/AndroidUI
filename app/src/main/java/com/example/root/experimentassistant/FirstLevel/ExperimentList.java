@@ -189,7 +189,7 @@ public class ExperimentList extends Fragment {
         }
 
         public void onRequestFailure(Object sender) {
-
+            myMaterialRefreshLayout.finishRefresh();
         }
     }
 }

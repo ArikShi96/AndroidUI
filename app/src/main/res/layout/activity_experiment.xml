@@ -32,8 +32,8 @@
             android:id="@+id/courseBtn"
             >
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/course_icon"
                 android:id="@+id/courseIcon"/>
             <TextView
@@ -53,8 +53,8 @@
             android:id="@+id/experBtn"
             >
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/exper_icon"
                 android:id="@+id/experIcon"/>
             <TextView
@@ -75,8 +75,8 @@
             android:id="@+id/personBtn"
             >
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/person_icon"
                 android:id="@+id/personIcon"/>
             <TextView

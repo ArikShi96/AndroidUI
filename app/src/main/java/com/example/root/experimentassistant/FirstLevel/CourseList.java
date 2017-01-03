@@ -45,7 +45,6 @@ public class CourseList extends Fragment implements MySearchViewListener{
         courses=new Courses(this.getContext());
 
         searchView.bindListener(this);
-//        courseList.setAdapter(new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,courses));
 
         //刷新回调函数
         myMaterialRefreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
@@ -119,12 +118,11 @@ public class CourseList extends Fragment implements MySearchViewListener{
 
     @Override
     public void getMatching(String matchText){
-//        List<String> suggest=courses.getSuggest(matchText);
-//        return new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,suggest.toArray(new String[suggest.size()]));
+
         courses.getSuggest(matchText, new RequestCallBack() {
             @Override
             public void onRequestSuccess(Object sender) {
-                ArrayAdapter<String> adapter=new ArrayAdapter<String>(CourseList.this.getContext(),R.layout.course_entry,(List<String>)sender);
+                ArrayAdapter<String> adapter=new ArrayAdapter<String>(CourseList.this.getContext(),android.R.layout.simple_list_item_1,(List<String>)sender);
                 searchView.setSuggestList(adapter);
             }
 
