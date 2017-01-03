@@ -124,7 +124,7 @@ public class CourseList extends Fragment implements MySearchViewListener{
         courses.getSuggest(matchText, new RequestCallBack() {
             @Override
             public void onRequestSuccess(Object sender) {
-                ArrayAdapter<String> adapter=new ArrayAdapter<String>(CourseList.this.getContext(),R.layout.course_entry,(List<String>)sender);
+                ArrayAdapter<String> adapter=new ArrayAdapter<String>(CourseList.this.getContext(),android.R.layout.simple_expandable_list_item_1,(List<String>)sender);
                 searchView.setSuggestList(adapter);
             }
 

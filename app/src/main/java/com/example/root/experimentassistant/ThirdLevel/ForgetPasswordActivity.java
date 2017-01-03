@@ -30,8 +30,8 @@ import java.util.TimerTask;
 import cz.msebera.android.httpclient.Header;
 
 public class ForgetPasswordActivity extends AppCompatActivity {
-    private static final String vcode_url = "";
-    private static final String send_url = "";
+    private static final String vcode_url = "/user/getvetifycode";
+    private static final String send_url = "/user/forget_password";
 
     private EditText identify;
     private EditText phone_number;
@@ -80,11 +80,11 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     if (new_pw.equals(cfm_pw)) {
                         err_msg.setText("");
                         send_button.setClickable(true);
-                        send_button.setBackgroundColor(Color.parseColor("#0099ff"));
+                        send_button.setBackgroundResource(R.drawable.rec_btn_select);
                     } else {
                         err_msg.setText("前后密码不一致");
                         send_button.setClickable(false);
-                        send_button.setBackgroundColor(Color.GRAY);
+                        send_button.setBackgroundResource(R.drawable.rec_btn_gray);
                     }
                 }
             }
@@ -99,7 +99,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() == 11) {
-                    vcode_button.setBackgroundColor(Color.parseColor("#0099ff"));
+                    vcode_button.setBackgroundResource(R.drawable.rec_btn_select);
                     vcode_button.setClickable(true);
                 }
             }
@@ -188,9 +188,9 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                 });
             }
         });
-        send_button.setBackgroundColor(Color.GRAY);
+        send_button.setBackgroundResource(R.drawable.rec_btn_gray);
         send_button.setClickable(true);
-        vcode_button.setBackgroundColor(Color.GRAY);
+        vcode_button.setBackgroundResource(R.drawable.rec_btn_gray);
         vcode_button.setClickable(true);
     }
 

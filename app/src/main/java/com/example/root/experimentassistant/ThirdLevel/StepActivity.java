@@ -2,6 +2,7 @@ package com.example.root.experimentassistant.ThirdLevel;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -123,7 +124,7 @@ public class StepActivity extends AppCompatActivity {
 
         content.setText(step_item.getContent());
         //image
-        image.setImageURI(StaticConfig.TEST_IMAGE_URL);
+        image.setImageURI(Uri.parse(StaticConfig.TEST_IMAGE_URL));
 
         note.setText(step_item.getNote());
 
@@ -277,6 +278,7 @@ public class StepActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
+                StaticConfig.closeDialog(loading_dialog);
                 Intent err=StaticConfig.errorPage(StepActivity.this,title.getText().toString(),"发送失败");
                 startActivity(err);
             }

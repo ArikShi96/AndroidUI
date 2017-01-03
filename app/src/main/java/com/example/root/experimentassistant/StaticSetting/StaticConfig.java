@@ -22,7 +22,7 @@ import static com.example.root.experimentassistant.R.layout.dialog_loading;
  * Created by Json on 2016/12/26.
  */
 public class StaticConfig {
-    public static final String TEST_IMAGE_URL="http://101.200.61.252:8080/course/1嵌入式.jpg";
+    public static final String TEST_IMAGE_URL="http://bpic.588ku.com/element_pic/00/01/57/665680a43f9438e.jpg";
 
     public static Dialog createLoadingDialog(Context context, String msg) {
         LayoutInflater inflater = LayoutInflater.from(context);

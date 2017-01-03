@@ -25,7 +25,7 @@
 
             <TextView
                 android:id="@+id/exper_detail_title"
-                android:textSize="30sp"
+                android:textSize="20sp"
                 android:textColor="#fff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,59 +36,68 @@
         </android.support.v7.widget.Toolbar>
     </RelativeLayout>
 
-    <GridLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/exper_pic"
             android:layout_width="160dp"
             android:layout_height="140dp"
-            fresco:placeholderImage="@color/iconGray"
+            fresco:placeholderImage="@mipmap/placeholder"
+            fresco:progressBarImage="@mipmap/progress_ing"
+            fresco:progressBarImageScaleType="centerInside"
+            fresco:progressBarAutoRotateInterval="1000"
+            fresco:failureImage="@mipmap/icon_progress_fail"
             />
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content">
 
             <TextView
-                android:textSize="30sp"
+                android:textSize="18sp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="20dp"
                 android:textColor="#000000"
                 android:id="@+id/exper_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="嵌入式系统导论实验"
                 />
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="45dp">
                 <TextView
-                    android:textSize="25sp"
+                    android:textSize="15sp"
                     android:layout_marginLeft="5dp"
                     android:textColor="#808080"
                     android:id="@+id/exper_begin_time"
-                    android:layout_width="120sp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:text="周三 10:00"
+                    android:layout_weight="1"
                     />
 
                 <Button
                     android:layout_width="64dp"
                     android:layout_height="32dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="@color/material_blue"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/rec_btn_select"
                     android:textColor="#fff"
                     android:text="开始"
-                    android:textSize="25sp"
+                    android:textSize="12sp"
                     android:id="@+id/exper_begin"/>
 
             </LinearLayout>
         </LinearLayout>
 
-    </GridLayout>
+    </LinearLayout>
 
 
     <LinearLayout
@@ -102,7 +111,7 @@
             android:layout_weight="1"
             android:background="@null"
             android:text="简介"
-            android:textSize="30sp"
+            android:textSize="18dp"
             android:id="@+id/exper_description"/>
         <Button
             android:layout_width="match_parent"
@@ -110,14 +119,14 @@
             android:layout_weight="1"
             android:background="@null"
             android:text="附件"
-            android:textSize="30sp"
+            android:textSize="18sp"
             android:id="@+id/exper_attach"/>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:textSize="25sp"
+        android:textSize="16sp"
         android:textColor="@color/gray"
         android:id="@+id/exper_content"
         />

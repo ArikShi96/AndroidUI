@@ -3,6 +3,7 @@ package com.example.root.experimentassistant.SecondLevel;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,7 +23,10 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URI;
+
 import cz.msebera.android.httpclient.Header;
+import lib.lhh.fiv.library.FrescoZoomImageView;
 
 public class CourseDetailActivity extends AppCompatActivity {
     private static final String url="/student/course_detail";
@@ -35,7 +39,7 @@ public class CourseDetailActivity extends AppCompatActivity {
 
     private TextView title;
     private ImageButton back_button;
-    private SimpleDraweeView course_pic;
+    private FrescoZoomImageView course_pic;
     private TextView course_name;
     private TextView teacher_name;
     private TextView course_time;
@@ -52,7 +56,7 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         title=(TextView) findViewById(R.id.cs_dtl_title);
         back_button=(ImageButton) findViewById(R.id.cs_dtl_back);
-        course_pic=(SimpleDraweeView) findViewById(R.id.cs_dtl_pic);
+        course_pic=(FrescoZoomImageView) findViewById(R.id.cs_dtl_pic);
         course_name=(TextView) findViewById(R.id.cs_dtl_name);
         course_time=(TextView) findViewById(R.id.cs_dtl_time);
         teacher_name=(TextView) findViewById(R.id.cs_dtl_teacher);
@@ -112,13 +116,14 @@ public class CourseDetailActivity extends AppCompatActivity {
         if(!response.getBoolean("enable")){
             enable=false;
             join_button.setText("退出");
-            join_button.setBackgroundColor(Color.RED);
+            join_button.setBackgroundResource(R.drawable.rec_btn_red);
         }
         else{
             join_button.setText("参加");
-            join_button.setBackgroundColor(Color.parseColor("#0099ff"));
+            join_button.setBackgroundResource(R.drawable.rec_btn_select);
         }
-        course_pic.setImageURI(response.getString("course_pic"));
+        course_pic.loadView(StaticConfig.TEST_IMAGE_URL, R.mipmap.placeholder);
+        course_pic.setTapToRetryEnabled(true);
         description.setText(response.getString("description"));
 
         join_button.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +147,7 @@ public class CourseDetailActivity extends AppCompatActivity {
                                         Toast.makeText(CourseDetailActivity.this,"参加成功",Toast.LENGTH_LONG).show();
                                         enable=false;
                                         join_button.setText("退出");
-                                        join_button.setBackgroundColor(Color.RED);
+                                        join_button.setBackgroundResource(R.drawable.rec_btn_red);
                                     }
                                     else{
                                         Toast.makeText(CourseDetailActivity.this,"参加失败",Toast.LENGTH_LONG).show();
@@ -180,7 +185,7 @@ public class CourseDetailActivity extends AppCompatActivity {
                                         Toast.makeText(CourseDetailActivity.this,"退课成功",Toast.LENGTH_LONG).show();
                                         enable=true;
                                         join_button.setText("参加");
-                                        join_button.setBackgroundColor(Color.parseColor("#0099ff"));
+                                        join_button.setBackgroundResource(R.drawable.rec_btn_select);
                                     }
                                     else{
                                         Toast.makeText(CourseDetailActivity.this,"退课失败",Toast.LENGTH_LONG).show();

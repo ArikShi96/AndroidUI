@@ -62,6 +62,7 @@ public class ExperModel {
 
         JSONArray steps=response;
         step_count=steps.length();
+        if (step_count==0) throw new JSONException("null array list");
         for(int i=0;i<steps.length();i++){
             JSONObject item=steps.getJSONObject(i);
             Step step=new Step();

@@ -177,6 +177,10 @@ Log.d("cache","file "+file.getAbsolutePath());
                     callBack.onRequestSuccess(suggest);
                 }
             }
+            @Override
+            public void onFailure(int v1, Header[] v2, String v3, Throwable v4){
+                Log.d("getSuggest",""+v1);
+            }
         });
     }
 
