@@ -126,15 +126,14 @@ public class QuestionAdapter extends BaseAdapter{
         }
 
         Question question=questions.get(i);
+        holder.question_content.setText(question.getQuestion());
+        holder.question_answer.setText(question.getAnswer());
         if(question!=null){
             if(!question.getAnswer_type()){
                 holder.question_type.setText("答案类型:文字");
-                holder.question_content.setText(question.getQuestion());
-                holder.question_answer.setText(question.getAnswer());
             }
             else{
                 holder.question_type.setText("答案类型:图片");
-                holder.question_content.setText(question.getQuestion());
             }
         }
         return view;
