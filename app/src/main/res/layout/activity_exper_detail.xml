@@ -127,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:textSize="16sp"
-        android:textColor="@color/gray"
+        android:textColor="#666666"
         android:id="@+id/exper_content"
         />
 

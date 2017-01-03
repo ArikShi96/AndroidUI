@@ -81,6 +81,7 @@ public class QuestionAdapter extends BaseAdapter{
             params.width=params.height;
             holder.photo_button.setLayoutParams(params);
             final TextView question_type=holder.question_type;
+            final TextView question_answer=holder.question_answer;
 
 
             final Question question=questions.get(i);
@@ -96,7 +97,7 @@ public class QuestionAdapter extends BaseAdapter{
                     Intent picture=new Intent(activity, TakePhotoActivity.class);
                     picture.putExtras(bundle);
                     activity.startActivityForResult(picture,0);
-                    activity.setTmpAnswer(question_type);
+                    activity.setTmpAnswer(question_type, question_answer);
                 }
             });
 

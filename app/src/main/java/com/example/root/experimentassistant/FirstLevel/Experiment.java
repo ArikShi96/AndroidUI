@@ -2,6 +2,7 @@ package com.example.root.experimentassistant.FirstLevel;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.example.root.experimentassistant.Model.User;
 import com.example.root.experimentassistant.R;
 import com.example.root.experimentassistant.SecondLevel.ExperDetailActivity;
 import com.example.root.experimentassistant.SecondLevel.ModifyPasswordActivity;
+import com.example.root.experimentassistant.StaticSetting.StaticConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.example.root.experimentassistant.Adapter.MySpinnerAdapter;
 import com.example.root.experimentassistant.Internet.CookieUnits;
@@ -26,6 +28,7 @@ import com.example.root.experimentassistant.R;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -202,5 +205,10 @@ public class Experiment extends AppCompatActivity {
 
     public void init(){
         Fresco.initialize(Experiment.this);
+
+        File file=new File(StaticConfig.IMAGE_STORAGE_URL);
+        if(!file.exists()){
+            file.mkdirs();
+        }
     }
 }

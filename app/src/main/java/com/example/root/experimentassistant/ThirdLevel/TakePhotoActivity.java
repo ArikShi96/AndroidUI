@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.root.experimentassistant.R;
+import com.example.root.experimentassistant.StaticSetting.StaticConfig;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -107,7 +108,8 @@ public class TakePhotoActivity extends Activity implements OnClickListener{
                     Bundle extras = data.getExtras();
                     Bitmap b = (Bitmap) extras.get("data");
                     String name = bundle.getInt("exper_id")+"_"+bundle.getInt("id");
-                    String fileName = Environment.getExternalStorageDirectory().toString()+ File.separator+"experiment/image/"+name+".jpg";
+                    src_path = "experiment/image/"+name+".jpg";
+                    String fileName = StaticConfig.IMAGE_STORAGE_URL+name+".jpg";
                     src_path = fileName;
                     File myCaptureFile =new File(fileName);
                     try {

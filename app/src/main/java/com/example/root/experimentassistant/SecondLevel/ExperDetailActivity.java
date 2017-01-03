@@ -164,14 +164,28 @@ public class ExperDetailActivity extends AppCompatActivity{
             begin.setBackgroundResource(R.drawable.rec_btn_gray);
         }
 
+        content.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri attach_url=Uri.parse(StaticConfig.BASE_URL+content.getText().toString());
+                intent.setData(attach_url);
+                startActivity(intent);
+            }
+        });
+
         //set description button and attach button
         description.setBackgroundColor(Color.GRAY);
+        content.setClickable(false);
         description.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 description.setBackgroundColor(Color.GRAY);
                 attach.setBackgroundColor(Color.WHITE);
                 content.setText(desc);
+                content.setClickable(false);
+                content.setTextColor(Color.parseColor("#666666"));
             }
         });
         attach.setBackgroundColor(Color.WHITE);
@@ -181,6 +195,8 @@ public class ExperDetailActivity extends AppCompatActivity{
                 description.setBackgroundColor(Color.WHITE);
                 attach.setBackgroundColor(Color.GRAY);
                 content.setText(attach_url);
+                content.setClickable(true);
+                content.setTextColor(Color.parseColor("#0099cc"));
             }
         });
     }

@@ -64,7 +64,6 @@
                 android:id="@+id/cs_dtl_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="计算机网络实验"
                 />
             <TextView
                 android:textSize="15sp"
@@ -74,7 +73,6 @@
                 android:id="@+id/cs_dtl_teacher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="罗衣柜"
                 />
             <LinearLayout
                 android:orientation="horizontal"
@@ -83,7 +81,6 @@
                 android:layout_marginTop="5dp">
                 <TextView
                     android:textSize="15sp"
-                    android:text="周一 10:00"
                     android:layout_marginLeft="5dp"
                     android:textColor="#808080"
                     android:id="@+id/cs_dtl_time"

@@ -54,6 +54,7 @@ public class StepActivity extends AppCompatActivity {
     private Button next_button;
 
     private TextView tmp_answer_type;
+    private TextView tmp_answer;
 
     private Dialog loading_dialog;
 
@@ -181,11 +182,12 @@ public class StepActivity extends AppCompatActivity {
                         if(result.getString("path").isEmpty()) return;
                         ExperModel exper = User.getInstance().getExperiment();
                         Question question = exper.getQuestions().get(result.getInt("id"));
-                        question.setAnswer_type(true);
-                        question.setAnswer(result.getString("path"));
-                        if (tmp_answer_type != null) {
+                        if (tmp_answer_type != null&&tmp_answer!=null) {
+                            tmp_answer.setText(result.getString("path"));
                             tmp_answer_type.setText("问题类型:图片");
                         }
+                        question.setAnswer_type(true);
+                        question.setAnswer(result.getString("path"));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -206,8 +208,9 @@ public class StepActivity extends AppCompatActivity {
         }
     }
 
-    public void setTmpAnswer(TextView answer_type){
+    public void setTmpAnswer(TextView answer_type, TextView answer){
         tmp_answer_type=answer_type;
+        tmp_answer=answer;
     }
 
 

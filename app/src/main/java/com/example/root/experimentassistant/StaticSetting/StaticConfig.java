@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,13 +17,16 @@ import android.widget.TextView;
 import com.example.root.experimentassistant.MyView.LoadingFailedActivity;
 import com.example.root.experimentassistant.R;
 
+import java.io.File;
+
 import static com.example.root.experimentassistant.R.layout.dialog_loading;
 
 /**
  * Created by Json on 2016/12/26.
  */
 public class StaticConfig {
-    public static final String BASE_URL="101.200.61.252:8080/";
+    public static final String BASE_URL="http://101.200.61.252:8080";
+    public static final String IMAGE_STORAGE_URL= Environment.getExternalStorageDirectory().toString()+ File.separator+"experiment/image/";
 
     public static Dialog createLoadingDialog(Context context, String msg) {
         LayoutInflater inflater = LayoutInflater.from(context);
