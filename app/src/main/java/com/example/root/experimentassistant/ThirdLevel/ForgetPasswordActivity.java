@@ -80,7 +80,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     if (new_pw.equals(cfm_pw)) {
                         err_msg.setText("");
                         send_button.setClickable(true);
-                        send_button.setBackgroundColor(Color.BLUE);
+                        send_button.setBackgroundColor(Color.parseColor("#0099ff"));
                     } else {
                         err_msg.setText("前后密码不一致");
                         send_button.setClickable(false);
@@ -99,7 +99,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() == 11) {
-                    vcode_button.setBackgroundColor(Color.BLUE);
+                    vcode_button.setBackgroundColor(Color.parseColor("#0099ff"));
                     vcode_button.setClickable(true);
                 }
             }

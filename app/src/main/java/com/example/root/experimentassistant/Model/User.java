@@ -52,6 +52,9 @@ public class User {
     public ExperModel getExperiment(){
         return model;
     }
+    public void setExperiment(ExperModel model){
+        this.model=model;
+    }
 
     public void setCurrentWeek(SharedPreferences preferences, int week) {
         if (week <= 0) week = 1;

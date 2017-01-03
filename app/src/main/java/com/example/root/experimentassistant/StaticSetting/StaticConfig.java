@@ -22,7 +22,7 @@ import static com.example.root.experimentassistant.R.layout.dialog_loading;
  * Created by Json on 2016/12/26.
  */
 public class StaticConfig {
-    public static final String BASIC_URL="101.200.61.252:8080/";
+    public static final String TEST_IMAGE_URL="http://101.200.61.252:8080/course/1嵌入式.jpg";
 
     public static Dialog createLoadingDialog(Context context, String msg) {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -74,6 +74,16 @@ public class StaticConfig {
         bundle.putCharSequence("err_msg", err_msg);
         err.putExtras(bundle);
         return err;
+    }
+
+    public static Intent successPage(Context context, String title, String success_msg){
+        Intent success=new Intent();
+        success.setClass(context, LoadingFailedActivity.class);
+        Bundle bundle=new Bundle();
+        bundle.putCharSequence("title", title);
+        bundle.putCharSequence("err_msg", success_msg);
+        success.putExtras(bundle);
+        return success;
     }
 
 }

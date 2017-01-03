@@ -3,12 +3,14 @@ package com.example.root.experimentassistant.FirstLevel;
 import com.example.root.experimentassistant.Adapter.CoursesAdapter;
 import com.example.root.experimentassistant.Model.*;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -16,6 +18,7 @@ import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.example.root.experimentassistant.MyView.*;
 import com.example.root.experimentassistant.R;
+import com.example.root.experimentassistant.SecondLevel.CourseDetailActivity;
 import com.example.root.experimentassistant.ViewModel.ViewCourse;
 
 import java.util.List;
@@ -82,6 +85,18 @@ public class CourseList extends Fragment implements MySearchViewListener{
             }
         });
 
+        courseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                long id=adapterView.getAdapter().getItemId(position);
+
+                Intent intent=new Intent();
+                intent.setClass(CourseList.this.getContext(), CourseDetailActivity.class);
+                intent.putExtra("course_id",id);
+
+                startActivity(intent);
+            }
+        });
         return view;
     }
 

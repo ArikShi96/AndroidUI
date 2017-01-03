@@ -110,6 +110,11 @@ public class PersonInfo extends Fragment{
 
         map=new HashMap<String, Object>();
         map.put("pic",R.mipmap.mexit_orange);
+        map.put("text","修改密码");
+        list.add(map);
+
+        map=new HashMap<String, Object>();
+        map.put("pic",R.mipmap.mexit_orange);
         map.put("text","退出登录");
         list.add(map);
 
@@ -119,6 +124,10 @@ public class PersonInfo extends Fragment{
         menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(User.getInstance().isLogin()==false){
+                    startActivity(new Intent(PersonInfo.this.getContext(),LoginActivity.class));
+                }
+
                 switch(position){
                     //我的课程
                     case 0:
@@ -132,8 +141,12 @@ public class PersonInfo extends Fragment{
                     case 2:
                         startActivity(new Intent(getContext(),MyScoreActivity.class));
                         break;
-                    //登出
+                    //修改密码
                     case 3:
+                        startActivity(new Intent(PersonInfo.this.getContext(),ModifyPasswordActivity.class));
+                        break;
+                    //登出
+                    case 4:
                         onLogoff();
                         User.getInstance().Logoff(getContext().getSharedPreferences("user", Context.MODE_PRIVATE));
                         break;

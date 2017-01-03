@@ -27,10 +27,12 @@ import java.util.List;
 public class QuestionAdapter extends BaseAdapter{
     private List<Question> questions;
     private StepActivity activity;
+    private int exper_id;
 
-    public QuestionAdapter(List<Question> q, StepActivity s){
+    public QuestionAdapter(List<Question> q, StepActivity s, int eid){
         questions=q;
         activity=s;
+        exper_id=eid;
     }
 
     @Override
@@ -70,12 +72,16 @@ public class QuestionAdapter extends BaseAdapter{
             holder.question_answer=(EditText) view.findViewById(R.id.question_answer);
             holder.photo_button=(ImageView) view.findViewById(R.id.photo_image);
 
+            ViewGroup.LayoutParams params = holder.photo_button.getLayoutParams();
+            params.width=params.height;
+            holder.photo_button.setLayoutParams(params);
             final TextView question_type=holder.question_type;
 
 
             final Question question=questions.get(i);
             final Bundle bundle=new Bundle();
             bundle.putInt("id",question.getId());
+            bundle.putInt("exper_id",exper_id);
 
 
             //点击照片按钮监听

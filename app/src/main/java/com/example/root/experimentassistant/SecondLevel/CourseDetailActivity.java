@@ -29,7 +29,6 @@ public class CourseDetailActivity extends AppCompatActivity {
     private static final String join_url="student/joincourse";
     private static final String cancel_url="student/cancelcourse";
 
-    private Bundle bundle;
     private int course_id;
 
     private boolean enable;
@@ -49,7 +48,6 @@ public class CourseDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_detail);
-        Bundle bundle=getIntent().getExtras();
         enable=true;
 
         title=(TextView) findViewById(R.id.cs_dtl_title);
@@ -61,7 +59,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         join_button=(Button) findViewById(R.id.cs_dtl_join);
         description=(TextView) findViewById(R.id.cs_dtl_desc);
 
-        course_id=bundle.getInt("course_id");
+        course_id= (int)getIntent().getLongExtra("course_id",0);
 
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +71,7 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         //get the data from server
         RequestParams params=new RequestParams();
+        params.put("student_id",User.getInstance().getId());
         params.put("course_id",course_id);
         loading_dialog = StaticConfig.createLoadingDialog(CourseDetailActivity.this,"加载中...");
         ExperimentHttpClient.getInstance().get(url,params,new JsonHttpResponseHandler(){
@@ -117,7 +116,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         }
         else{
             join_button.setText("参加");
-            join_button.setBackgroundColor(Color.BLUE);
+            join_button.setBackgroundColor(Color.parseColor("#0099ff"));
         }
         course_pic.setImageURI(response.getString("course_pic"));
         description.setText(response.getString("description"));
@@ -181,7 +180,7 @@ public class CourseDetailActivity extends AppCompatActivity {
                                         Toast.makeText(CourseDetailActivity.this,"退课成功",Toast.LENGTH_LONG).show();
                                         enable=true;
                                         join_button.setText("参加");
-                                        join_button.setBackgroundColor(Color.BLUE);
+                                        join_button.setBackgroundColor(Color.parseColor("#0099ff"));
                                     }
                                     else{
                                         Toast.makeText(CourseDetailActivity.this,"退课失败",Toast.LENGTH_LONG).show();

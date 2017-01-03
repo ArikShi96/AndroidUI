@@ -1,6 +1,7 @@
 package com.example.root.experimentassistant.FirstLevel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.Spinner;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.example.root.experimentassistant.Adapter.ExpersAdapter;
+
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -30,6 +32,7 @@ import com.example.root.experimentassistant.Adapter.MySpinnerAdapter;
 import com.example.root.experimentassistant.Model.RequestCallBack;
 import com.example.root.experimentassistant.Model.User;
 import com.example.root.experimentassistant.R;
+import com.example.root.experimentassistant.SecondLevel.ExperDetailActivity;
 import com.example.root.experimentassistant.ViewModel.ViewExper;
 
 import org.w3c.dom.Text;
@@ -37,16 +40,16 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExperimentList extends Fragment{
+public class ExperimentList extends Fragment {
     ListView experimentList;
 
     private MaterialRefreshLayout myMaterialRefreshLayout;
 
-    private int weekCnt=1;
+    private int weekCnt = 1;
 
     private Button spinnerText;
 
-    private ListView weekList=null;
+    private ListView weekList = null;
 
     private Button setWeekBtn;
 
@@ -59,41 +62,42 @@ public class ExperimentList extends Fragment{
     private MySpinnerAdapter adapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View view =inflater.inflate(R.layout.experiment_list,container,false);
-        Log.d("Exper","create");
-        experimentList=(ListView) view.findViewById(R.id.experiment_list);
-        myMaterialRefreshLayout=(MaterialRefreshLayout)view.findViewById(R.id.experiment_refresh);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.experiment_list, container, false);
+        Log.d("Exper", "create");
+        experimentList = (ListView) view.findViewById(R.id.experiment_list);
+        myMaterialRefreshLayout = (MaterialRefreshLayout) view.findViewById(R.id.experiment_refresh);
 
-        weekArr=new ArrayList<String>();
-        for(int i=1;i<=25;i++){
-            weekArr.add("第"+i+"周实验");
+        weekArr = new ArrayList<String>();
+        for (int i = 1; i <= 25; i++) {
+            weekArr.add("第" + i + "周实验");
         }
 
-        spinnerText=(Button) view.findViewById(R.id.testSpinner);
-        adapter=new MySpinnerAdapter(getContext(),weekArr);
+        spinnerText = (Button) view.findViewById(R.id.testSpinner);
+        adapter = new MySpinnerAdapter(getContext(), weekArr);
 
         //刷新回调函数
         myMaterialRefreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
             @Override
             public void onRefresh(final MaterialRefreshLayout materialRefreshLayout) {
-                if(User.getInstance().isLogin()) bindExperiment();
+                if (User.getInstance().isLogin()) bindExperiment();
             }
+
             @Override
             public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
-                            myMaterialRefreshLayout.finishRefreshLoadMore();
+                myMaterialRefreshLayout.finishRefreshLoadMore();
             }
         });
 
         //若登录初始化列表
-        if(User.getInstance().isLogin()) {
+        if (User.getInstance().isLogin()) {
             weekCnt = User.getInstance().getCurrentWeek(getContext().getSharedPreferences("user", Context.MODE_PRIVATE));
-            if(weekCnt<1||weekCnt>25) weekCnt=1;
+            if (weekCnt < 1 || weekCnt > 25) weekCnt = 1;
 
             bindExperiment();
         }
 
-        spinnerText.setText(adapter.getItem(weekCnt-1));
+        spinnerText.setText(adapter.getItem(weekCnt - 1));
 
         spinnerText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,21 +106,32 @@ public class ExperimentList extends Fragment{
             }
         });
 
-        weekPicker=new OptionsPickerView(getContext());
+        weekPicker = new OptionsPickerView(getContext());
         weekPicker.setPicker(weekArr);
         weekPicker.setCyclic(false);
         weekPicker.setTitle("选择星期");
-        weekPicker.setSelectOptions(weekCnt-1);
+        weekPicker.setSelectOptions(weekCnt - 1);
 
         weekPicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int option2, int options3) {
-                weekCnt=options1+1;
+                weekCnt = options1 + 1;
                 adapter.setSelectItem(options1);
                 spinnerText.setText(adapter.getItem(options1));
             }
         });
 
+        experimentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                long id = adapterView.getAdapter().getItemId(position);
+
+                Intent intent=new Intent(ExperimentList.this.getContext(), ExperDetailActivity.class);
+                intent.putExtra("exper_id",id);
+
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
@@ -127,21 +142,21 @@ public class ExperimentList extends Fragment{
         setWeekBtn = (Button) layout.findViewById(R.id.setWeekBtn);
         weekList.setAdapter(adapter);
 //        weekList.setSelection(weekCnt-1);
-        weekList.setSelectionFromTop(weekCnt-1,(int)(getContext().getResources().getDisplayMetrics().density*240)/2);
-        adapter.setSelectItem(weekCnt-1);
+        weekList.setSelectionFromTop(weekCnt - 1, (int) (getContext().getResources().getDisplayMetrics().density * 240) / 2);
+        adapter.setSelectItem(weekCnt - 1);
 
-        final PopupWindow popupWindow = new PopupWindow(layout, spinnerText.getWidth()/2,LinearLayout.LayoutParams.WRAP_CONTENT,true);
+        final PopupWindow popupWindow = new PopupWindow(layout, spinnerText.getWidth() / 2, LinearLayout.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
         popupWindow.setContentView(layout);
         popupWindow.showAsDropDown(v, spinnerText.getWidth() / 4, 0);
 
-        Log.d("showWindow","first");
+        Log.d("showWindow", "first");
         weekList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("item listem",position+"");
-                weekCnt=position+1;
+                Log.d("item listem", position + "");
+                weekCnt = position + 1;
                 adapter.setSelectItem(position);
                 spinnerText.setText(adapter.getItem(position));
                 bindExperiment();
@@ -153,7 +168,7 @@ public class ExperimentList extends Fragment{
         setWeekBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                weekPicker.setSelectOptions(weekCnt-1);
+                weekPicker.setSelectOptions(weekCnt - 1);
                 weekPicker.show();
                 popupWindow.dismiss();
             }
@@ -161,19 +176,19 @@ public class ExperimentList extends Fragment{
     }
 
     private void bindExperiment() {
-        if(User.getInstance().isLogin()==false) return;
-        Log.d("bindExper","week"+weekCnt);
-        User.getInstance().getCntExper(weekCnt,new getExpersCallback());
+        if (User.getInstance().isLogin() == false) return;
+        Log.d("bindExper", "week" + weekCnt);
+        User.getInstance().getCntExper(weekCnt, new getExpersCallback());
     }
 
-    private class getExpersCallback implements RequestCallBack{
-        public void onRequestSuccess(Object sender){
+    private class getExpersCallback implements RequestCallBack {
+        public void onRequestSuccess(Object sender) {
             myMaterialRefreshLayout.finishRefresh();
-            ExpersAdapter adapter = new ExpersAdapter(ExperimentList.this.getContext(), (List<ViewExper>)sender);
+            ExpersAdapter adapter = new ExpersAdapter(ExperimentList.this.getContext(), (List<ViewExper>) sender);
             experimentList.setAdapter(adapter);
         }
 
-        public void onRequestFailure(Object sender){
+        public void onRequestFailure(Object sender) {
 
         }
     }

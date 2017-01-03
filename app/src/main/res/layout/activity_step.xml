@@ -1,152 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
+    android:fillViewport="true"
+    android:fadeScrollbars="true"
     android:id="@+id/step_globallayout">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/skyBlue"
-                android:minHeight="?attr/actionBarSize">
-
-                <ImageButton
-                    android:id="@+id/step_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/cancleButton"
-                    android:background="@android:color/transparent"
-                    android:src="@mipmap/arrow_left"
-                    />
-
-                <TextView
-                    android:id="@+id/step_title"
-                    android:textSize="30sp"
-                    android:textColor="#fff"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:text="第一步"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="25sp"
-                    android:textColor="#ffffff"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="10dp"
-                    android:id="@+id/step_count_down"
-                    />
-            </android.support.v7.widget.Toolbar>
-        </RelativeLayout>
-
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/skyBlue"
+                    android:minHeight="?attr/actionBarSize">
+
+                    <ImageButton
+                        android:id="@+id/step_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/cancleButton"
+                        android:background="@android:color/transparent"
+                        android:src="@mipmap/arrow_left"
+                        />
+
+                    <TextView
+                        android:id="@+id/step_title"
+                        android:textSize="30sp"
+                        android:textColor="#fff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:text="第一步"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="25sp"
+                        android:textColor="#ffffff"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/step_count_down"
+                        />
+                </android.support.v7.widget.Toolbar>
+            </RelativeLayout>
 
             <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="0dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="25dp"
+                        android:text="步骤内容"
+                        android:id="@+id/step_content_title"
+                        android:background="@drawable/bottomborder"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textSize="18dp"
+                        android:id="@+id/step_content"
+                        android:text="编写程序，当用户在实验箱上按下 KEY1 键或KEY2 键时在中断服务子程序中将相关信息打印到串口中，显示在超级终端上"
+                        />
+                </LinearLayout>
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/step_images"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:background="@color/iconGray"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="1">
+                android:orientation="vertical"
+                android:layout_margin="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="25dp"
-                    android:text="步骤内容"
-                    android:id="@+id/step_content_title"
+                    android:text="注意事项"
+                    android:id="@+id/step_note_title"
                     android:background="@drawable/bottomborder"
                     />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:textSize="18dp"
-                    android:id="@+id/step_content"
+                    android:id="@+id/step_note"
                     android:text="编写程序，当用户在实验箱上按下 KEY1 键或KEY2 键时在中断服务子程序中将相关信息打印到串口中，显示在超级终端上"
                     />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/step_images"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
-                android:background="@color/iconGray"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25dp"
-                android:text="注意事项"
-                android:id="@+id/step_note_title"
-                android:background="@drawable/bottomborder"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="18dp"
-                android:id="@+id/step_note"
-                android:text="编写程序，当用户在实验箱上按下 KEY1 键或KEY2 键时在中断服务子程序中将相关信息打印到串口中，显示在超级终端上"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25dp"
-                android:text="相关问题"
-                android:id="@+id/step_question_title"
-                android:background="@drawable/bottomborder"
-                />
-            <!-- 问题列表 -->
-
-            <ListView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:id="@+id/step_question"></ListView>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="25dp"
+                    android:text="相关问题"
+                    android:id="@+id/step_question_title"
+                    android:background="@drawable/bottomborder"
+                    />
+                <!-- 问题列表 -->
+
+                <ListView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/step_question"></ListView>
+
+            </LinearLayout>
 
         </LinearLayout>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#0099ff"
+            android:text="下一步"
+            android:textColor="#ffffff"
+            android:textSize="25dp"
+            android:id="@+id/step_next_button"
+            />
     </LinearLayout>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#0099ff"
-        android:text="下一步"
-        android:textColor="#ffffff"
-        android:textSize="25dp"
-        android:id="@+id/step_next_button"
-        />
-</LinearLayout>
+</ScrollView>

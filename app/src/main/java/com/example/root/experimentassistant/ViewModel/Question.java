@@ -9,6 +9,12 @@ public class Question {
     private boolean answer_type;
     private String answer;
 
+    public Question(){
+        question="";
+        answer="";
+        answer_type=false;
+    }
+
     public int getId() {
         return id;
     }

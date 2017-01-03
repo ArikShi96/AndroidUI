@@ -18,11 +18,13 @@ import java.util.List;
  */
 public class ExperModel {
     int id;
-    int question_id;
+    int question_count;
     List<Step> steps=new ArrayList<>();
     List<Question> question_list=new ArrayList<>();
     int current_time;
     int total_time;
+
+    int step_count;
 
     Handler handler_start=new Handler();
     Handler handler_stop=new Handler(){
@@ -52,13 +54,14 @@ public class ExperModel {
         }
     };
 
-    ExperModel(int id, JSONObject response) throws JSONException{
+    public ExperModel(int id, JSONArray response) throws JSONException{
         this.id=id;
-        question_id=0;
+        question_count=0;
         current_time=0;
         total_time=0;
 
-        JSONArray steps=response.getJSONArray("step_list");
+        JSONArray steps=response;
+        step_count=steps.length();
         for(int i=0;i<steps.length();i++){
             JSONObject item=steps.getJSONObject(i);
             Step step=new Step();
@@ -81,15 +84,17 @@ public class ExperModel {
             JSONArray questions=item.getJSONArray("question_list");
             for(int j=0;j<questions.length();j++){
                 Question question=new Question();
-                question.setId(question_id++);
+                question.setId(question_count++);
                 question.setQuestion(questions.getString(j));
                 step.getQuestion_list().add(question);
                 question_list.add(question);
             }
             JSONArray images=item.getJSONArray("image_list");
             for(int j=0;j<images.length();j++){
-                step.getImage_list().add(images.getString(i));
+                step.getImage_list().add(images.getString(j));
             }
+
+            this.steps.add(step);
         }
     }
 
@@ -103,5 +108,17 @@ public class ExperModel {
 
     public int getCurrent_time(){
         return current_time;
+    }
+
+    public void beginCountDown(){
+        handler_start.post(runnable);
+    }
+
+    public int getStep_count(){
+        return step_count;
+    }
+
+    public int getId(){
+        return id;
     }
 }

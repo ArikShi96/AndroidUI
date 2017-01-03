@@ -106,10 +106,10 @@ public class TakePhotoActivity extends Activity implements OnClickListener{
                 case TAKE_PHOTO:
                     Bundle extras = data.getExtras();
                     Bitmap b = (Bitmap) extras.get("data");
-                    String name = new Date().toString();
-                    String fileNmae = Environment.getExternalStorageDirectory().toString()+ File.separator+"dong/image/"+name+".jpg";
-                    src_path = fileNmae;
-                    File myCaptureFile =new File(fileNmae);
+                    String name = bundle.getInt("exper_id")+"_"+bundle.getInt("id");
+                    String fileName = Environment.getExternalStorageDirectory().toString()+ File.separator+"experiment/image/"+name+".jpg";
+                    src_path = fileName;
+                    File myCaptureFile =new File(fileName);
                     try {
                         if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
                             if(!myCaptureFile.getParentFile().exists()){

@@ -14,8 +14,8 @@ public class Step {
     private int prefix_time;
     private String content;
     private String note;
-    private ArrayList<Question> question_list;
-    private ArrayList<String> image_list;
+    private ArrayList<Question> question_list=new ArrayList<>();
+    private ArrayList<String> image_list=new ArrayList<>();
 
     public int getId() {
         return id;

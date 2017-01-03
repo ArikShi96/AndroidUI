@@ -43,22 +43,27 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
 
         <EditText
-            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
             style="@style/grayText"
             android:background="@drawable/edittext"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/question_answer"/>
-
+            android:minHeight="50dp"
+            android:id="@+id/question_answer"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" "/>
         <ImageView
+            android:layout_gravity="center_vertical"
             android:id="@+id/photo_image"
-            android:layout_weight="5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@mipmap/camera_icon"/>
     </LinearLayout>
 </LinearLayout>

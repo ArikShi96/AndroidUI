@@ -68,7 +68,7 @@ public class ModifyPasswordActivity extends AppCompatActivity {
                     if(new_pw.equals(cfm_pw)) {
                         error_message.setText("");
                         send.setClickable(true);
-                        send.setBackgroundColor(Color.BLUE);
+                        send.setBackgroundColor(Color.parseColor("#0099ff"));
                     }
                     else{
                         error_message.setText("前后密码不一致");

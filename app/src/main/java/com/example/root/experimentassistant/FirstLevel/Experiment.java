@@ -79,6 +79,7 @@ public class Experiment extends AppCompatActivity {
         initFragement2();
 
         CookieUnits.setAppContext(getApplicationContext());
+        init();
     }
 
     private void hideAllFragement(FragmentTransaction transaction){

@@ -3,8 +3,10 @@ package com.example.root.experimentassistant.SecondLevel;
 import com.example.root.experimentassistant.Model.RequestCallBack;
 import com.example.root.experimentassistant.Model.User;
 import com.example.root.experimentassistant.R;
+import com.example.root.experimentassistant.ThirdLevel.ForgetPasswordActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
@@ -30,12 +32,15 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextView pass;
 
+    private TextView forgetBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         loginBtn=(Button)findViewById(R.id.LoginBtn);
+        forgetBtn=(TextView)findViewById(R.id.ForgetButton);
         id=(TextView)findViewById(R.id.LoginId);
         pass=(TextView)findViewById(R.id.LoginPass);
 
@@ -68,6 +73,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 User.getInstance().Login(id.getText().toString(),pass.getText().toString(),new LoginCallBack());
+            }
+        });
+        //忘记密码按钮
+        forgetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, ForgetPasswordActivity.class));
             }
         });
     }
