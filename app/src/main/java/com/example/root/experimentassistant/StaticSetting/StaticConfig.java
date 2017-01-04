@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.root.experimentassistant.MyView.LoadingFailedActivity;
+import com.example.root.experimentassistant.MyView.SuccessActivity;
 import com.example.root.experimentassistant.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
@@ -96,10 +97,10 @@ public class StaticConfig {
 
     public static Intent successPage(Context context, String title, String success_msg){
         Intent success=new Intent();
-        success.setClass(context, LoadingFailedActivity.class);
+        success.setClass(context, SuccessActivity.class);
         Bundle bundle=new Bundle();
         bundle.putCharSequence("title", title);
-        bundle.putCharSequence("err_msg", success_msg);
+        bundle.putCharSequence("success_msg", success_msg);
         success.putExtras(bundle);
         return success;
     }

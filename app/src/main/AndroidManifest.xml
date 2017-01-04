@@ -38,6 +38,7 @@
         <activity android:name=".SecondLevel.HistoryCourseActivity" />
         <activity android:name=".SecondLevel.MyScoreActivity" />
         <activity android:name=".MyView.ImageShowActivity"></activity>
+        <activity android:name=".MyView.SuccessActivity"></activity>
     </application>
 
 </manifest>
