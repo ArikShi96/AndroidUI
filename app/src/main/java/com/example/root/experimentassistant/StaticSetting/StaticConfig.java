@@ -3,6 +3,7 @@ package com.example.root.experimentassistant.StaticSetting;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -16,6 +17,9 @@ import android.widget.TextView;
 
 import com.example.root.experimentassistant.MyView.LoadingFailedActivity;
 import com.example.root.experimentassistant.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 
 import java.io.File;
 
@@ -27,6 +31,16 @@ import static com.example.root.experimentassistant.R.layout.dialog_loading;
 public class StaticConfig {
     public static final String BASE_URL="http://101.200.61.252:8080";
     public static final String IMAGE_STORAGE_URL= Environment.getExternalStorageDirectory().toString()+ File.separator+"experiment/image/";
+    public static final DisplayImageOptions options=new DisplayImageOptions.Builder()
+            .showImageOnLoading(R.mipmap.progress_ing)
+            .showImageForEmptyUri(R.mipmap.icon_progress_fail)
+            .showImageOnFail(R.mipmap.icon_progress_fail)
+            .delayBeforeLoading(0)
+            .cacheInMemory(true)
+            .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
+            .bitmapConfig(Bitmap.Config.ARGB_8888)
+            .displayer(new SimpleBitmapDisplayer())
+            .build();
 
     public static Dialog createLoadingDialog(Context context, String msg) {
         LayoutInflater inflater = LayoutInflater.from(context);

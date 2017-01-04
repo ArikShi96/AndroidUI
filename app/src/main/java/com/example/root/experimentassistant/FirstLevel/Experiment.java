@@ -25,6 +25,8 @@ import com.example.root.experimentassistant.Adapter.MySpinnerAdapter;
 import com.example.root.experimentassistant.Internet.CookieUnits;
 import com.example.root.experimentassistant.Model.User;
 import com.example.root.experimentassistant.R;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.w3c.dom.Text;
 
@@ -210,5 +212,8 @@ public class Experiment extends AppCompatActivity {
         if(!file.exists()){
             file.mkdirs();
         }
+
+        ImageLoaderConfiguration configuration=ImageLoaderConfiguration.createDefault(Experiment.this);
+        ImageLoader.getInstance().init(configuration);
     }
 }

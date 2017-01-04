@@ -2,6 +2,7 @@ package com.example.root.experimentassistant.ThirdLevel;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -12,12 +13,14 @@ import com.example.root.experimentassistant.Internet.ExperimentHttpClient;
 import com.example.root.experimentassistant.Model.ExperModel;
 import com.example.root.experimentassistant.Model.Step;
 import com.example.root.experimentassistant.Model.User;
+import com.example.root.experimentassistant.MyView.ImageShowActivity;
 import com.example.root.experimentassistant.R;
 import com.example.root.experimentassistant.StaticSetting.StaticConfig;
 import com.example.root.experimentassistant.ViewModel.Question;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -45,7 +49,7 @@ public class StepActivity extends AppCompatActivity {
     private ImageButton back;
     private TextView content_title;
     private TextView content;
-    private SimpleDraweeView image;
+    private ImageView image;
     private TextView note_title;
     private TextView note;
     private TextView question_title;
@@ -99,7 +103,7 @@ public class StepActivity extends AppCompatActivity {
         back           = (ImageButton) findViewById(R.id.step_back);
         content_title  = (TextView)    findViewById(R.id.step_content_title);
         content        = (TextView)    findViewById(R.id.step_content);
-        image          = (SimpleDraweeView)   findViewById(R.id.step_images);
+        image          = (ImageView)   findViewById(R.id.step_images);
         note_title     = (TextView)    findViewById(R.id.step_note_title);
         note           = (TextView)    findViewById(R.id.step_note);
         question_title = (TextView)    findViewById(R.id.step_question_title);
@@ -128,7 +132,16 @@ public class StepActivity extends AppCompatActivity {
         //image
         ArrayList<String> images=step_item.getImage_list();
         if(images.size()>0) {
-            image.setImageURI(Uri.parse(StaticConfig.BASE_URL + step_item.getImage_list().get(0)));
+            ImageLoader imageLoader=ImageLoader.getInstance();
+            imageLoader.displayImage(StaticConfig.BASE_URL + step_item.getImage_list().get(0),image,StaticConfig.options);
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent show_image=new Intent(StepActivity.this, ImageShowActivity.class);
+                    show_image.putExtra("bitmap",((BitmapDrawable)image.getDrawable()).getBitmap());
+                    startActivity(show_image);
+                }
+            });
         }
 
         note.setText(step_item.getNote());
@@ -241,19 +254,25 @@ public class StepActivity extends AppCompatActivity {
         params.put("student_id",User.getInstance().getId());
         params.put("exper_id",exper_id);
         List<Question> questions=User.getInstance().getExperiment().getQuestions();
+        ArrayList<String> answer_list=new ArrayList<>();
+        ArrayList<File> image_list=new ArrayList<>();
+
         try {
             for (Question question : questions) {
                 if (!question.getAnswer_type()) {
-                    params.put("answer_list", "*#" + question.getId() + "*#" + question.getAnswer());
+                    answer_list.add("*#" + question.getId() + "*#" + question.getAnswer());
                 } else {
                     File file = new File(question.getAnswer());
-                    params.put("image_list", file);
+                    image_list.add(file);
                 }
             }
+            params.put("image_list", image_list);
+            params.put("answer_list", answer_list);
         }catch (Exception e){
             Toast.makeText(StepActivity.this,"图片读取失败",Toast.LENGTH_LONG).show();
             return;
         }
+
         loading_dialog=StaticConfig.createLoadingDialog(StepActivity.this,"发送中...");
         ExperimentHttpClient.getInstance().post("student/submit",params, new JsonHttpResponseHandler(){
             @Override
