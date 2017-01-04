@@ -131,6 +131,7 @@ public class StudentInfo {
                             score.setCourseName(object.getString("course_name"));
                             score.setExperName(object.getString("experiment_name"));
                             score.setScore(object.getString("score"));
+                            score.setAttach_url(object.getString("attach_url"));
 
                             scores.add(score);
                         }

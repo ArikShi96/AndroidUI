@@ -97,9 +97,20 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         public void onRequestFailure(Object sender){
+            int status=((Integer)sender).intValue();
+            String mess="";
+//            switch(status){
+//                case 1:mess="用户不存在";
+//                    break;
+//                case 2:mess="密码错误";
+//                    break;
+//                default:
+//                    break;
+//            }
+
             id.setText("");
             pass.setText("");
-            Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this,"登录失败 "+mess,Toast.LENGTH_SHORT).show();
         }
     }
 }

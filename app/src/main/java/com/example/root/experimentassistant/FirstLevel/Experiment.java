@@ -34,19 +34,21 @@ public class Experiment extends AppCompatActivity {
     private Fragment fragment2;
     private Fragment fragment3;
 
-    LinearLayout courseBtn;
-    LinearLayout experBtn;
-    LinearLayout personBtn;
+    private LinearLayout courseBtn;
+    private LinearLayout experBtn;
+    private LinearLayout personBtn;
 
-    ImageView courseIcon;
-    ImageView experIcon;
-    ImageView personIcon;
+    private ImageView courseIcon;
+    private ImageView experIcon;
+    private ImageView personIcon;
 
-    TextView courseText;
-    TextView experText;
-    TextView personText;
+    private TextView courseText;
+    private TextView experText;
+    private TextView personText;
 
-    Toolbar toolbar;
+    private Toolbar toolbar;
+    private TextView title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,8 +69,10 @@ public class Experiment extends AppCompatActivity {
         personText=(TextView)findViewById(R.id.personText);
 
         toolbar=(Toolbar)findViewById(R.id.toolbar);
+        title=(TextView)findViewById(R.id.index_title);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Experiments");
+        title.setText("本周实验");
+        toolbar.setTitle("");
 
         courseBtn.setOnClickListener(testClickListener);
         experBtn.setOnClickListener(testClickListener);
@@ -153,7 +157,7 @@ public class Experiment extends AppCompatActivity {
                          setExperSelect(false);
                          setPersonSelect(false);
                          initFragement1();
-                         toolbar.setTitle("Courses");
+                         title.setText("我的课程");
                      }
                      break;
                  case R.id.experBtn:
@@ -162,7 +166,7 @@ public class Experiment extends AppCompatActivity {
                          setExperSelect(true);
                          setPersonSelect(false);
                          initFragement2();
-                         toolbar.setTitle("Experiments");
+                         title.setText("本周实验");
                      }
                      break;
                  case R.id.personBtn:
@@ -171,7 +175,7 @@ public class Experiment extends AppCompatActivity {
                          setExperSelect(false);
                          setPersonSelect(true);
                          initFragement3();
-                         toolbar.setTitle("Personal Info");
+                         title.setText("个人信息");
                      }
                      break;
                  default:

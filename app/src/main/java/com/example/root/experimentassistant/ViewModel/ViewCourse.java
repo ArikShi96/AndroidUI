@@ -1,9 +1,11 @@
 package com.example.root.experimentassistant.ViewModel;
 
+import java.io.Serializable;
+
 /**
  * Created by root on 2016/12/20.
  */
-public class ViewCourse {
+public class ViewCourse implements Serializable{
     private String id;
 
     private String courseName;
