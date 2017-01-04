@@ -10,6 +10,16 @@ public class ViewExperScore {
 
     private String experName;
 
+    private String attach_url;
+
+    public String getAttach_url() {
+        return attach_url;
+    }
+
+    public void setAttach_url(String attach_url) {
+        this.attach_url = attach_url;
+    }
+
     public String getScore() {
         return score;
     }

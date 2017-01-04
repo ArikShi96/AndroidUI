@@ -121,4 +121,9 @@
         <item name="android:textSize">40px</item>
         <item name="android:textColor">#00B7EE</item>
     </style>
+
+    <style name="scoreText">
+        <item name="android:textSize">50px</item>
+        <item name="android:textColor">#808080</item>
+    </style>
 </resources>

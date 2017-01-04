@@ -1,13 +1,18 @@
 package com.example.root.experimentassistant.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.root.experimentassistant.R;
+import com.example.root.experimentassistant.StaticSetting.StaticConfig;
 import com.example.root.experimentassistant.ViewModel.ViewExper;
 import com.example.root.experimentassistant.ViewModel.ViewExperScore;
 
@@ -50,7 +55,7 @@ public class ScoresAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(final int position, View convertView, ViewGroup parent){
         ViewHolder holder=null;
         if (null == convertView)
         {
@@ -59,8 +64,9 @@ public class ScoresAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.score_entry, null);
 
             holder.experName = (TextView) convertView.findViewById(R.id.scoreExperName);
-            holder.courseName = (TextView) convertView.findViewById(R.id.scoreCourseName);
+            holder.report = (TextView) convertView.findViewById(R.id.experReport);
             holder.score = (TextView) convertView.findViewById(R.id.score);
+            holder.noScore=(ImageView)convertView.findViewById(R.id.noScore);
 
             convertView.setTag(holder);
         }
@@ -69,16 +75,31 @@ public class ScoresAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        ViewExperScore score = getItem(position);
+        final ViewExperScore score = getItem(position);
         if (null != score)
         {
             holder.experName.setText(score.getExperName());
-            holder.courseName.setText(score.getCourseName());
-            if(score.getScore()!=null) {
+
+            holder.report.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("report","click");
+                    Intent intent=new Intent();
+                    intent.setAction("android.intent.action.VIEW");
+                    Uri attach_url=Uri.parse("http://"+StaticConfig.BASE_URL+score.getAttach_url());
+                    intent.setData(attach_url);
+                    mContext.startActivity(intent);
+                }
+            });
+            if(score.getScore()!="null") {
                 holder.score.setText(score.getScore());
+                holder.score.setVisibility(View.VISIBLE);
+                holder.noScore.setVisibility(View.GONE);
             }
             else{
                 holder.score.setText("×");
+                holder.score.setVisibility(View.GONE);
+                holder.noScore.setVisibility(View.VISIBLE);
             }
         }
 
@@ -87,7 +108,8 @@ public class ScoresAdapter extends BaseAdapter {
 
     private static class ViewHolder{
         TextView experName;
-        TextView courseName;
+        TextView report;
         TextView score;
+        ImageView noScore;
     }
 }

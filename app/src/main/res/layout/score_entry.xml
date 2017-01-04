@@ -3,30 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp">
+    android:padding="5dp">
+
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left|bottom"
-            style="@style/bigText"
-            android:id="@+id/scoreExperName"/>
+            style="@style/scoreText"
+            android:id="@+id/scoreExperName"
+            android:text="null"/>
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left|top"
-            style="@style/bigText"
-            android:id="@+id/scoreCourseName"/>
+            style="@style/btnTextBlue"
+            android:id="@+id/experReport"
+            android:text="实验报告" />
     </LinearLayout>
 
     <TextView
@@ -35,6 +37,16 @@
         android:layout_margin="5dp"
         android:gravity="center"
         style="@style/grayText"
-        android:id="@+id/score"/>
+        android:id="@+id/score" />
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/clock"
+        android:layout_margin="5dp"
+        android:visibility="gone"
+        android:id="@+id/noScore"
+        android:layout_gravity="center_vertical"
+        />
+
 
 </LinearLayout>

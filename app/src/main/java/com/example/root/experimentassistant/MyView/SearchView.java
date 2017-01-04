@@ -58,7 +58,7 @@ public class SearchView extends LinearLayout{
     }
 
     private void initViews(){
-        searchBy=(Spinner)findViewById(R.id.search_by);
+//        searchBy=(Spinner)findViewById(R.id.search_by);
         searchText=(EditText)findViewById(R.id.search_text);
         searchList=(ListView)findViewById(R.id.search_list);
         searchButton=(Button)findViewById(R.id.search_button);

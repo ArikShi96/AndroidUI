@@ -10,13 +10,13 @@
         android:orientation="horizontal"
         android:background="@color/skyBlue">
 
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/search_by"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/search_by"></Spinner>
+        <!--<Spinner-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:entries="@array/search_by"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:id="@+id/search_by"></Spinner>-->
 
         <FrameLayout
             android:layout_width="0dp"
@@ -24,7 +24,10 @@
             android:layout_weight="1"
             android:background="@drawable/rectangle"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,11 +52,14 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="搜索"
             android:textSize="15dp"
-            android:id="@+id/search_button"/>
-
+            android:textColor="@color/iconBlue"
+            android:id="@+id/search_button"
+            android:background="@drawable/search_btn"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"/>
     </LinearLayout>
 
     <ListView

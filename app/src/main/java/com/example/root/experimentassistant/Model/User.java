@@ -15,6 +15,7 @@ import android.util.Log;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.TimeZone;
 
 import com.example.root.experimentassistant.FirstLevel.Experiment;
 import com.example.root.experimentassistant.Internet.*;
@@ -57,6 +58,9 @@ public class User {
     }
 
     public void setCurrentWeek(SharedPreferences preferences, int week) {
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
+
+        Log.d("setCurrentWeek",""+week);
         if (week <= 0) week = 1;
         if (week > 20) week = 20;
         currentWeek = week;
@@ -72,8 +76,13 @@ public class User {
     }
 
     public int getCurrentWeek(SharedPreferences preferences) {
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
         String beforeDate = preferences.getString("lastUsingDate", "");
         int weekCnt = preferences.getInt("weekCnt", 0);
+
+        Log.d("getCurWeek","bDate"+beforeDate);
+        Log.d("getCurWeek","weekCnt "+weekCnt);
+
         SharedPreferences.Editor editor = preferences.edit();
         //为初始化或小于0错误
         if (weekCnt <= 0) {
@@ -90,17 +99,21 @@ public class User {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date now = new Date();
             Date before = sdf.parse(beforeDate);
+
+            Log.d("nowDate",sdf.format(now));
             //前一次使用日期晚于现日期则保留星期数记录现日期
             if (now.before(before)) {
                 setCurrentWeek(preferences, weekCnt);
                 return weekCnt;
             }
             //现周数=上次使用周数+经过周数
+            Log.d("weekBet",weekCntBetween(before, now)+"");
             rnt += weekCntBetween(before, now);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        if(rnt>25) rnt=25;
         //更新日期数
         setCurrentWeek(preferences, rnt);
         return rnt;
@@ -135,6 +148,13 @@ public class User {
             before = now;
             now = tmp;
         }
+
+        Log.d("WeekOfYear","now "+getWeekOfYear(now));
+        Log.d("WeekOfYear","before "+getWeekOfYear(before));
+        Log.d("getYear","now "+getYear(now));
+        Log.d("getYear","before "+getYear(before));
+
+        if(getWeekOfYear(now)<getWeekOfYear(before)) return 0;
 
         return getWeekOfYear(now) - getWeekOfYear(before) +
                 (getYear(now) - getYear(before)) * 52;
@@ -182,6 +202,15 @@ public class User {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 if (statusCode == 200) {
                     try {
+                        int status=response.getInt("status");
+                        if(status!=0){
+                            Log.d("loginStatus",""+status);
+                            if(callBack!=null){
+                                callBack.onRequestFailure(status);
+                            }
+                            return;
+                        }
+
                         id = response.getString("identify");
                         name = response.getString("name");
 
@@ -215,7 +244,7 @@ public class User {
 
         Log.d("UserVer", "phone " + phoneNum);
 
-        ExperimentHttpClient.getInstance().post("student/getvertifycode", params, new AsyncHttpResponseHandler() {
+        ExperimentHttpClient.getInstance().post("user/getvertifycode", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.d("getVer", "success");
@@ -244,22 +273,46 @@ public class User {
         ExperimentHttpClient.getInstance().post("user/register", params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d("reg", "statusCode" + statusCode);
-                if (callBack != null) {
-                    callBack.onRequestFailure(null);
-                }
-                flag = -1;
+                if(callBack!=null) callBack.onRequestFailure(null);
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                if (statusCode == 200) {
-                    flag = Integer.parseInt(responseString);
-                    if (callBack != null) {
-                        callBack.onRequestSuccess(new Integer(flag));
-                    }
-                }
+                int sender=Integer.valueOf(responseString);
+
+                if(callBack!=null) callBack.onRequestSuccess(sender);
             }
+
+//        {
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                Log.d("reg", "fail statusCode" + statusCode);
+//                if (callBack != null) {
+//                    callBack.onRequestFailure(null);
+//                }
+//                Log.d("regist response",responseString);
+//                flag = -1;
+//            }
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                if (statusCode == 200) {
+//                    try {
+//                        int status = response.getInt("status");
+//                        if(status==0) {
+//                            if (callBack != null) {
+//                                callBack.onRequestSuccess(status);
+//                            }
+//                        }
+//                        else{
+//                            callBack.onRequestSuccess(status);
+//                        }
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
         });
         return flag;
     }
@@ -276,6 +329,7 @@ public class User {
         editor.putString("userId", User.getInstance().getId());
         editor.putString("userPhoneNum", User.getInstance().getPhoneNum());
         editor.putString("userName", User.getInstance().getName());
+        editor.putInt("weekCnt",0);
         editor.commit();
 
         ExperimentHttpClient.getInstance().post("user/logout", null, new AsyncHttpResponseHandler() {

@@ -75,6 +75,7 @@ public class ExperimentList extends Fragment {
 
         spinnerText = (Button) view.findViewById(R.id.testSpinner);
         adapter = new MySpinnerAdapter(getContext(), weekArr);
+        weekCnt=User.getInstance().getCurrentWeek(getContext().getSharedPreferences("user", Context.MODE_PRIVATE));
 
         //刷新回调函数
         myMaterialRefreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
@@ -93,15 +94,8 @@ public class ExperimentList extends Fragment {
             }
         });
 
-        //若登录初始化列表
-        if (User.getInstance().isLogin()) {
-            weekCnt = User.getInstance().getCurrentWeek(getContext().getSharedPreferences("user", Context.MODE_PRIVATE));
-            if (weekCnt < 1 || weekCnt > 25) weekCnt = 1;
-
-            bindExperiment();
-        }
-
         spinnerText.setText(adapter.getItem(weekCnt - 1));
+        adapter.setSelectItem(weekCnt-1);
 
         spinnerText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,9 +113,12 @@ public class ExperimentList extends Fragment {
         weekPicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int option2, int options3) {
+                Log.d("weekPicker","press");
                 weekCnt = options1 + 1;
                 adapter.setSelectItem(options1);
                 spinnerText.setText(adapter.getItem(options1));
+                User.getInstance().setCurrentWeek(ExperimentList.this.getContext().getSharedPreferences("user", Context.MODE_PRIVATE),weekCnt);
+                bindExperiment();
             }
         });
 
@@ -138,6 +135,24 @@ public class ExperimentList extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden){
+        super.onHiddenChanged(hidden);
+
+        if(hidden==false){
+            //若登录初始化列表
+            if (User.getInstance().isLogin()) {
+                weekCnt = User.getInstance().getCurrentWeek(getContext().getSharedPreferences("user", Context.MODE_PRIVATE));
+                if (weekCnt < 1 || weekCnt > 25) weekCnt = 1;
+
+                bindExperiment();
+            }
+            else{
+                if(experimentList!=null&&experimentList.getAdapter()!=null) experimentList.setAdapter(null);
+            }
+        }
     }
 
     private void showWindow(View v) {
