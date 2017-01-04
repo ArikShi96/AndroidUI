@@ -106,36 +106,35 @@ public class QuestionAdapter extends BaseAdapter{
             holder.question_answer.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
+                    ((ViewGroup)view.getParent()).setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
                     touch_pos=(Integer) view.getTag();
-                    if ((view.getId() == R.id.question_answer && canVerticalScroll((EditText)view))) {
-                        view.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                            view.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                    }
                     return false;
                 }
             });
 
             holder.text_watcher=new MyTextWatcher();
-            holder.text_watcher.setData(question, holder);
+            holder.text_watcher.setData(questions);
+            holder.question_answer.addTextChangedListener(holder.text_watcher);
+            holder.updatePos(position);
+
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((ViewGroup) view).setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+                }
+            });
 
             view.setTag(holder);
         }else {
             holder=(ComponentHolder) view.getTag();
+            holder.updatePos(position);
         }
-
         holder.question_answer.setTag(position);
-
-        if(touch_pos==position){
-            holder.question_answer.requestFocus();
-            holder.question_answer.setSelection(holder.question_answer.getText().length());
-        }else{
-            holder.question_answer.clearFocus();
-        }
-
         Question question=questions.get(position);
+
         if(question!=null){
+            System.out.println("******** get view answer "+position+":"+question.getAnswer());
             holder.question_content.setText(question.getQuestion());
             holder.question_answer.setText(question.getAnswer());
             if(!question.getAnswer_type()){
@@ -153,22 +152,6 @@ public class QuestionAdapter extends BaseAdapter{
      * @param editText 需要判断的EditText
      * @return true：可以滚动 false：不可以滚动
      */
-    private boolean canVerticalScroll(EditText editText) {
-        //滚动的距离
-        int scrollY = editText.getScrollY();
-        //控件内容的总高度
-        int scrollRange = editText.getLayout().getHeight();
-        //控件实际显示的高度
-        int scrollExtent = editText.getHeight() - editText.getCompoundPaddingTop() -editText.getCompoundPaddingBottom();
-        //控件内容总高度与实际显示高度的差值
-        int scrollDifference = scrollRange - scrollExtent;
-
-        if(scrollDifference == 0) {
-            return false;
-        }
-
-        return (scrollY > 0) || (scrollY < scrollDifference - 1);
-    }
 }
 
 class ComponentHolder{
@@ -180,15 +163,22 @@ class ComponentHolder{
     public ImageView photo_button;
 
     public MyTextWatcher text_watcher;
+
+    public void updatePos(int pos){
+        text_watcher.updatePos(pos);
+    }
 }
 
 class MyTextWatcher implements TextWatcher {
-    private Question question;
-    private ComponentHolder holder;
+    private List<Question> questions;
+    private int position;
 
-    public void setData(Question q, ComponentHolder h){
-        question=q;
-        holder=h;
+    public void updatePos(int pos){
+        position=pos;
+    }
+
+    public void setData(List<Question> q){
+        questions=q;
     }
 
     @Override
@@ -203,8 +193,8 @@ class MyTextWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
+        Question question=questions.get(position);
         question.setAnswer_type(false);
         question.setAnswer(s.toString());
-        holder.question_type.setText("答案类型:文字");
     }
 };

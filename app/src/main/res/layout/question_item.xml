@@ -48,6 +48,7 @@
         android:layout_margin="5dp">
 
         <EditText
+            android:descendantFocusability="blocksDescendants"
             android:layout_gravity="center_horizontal"
             style="@style/smallText"
             android:background="@drawable/edittext"

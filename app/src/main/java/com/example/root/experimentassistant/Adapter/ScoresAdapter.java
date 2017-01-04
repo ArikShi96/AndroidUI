@@ -86,7 +86,7 @@ public class ScoresAdapter extends BaseAdapter {
                     Log.d("report","click");
                     Intent intent=new Intent();
                     intent.setAction("android.intent.action.VIEW");
-                    Uri attach_url=Uri.parse("http://"+StaticConfig.BASE_URL+score.getAttach_url());
+                    Uri attach_url=Uri.parse(StaticConfig.BASE_URL+score.getAttach_url());
                     intent.setData(attach_url);
                     mContext.startActivity(intent);
                 }
