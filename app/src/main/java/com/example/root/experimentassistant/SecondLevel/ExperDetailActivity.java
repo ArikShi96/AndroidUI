@@ -80,19 +80,19 @@ public class ExperDetailActivity extends AppCompatActivity{
         params.put("exper_id",exper_id);
         loading_dialog = StaticConfig.createLoadingDialog(ExperDetailActivity.this,"加载中...");
         ExperimentHttpClient.getInstance().get(detail_url,params,new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                StaticConfig.closeDialog(loading_dialog);
-                if(statusCode==200){
-                    try {
-                            init(response);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                        Intent err=StaticConfig.errorPage(ExperDetailActivity.this,title.getText().toString(),"数据解析失败");
-                        startActivity(err);
-                        finish();
-                    }
-                }
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        StaticConfig.closeDialog(loading_dialog);
+                        if(statusCode==200){
+                            try {
+                                init(response);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                                Intent err=StaticConfig.errorPage(ExperDetailActivity.this,title.getText().toString(),"数据解析失败");
+                                startActivity(err);
+                                finish();
+                            }
+                        }
                 else {
                     Intent err=StaticConfig.errorPage(ExperDetailActivity.this,title.getText().toString(),"加载失败，返回码："+statusCode);
                     startActivity(err);
