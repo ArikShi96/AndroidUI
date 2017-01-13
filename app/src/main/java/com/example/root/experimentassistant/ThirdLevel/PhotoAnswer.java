@@ -213,8 +213,11 @@ public class PhotoAnswer extends AppCompatActivity {
         Log.d("update","start");
         loading_dialog= StaticConfig.createLoadingDialog(PhotoAnswer.this,"上传中...");
         RequestParams params=new RequestParams();
-        params.put("TextDes",answerText.getText().toString());
+        params.put("AnswerDes",answerText.getText().toString());
         params.put("ImageNum",Bimp.tempSelectBitmap.size());
+        params.put("exper_id",User.getInstance().getExperiment().getId());
+        params.put("student_id",User.getInstance().getId());
+        params.put("step_index",questionId+1);
 
         try{
             for (int i = 0; i < Bimp.tempSelectBitmap.size(); i++) {
@@ -233,7 +236,7 @@ public class PhotoAnswer extends AppCompatActivity {
         }
 
         Log.d("update","begin");
-        ExperimentHttpClient.getInstance().post("/student/file", params, new AsyncHttpResponseHandler() {
+        ExperimentHttpClient.getInstance().post("/student/submitstep", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.d("fileUpdate","success "+statusCode);

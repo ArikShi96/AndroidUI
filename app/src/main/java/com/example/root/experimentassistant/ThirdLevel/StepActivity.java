@@ -23,6 +23,7 @@ import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -262,34 +263,19 @@ public class StepActivity extends AppCompatActivity implements QuestionAdapter.O
         RequestParams params=new RequestParams();
         params.put("student_id",User.getInstance().getId());
         params.put("exper_id",exper_id);
-        List<Question> questions=User.getInstance().getExperiment().getQuestions();
-        ArrayList<String> answer_list=new ArrayList<>();
-        ArrayList<File> image_list=new ArrayList<>();
-
-        try {
-            for (Question question : questions) {
-                if (question.getAnswer_type()==Question.TEXTQUESTION) {
-                    answer_list.add("*#" + question.getId() + "*#" + question.getAnswer());
-                } else {
-                    File file = new File(question.getAnswer());
-                    image_list.add(file);
-                }
-            }
-            params.put("image_list", image_list);
-            params.put("answer_list", answer_list);
-        }catch (Exception e){
-            Toast.makeText(StepActivity.this,"图片读取失败",Toast.LENGTH_LONG).show();
-            return;
-        }
+        Log.d("submit","student_id "+User.getInstance().getId());
+        Log.d("submit","exper_id "+exper_id);
 
         loading_dialog=StaticConfig.createLoadingDialog(StepActivity.this,"发送中...");
-        ExperimentHttpClient.getInstance().post("student/submit",params, new JsonHttpResponseHandler(){
+        ExperimentHttpClient.getInstance().post("/student/submit",params, new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("submit","success "+statusCode);
                 StaticConfig.closeDialog(loading_dialog);
                 if(statusCode==200){
                     try {
                         int code=response.getInt("status");
+                        Log.d("submit","statuc code "+code);
                         if(code==0){
                             Intent success= StaticConfig.successPage(StepActivity.this,title.getText().toString(),"提交成功");
                             startActivity(success);
@@ -313,6 +299,11 @@ public class StepActivity extends AppCompatActivity implements QuestionAdapter.O
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
+                Log.d("submit","failure "+statusCode);
+                Log.d("submit","failure "+response.toString());
+                for(Header header:headers) {
+                    Log.d("submit", "failure " + headers.toString());
+                }
                 StaticConfig.closeDialog(loading_dialog);
                 Intent err=StaticConfig.errorPage(StepActivity.this,title.getText().toString(),"发送失败");
                 startActivity(err);

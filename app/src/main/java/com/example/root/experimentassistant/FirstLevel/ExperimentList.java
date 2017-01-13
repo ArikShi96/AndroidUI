@@ -147,6 +147,9 @@ public class ExperimentList extends Fragment {
                 weekCnt = User.getInstance().getCurrentWeek(getContext().getSharedPreferences("user", Context.MODE_PRIVATE));
                 if (weekCnt < 1 || weekCnt > 25) weekCnt = 1;
 
+                if(adapter!=null) {
+                    spinnerText.setText(adapter.getItem(weekCnt - 1));
+                }
                 bindExperiment();
             }
             else{

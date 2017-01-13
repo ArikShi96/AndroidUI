@@ -89,6 +89,7 @@ public class CourseList extends Fragment implements MySearchViewListener{
 
             @Override
             public void onRequestFailure(Object sender) {
+                Toast.makeText(CourseList.this.getContext(),"网络故障",Toast.LENGTH_SHORT).show();
                 myMaterialRefreshLayout.finishRefresh();
             }
         });

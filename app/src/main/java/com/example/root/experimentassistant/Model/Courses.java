@@ -123,6 +123,7 @@ public class Courses {
         ExperimentHttpClient.getInstance().post("student/index", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                defaultCourses.clear();
                 try {
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject object = response.getJSONObject(i);

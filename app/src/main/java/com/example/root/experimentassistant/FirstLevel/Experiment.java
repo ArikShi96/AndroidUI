@@ -2,7 +2,9 @@ package com.example.root.experimentassistant.FirstLevel;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -219,5 +221,10 @@ public class Experiment extends AppCompatActivity {
 
         ImageLoaderConfiguration configuration=ImageLoaderConfiguration.createDefault(Experiment.this);
         ImageLoader.getInstance().init(configuration);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 }
