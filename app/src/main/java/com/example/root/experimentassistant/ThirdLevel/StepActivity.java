@@ -37,7 +37,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 
 
-public class StepActivity extends AppCompatActivity {
+public class StepActivity extends AppCompatActivity implements QuestionAdapter.OnEditBtnClickListerner{
     int step;
     int exper_id;
     Step step_item;
@@ -56,6 +56,8 @@ public class StepActivity extends AppCompatActivity {
     private TextView tmp_answer_type;
 
     private Dialog loading_dialog;
+
+    public static final int EDITANSWER=1;
 
     //倒计时
     Handler handler_start=new Handler();
@@ -134,6 +136,7 @@ public class StepActivity extends AppCompatActivity {
 
         //question
         QuestionAdapter adapter=new QuestionAdapter(step_item.getQuestion_list(),this,exper_id);
+        adapter.setmListerner(this);
         questions.setAdapter(adapter);
 
         //next button
@@ -174,35 +177,42 @@ public class StepActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case 0:       //take photo complete
-                if (resultCode == RESULT_OK) {
-                    try {
-                        Bundle result = data.getExtras();
-                        if(result.getString("path").isEmpty()) return;
-                        ExperModel exper = User.getInstance().getExperiment();
-                        Question question = exper.getQuestions().get(result.getInt("id"));
-                        question.setAnswer_type(true);
-                        question.setAnswer(result.getString("path"));
-                        if (tmp_answer_type != null) {
-                            tmp_answer_type.setText("问题类型:图片");
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else if (resultCode == RESULT_CANCELED) {
-                    tmp_answer_type = null;
-                }
-                break;
+//            case 0:       //take photo complete
+//                if (resultCode == RESULT_OK) {
+//                    try {
+//                        Bundle result = data.getExtras();
+//                        if(result.getString("path").isEmpty()) return;
+//                        ExperModel exper = User.getInstance().getExperiment();
+//                        Question question = exper.getQuestions().get(result.getInt("id"));
+//                        question.setAnswer_type(Question.PHOTOQUESTION);
+//                        question.setAnswer(result.getString("path"));
+//                        if (tmp_answer_type != null) {
+//                            tmp_answer_type.setText("问题类型:图片");
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                } else if (resultCode == RESULT_CANCELED) {
+//                    tmp_answer_type = null;
+//                }
+//                break;
+//
+//            case 1:
+//                if(resultCode==RESULT_OK) {
+//                    if(step!=0) {
+//                        setResult(RESULT_OK);
+//                        finish();
+//                    }else {
+//                        finish();
+//                    }
+//                }
 
-            case 1:
-                if(resultCode==RESULT_OK) {
-                    if(step!=0) {
-                        setResult(RESULT_OK);
-                        finish();
-                    }else {
-                        finish();
-                    }
-                }
+            case EDITANSWER:
+                step_item=User.getInstance().getExperiment().getSteps().get(step);
+                QuestionAdapter adapter=new QuestionAdapter(step_item.getQuestion_list(),this,exper_id);
+                adapter.setmListerner(this);
+                questions.setAdapter(adapter);
+                break;
         }
     }
 
@@ -240,7 +250,7 @@ public class StepActivity extends AppCompatActivity {
         List<Question> questions=User.getInstance().getExperiment().getQuestions();
         try {
             for (Question question : questions) {
-                if (!question.getAnswer_type()) {
+                if (question.getAnswer_type()==1) {
                     params.put("answer_list", "*#" + question.getId() + "*#" + question.getAnswer());
                 } else {
                     File file = new File(question.getAnswer());
@@ -287,5 +297,12 @@ public class StepActivity extends AppCompatActivity {
                 startActivity(err);
             }
         });
+    }
+
+    @Override
+    public void onEditBtnClick(int questionId){
+        Intent intent=new Intent(this,PhotoAnswer.class);
+        intent.putExtra("questionId",questionId);
+        startActivityForResult(intent,EDITANSWER);
     }
 }

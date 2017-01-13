@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.example.root.experimentassistant.ViewModel.Question;
+import com.example.root.experimentassistant.ViewModel.photoQuestion;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -84,8 +85,9 @@ public class ExperModel {
             }
             JSONArray questions=item.getJSONArray("question_list");
             for(int j=0;j<questions.length();j++){
-                Question question=new Question();
+                Question question=new photoQuestion();
                 question.setId(question_count++);
+                question.setAnswer_type(Question.PHOTOQUESTION);
                 question.setQuestion(questions.getString(j));
                 step.getQuestion_list().add(question);
                 question_list.add(question);

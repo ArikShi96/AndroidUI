@@ -16,12 +16,12 @@
             android:name=".FirstLevel.Experiment"
             android:windowSoftInputMode="adjustPan|stateHidden">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
         <activity android:name=".SecondLevel.LoginActivity" />
         <activity android:name=".SecondLevel.RegisterActivity" />
@@ -38,11 +38,11 @@
         <activity android:name=".SecondLevel.HistoryCourseActivity" />
         <activity android:name=".SecondLevel.MyScoreActivity" />
         <activity android:name=".ThirdLevel.PhotoAnswer">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity android:name=".ThirdLevel.AlbumActivity" />
         <activity android:name=".ThirdLevel.PhotoPreviewActivity"></activity>

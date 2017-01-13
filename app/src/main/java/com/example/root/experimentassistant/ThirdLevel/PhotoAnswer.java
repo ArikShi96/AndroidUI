@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -28,12 +29,15 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.example.root.experimentassistant.ViewModel.*;
 
 import com.example.root.experimentassistant.Internet.CookieUnits;
 import com.example.root.experimentassistant.Internet.ExperimentHttpClient;
+import com.example.root.experimentassistant.Model.User;
 import com.example.root.experimentassistant.R;
 import com.example.root.experimentassistant.StaticSetting.StaticConfig;
 import com.example.root.experimentassistant.ViewModel.ImageItem;
+import com.example.root.experimentassistant.ViewModel.Question;
 import com.example.root.experimentassistant.ViewModel.ViewCourse;
 import com.example.root.experimentassistant.util.Bimp;
 import com.facebook.common.file.FileUtils;
@@ -43,6 +47,7 @@ import com.loopj.android.http.RequestParams;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.Inflater;
 
@@ -66,6 +71,10 @@ public class PhotoAnswer extends AppCompatActivity {
     private TextView upload;
 
     private Dialog loading_dialog;
+
+    private int questionId;
+
+    private Question question;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,12 +86,24 @@ public class PhotoAnswer extends AppCompatActivity {
         back=(ImageView)findViewById(R.id.Cancle);
         answerText=(EditText)findViewById(R.id.answerText);
         upload=(TextView)findViewById(R.id.answerUpload);
+        questionId=getIntent().getExtras().getInt("questionId");
+        question=User.getInstance().getExperiment().getQuestions().get(questionId);
 
-        CookieUnits.setAppContext(this);
         init();
     }
 
     private void init(){
+        //初始化Btmp
+        if(Bimp.tempSelectBitmap.size()!=0){
+            Bimp.tempSelectBitmap.clear();
+        }
+        //已经回答过
+        Log.d("question","type "+question.getAnswer_type()+" isAnswer "+(question.isAnswered()?"answered":"no answered"));
+        if(question.isAnswered()&&question.getAnswer_type()==Question.PHOTOQUESTION){
+            Bimp.tempSelectBitmap=((photoQuestion)question).getBitmap();
+            answerText.setText(question.getAnswer());
+        }
+
         //初始化弹出菜单
         popupWindow=new PopupWindow(this);
         View view = getLayoutInflater().inflate(R.layout.activity_take_photo,null);
@@ -140,6 +161,7 @@ public class PhotoAnswer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                Bimp.tempSelectBitmap.clear();
             }
         });
 
@@ -216,12 +238,26 @@ public class PhotoAnswer extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.d("fileUpdate","success "+statusCode);
                 StaticConfig.closeDialog(loading_dialog);
+
+                question.setAnswered(true);
+                question.setAnswer(answerText.getText().toString());
+                Log.d("question after","id "+questionId+"question"+" type "+question.getAnswer_type()+" isAnswer "+(question.isAnswered()?"answered":"no answered"));
+                if(question.getAnswer_type()==Question.PHOTOQUESTION){
+                    ArrayList<ImageItem> tmp=new ArrayList<ImageItem>();
+                    tmp.addAll(Bimp.tempSelectBitmap);
+                    ((photoQuestion)question).setBitmap(tmp);
+                }
+
+                finish();
+                Bimp.tempSelectBitmap.clear();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.d("fileUpdate","failure "+statusCode);
                 StaticConfig.closeDialog(loading_dialog);
+
+                Toast.makeText(PhotoAnswer.this,"上传失败",Toast.LENGTH_SHORT);
             }
         });
     }

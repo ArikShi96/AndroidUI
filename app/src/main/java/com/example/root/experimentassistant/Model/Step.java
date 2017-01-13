@@ -1,5 +1,6 @@
 package com.example.root.experimentassistant.Model;
 
+import com.example.root.experimentassistant.Adapter.QuestionAdapter;
 import com.example.root.experimentassistant.ViewModel.Question;
 
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by Json on 2016/12/30.
  */
-public class Step {
+public class Step{
     private int id;
     private String name;
     private int suggest_time;

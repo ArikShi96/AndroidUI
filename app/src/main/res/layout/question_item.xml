@@ -42,29 +42,55 @@
 
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp">
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
 
-        <EditText
-            android:layout_gravity="center_horizontal"
-            style="@style/smallText"
-            android:background="@drawable/edittext"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="40dp"
-            android:id="@+id/question_answer"
-            android:layout_weight="1"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" "/>
-        <ImageView
-            android:layout_gravity="center_vertical"
-            android:id="@+id/photo_image"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@mipmap/camera"/>
+            style="@style/smallText"
+            android:text="状态：未回答"
+            android:layout_weight="1"
+            android:id="@+id/question_state"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:text="编辑答案"
+            android:background="@drawable/rec_btn_select"
+            style="@style/btnTextSelect"
+            android:id="@+id/question_editBtn"/>
     </LinearLayout>
+
+    <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="5dp">-->
+
+        <!--<EditText-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--style="@style/smallText"-->
+            <!--android:background="@drawable/edittext"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:minHeight="40dp"-->
+            <!--android:id="@+id/question_answer"-->
+            <!--android:layout_weight="1"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text=" "/>-->
+        <!--<ImageView-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:id="@+id/photo_image"-->
+            <!--android:layout_width="40dp"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:background="@mipmap/camera"/>-->
+    <!--</LinearLayout>-->
 </LinearLayout>

@@ -6,13 +6,17 @@ package com.example.root.experimentassistant.ViewModel;
 public class Question {
     private int id;
     private String question;
-    private boolean answer_type;
+    private int answer_type;
     private String answer;
+    private boolean answered=false;
+
+    public static int TEXTQUESTION=0;
+    public static int PHOTOQUESTION=1;
 
     public Question(){
         question="";
         answer="";
-        answer_type=false;
+        answer_type=TEXTQUESTION;
     }
 
     public int getId() {
@@ -31,11 +35,11 @@ public class Question {
         this.question = question;
     }
 
-    public boolean getAnswer_type() {
+    public int getAnswer_type() {
         return answer_type;
     }
 
-    public void setAnswer_type(boolean answer_type) {
+    public void setAnswer_type(int answer_type) {
         this.answer_type = answer_type;
     }
 
@@ -45,5 +49,13 @@ public class Question {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public boolean isAnswered() {
+        return answered;
+    }
+
+    public void setAnswered(boolean answered) {
+        this.answered = answered;
     }
 }
