@@ -22,7 +22,7 @@ public class SuccessActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.err);
+        setContentView(R.layout.success);
 
         title      = (TextView)    findViewById(R.id.err_title);
         err_msg    = (TextView)    findViewById(R.id.err_content);

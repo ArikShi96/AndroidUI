@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.root.experimentassistant.R;
+import com.example.root.experimentassistant.StaticSetting.StaticConfig;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -77,6 +78,10 @@ public class TakePhotoActivity extends Activity implements OnClickListener{
         switch (v.getId()) {
             case R.id.btn_take_photo:
                 Intent take=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                String name = bundle.getInt("exper_id")+"_"+bundle.getInt("id");
+                File file = new File(StaticConfig.IMAGE_STORAGE_URL+name);
+                src_path=file.getAbsolutePath();
+                take.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
                 startActivityForResult(take, TAKE_PHOTO);
                 break;
             case R.id.btn_pick_photo:
@@ -104,30 +109,6 @@ public class TakePhotoActivity extends Activity implements OnClickListener{
         if (resultCode == Activity.RESULT_OK) {
             switch(requestCode) {
                 case TAKE_PHOTO:
-                    Bundle extras = data.getExtras();
-                    Bitmap b = (Bitmap) extras.get("data");
-                    String name = bundle.getInt("exper_id")+"_"+bundle.getInt("id");
-                    String fileName = Environment.getExternalStorageDirectory().toString()+ File.separator+"experiment/image/"+name+".jpg";
-                    src_path = fileName;
-                    File myCaptureFile =new File(fileName);
-                    try {
-                        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
-                            if(!myCaptureFile.getParentFile().exists()){
-                                myCaptureFile.getParentFile().mkdirs();
-                            }
-                            BufferedOutputStream bos;
-                            bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
-                            b.compress(Bitmap.CompressFormat.JPEG, 80, bos);
-                            bos.flush();
-                            bos.close();
-                        }else{
-                            Toast toast= Toast.makeText(TakePhotoActivity.this, "保存失败，SD卡无效", Toast.LENGTH_SHORT);
-                            toast.setGravity(Gravity.CENTER, 0, 0);
-                            toast.show();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
                     break;
                 case PICK_PHOTO:
                     Uri uri = data.getData();

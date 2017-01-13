@@ -3,22 +3,26 @@ package com.example.root.experimentassistant.SecondLevel;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.root.experimentassistant.Internet.ExperimentHttpClient;
 import com.example.root.experimentassistant.Model.User;
+import com.example.root.experimentassistant.MyView.ImageShowActivity;
 import com.example.root.experimentassistant.R;
 import com.example.root.experimentassistant.StaticSetting.StaticConfig;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +43,7 @@ public class CourseDetailActivity extends AppCompatActivity {
 
     private TextView title;
     private ImageButton back_button;
-    private FrescoZoomImageView course_pic;
+    private ImageView course_pic;
     private TextView course_name;
     private TextView teacher_name;
     private TextView course_time;
@@ -56,7 +60,7 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         title=(TextView) findViewById(R.id.cs_dtl_title);
         back_button=(ImageButton) findViewById(R.id.cs_dtl_back);
-        course_pic=(FrescoZoomImageView) findViewById(R.id.cs_dtl_pic);
+        course_pic=(ImageView) findViewById(R.id.cs_dtl_pic);
         course_name=(TextView) findViewById(R.id.cs_dtl_name);
         course_time=(TextView) findViewById(R.id.cs_dtl_time);
         teacher_name=(TextView) findViewById(R.id.cs_dtl_teacher);
@@ -122,8 +126,20 @@ public class CourseDetailActivity extends AppCompatActivity {
             join_button.setText("参加");
             join_button.setBackgroundResource(R.drawable.rec_btn_select);
         }
-        course_pic.loadView(StaticConfig.BASE_URL+response.getString("course_pic"), R.mipmap.placeholder);
-        course_pic.setTapToRetryEnabled(true);
+
+        //image
+        ImageLoader imageLoader=ImageLoader.getInstance();
+        imageLoader.displayImage(StaticConfig.BASE_URL+response.getString("course_pic"),course_pic,StaticConfig.options);
+        course_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent show_image=new Intent(CourseDetailActivity.this, ImageShowActivity.class);
+                show_image.putExtra("bitmap",((BitmapDrawable)course_pic.getDrawable()).getBitmap());
+                startActivity(show_image);
+            }
+        });
+
+
         description.setText(response.getString("description"));
 
         join_button.setOnClickListener(new View.OnClickListener() {

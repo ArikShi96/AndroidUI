@@ -91,16 +91,10 @@
                         />
                 </LinearLayout>
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:id="@+id/step_images"
                     android:layout_width="160dp"
-                    android:layout_height="160dp"
-                    fresco:placeholderImage="@mipmap/placeholder"
-                    fresco:progressBarImage="@mipmap/progress_ing"
-                    fresco:progressBarImageScaleType="centerInside"
-                    fresco:progressBarAutoRotateInterval="1000"
-                    fresco:failureImage="@mipmap/icon_progress_fail"
-                    />
+                    android:layout_height="140dp"/>
             </LinearLayout>
 
             <LinearLayout
