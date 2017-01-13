@@ -90,9 +90,6 @@ public class AlbumGridViewAdapter extends BaseAdapter{
                     .findViewById(R.id.toggle_button);
             viewHolder.choosetoggle = (Button) convertView
                     .findViewById(R.id.choosedbt);
-//			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,dipToPx(65));
-//			lp.setMargins(50, 0, 50,0);
-//			viewHolder.imageView.setLayoutParams(lp);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

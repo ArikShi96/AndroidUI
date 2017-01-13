@@ -26,12 +26,14 @@
             android:textOn="@null" />
         <Button
             android:id="@+id/choosedbt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:background="@mipmap/photo_choosed"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:visibility="gone"
+            android:layout_margin="5dp"
+            android:layout_gravity="right|top"
             />
     </RelativeLayout>
 </RelativeLayout>

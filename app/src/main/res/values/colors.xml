@@ -10,4 +10,6 @@
     <color name="iconBlue">#00B7EE</color>
     <color name="seaBlue">#20B2AA</color>
     <color name="white">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="trans_gray">#80C0C0C0</color>
 </resources>

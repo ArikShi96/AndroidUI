@@ -32,7 +32,7 @@ import com.example.root.experimentassistant.util.ImageBucket;
 
 
 public class AlbumActivity extends Activity {
-    public static final int num=9;
+    public static final int num = 9;
     //显示手机里的所有图片的列表控件
     private GridView gridView;
     //当手机里没有图片时，提示用户没有图片的控件
@@ -51,6 +51,7 @@ public class AlbumActivity extends Activity {
     private AlbumHelper helper;
     public static List<ImageBucket> contentList;
     public static Bitmap bitmap;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
@@ -59,8 +60,6 @@ public class AlbumActivity extends Activity {
         registerReceiver(broadcastReceiver, filter);
         init();
         initListener();
-        //这个函数主要用来控制预览和完成按钮的状态
-        isShowOkBt();
     }
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -74,11 +73,13 @@ public class AlbumActivity extends Activity {
     // 预览按钮的监听
     private class PreviewListener implements OnClickListener {
         public void onClick(View v) {
-//            if (Bimp.tempSelectBitmap.size() > 0) {
-//                intent.putExtra("position", "1");
-//                intent.setClass(AlbumActivity.this, GalleryActivity.class);
-//                startActivity(intent);
-//            }
+            if (Bimp.tempSelectBitmap.size() > 0) {
+                Intent pre=new Intent(AlbumActivity.this,PhotoPreviewActivity.class);
+                pre.putExtra("position", 0);
+                startActivity(pre);
+            } else {
+                Toast.makeText(AlbumActivity.this, "未选中任何照片", Toast.LENGTH_SHORT);
+            }
         }
 
     }
@@ -86,10 +87,11 @@ public class AlbumActivity extends Activity {
     // 完成按钮的监听
     private class AlbumSendListener implements OnClickListener {
         public void onClick(View v) {
-//            overridePendingTransition(R.anim.activity_translate_in, R.anim.activity_translate_out);
-//            intent.setClass(mContext, MainActivity.class);
-//            startActivity(intent);
-//            finish();
+            if (Bimp.tempSelectBitmap.size() == 0) {
+                Toast.makeText(AlbumActivity.this, "未选中任何照片", Toast.LENGTH_SHORT);
+            }
+            finish();
+            overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
         }
 
     }
@@ -97,20 +99,10 @@ public class AlbumActivity extends Activity {
     // 返回按钮监听
     private class BackListener implements OnClickListener {
         public void onClick(View v) {
-//            intent.setClass(AlbumActivity.this, ImageFile.class);
-//            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.trans_in, R.anim.trans_out);
         }
     }
-
-    // 取消按钮的监听
-    private class CancelListener implements OnClickListener {
-        public void onClick(View v) {
-//            Bimp.tempSelectBitmap.clear();
-//            intent.setClass(mContext, MainActivity.class);
-//            startActivity(intent);
-        }
-    }
-
 
 
     // 初始化，给一些对象赋值
@@ -120,8 +112,8 @@ public class AlbumActivity extends Activity {
 
         contentList = helper.getImagesBucketList(false);
         dataList = new ArrayList<ImageItem>();
-        for(int i = 0; i<contentList.size(); i++){
-            dataList.addAll( contentList.get(i).imageList );
+        for (int i = 0; i < contentList.size(); i++) {
+            dataList.addAll(contentList.get(i).imageList);
         }
 
         back = (ImageView) findViewById(R.id.Cancle);
@@ -131,14 +123,14 @@ public class AlbumActivity extends Activity {
         intent = getIntent();
         Bundle bundle = intent.getExtras();
         gridView = (GridView) findViewById(R.id.myGrid);
-        gridImageAdapter = new AlbumGridViewAdapter(this,dataList,
+        gridImageAdapter = new AlbumGridViewAdapter(this, dataList,
                 Bimp.tempSelectBitmap);
         gridView.setAdapter(gridImageAdapter);
         tv = (TextView) findViewById(R.id.myText);
         gridView.setEmptyView(tv);
         okButton = (Button) findViewById(R.id.ok_button);
-        okButton.setText("完成"+"(" + Bimp.tempSelectBitmap.size()
-                + "/"+num+")");
+        okButton.setText("完成" + "(" + Bimp.tempSelectBitmap.size()
+                + "/" + num + ")");
     }
 
     private void initListener() {
@@ -148,7 +140,7 @@ public class AlbumActivity extends Activity {
 
                     @Override
                     public void onItemClick(final ToggleButton toggleButton,
-                                            int position, boolean isChecked,Button chooseBt) {
+                                            int position, boolean isChecked, Button chooseBt) {
                         if (Bimp.tempSelectBitmap.size() >= num) {
                             toggleButton.setChecked(false);
                             chooseBt.setVisibility(View.GONE);
@@ -161,15 +153,14 @@ public class AlbumActivity extends Activity {
                         if (isChecked) {
                             chooseBt.setVisibility(View.VISIBLE);
                             Bimp.tempSelectBitmap.add(dataList.get(position));
-                            okButton.setText("完成"+"(" + Bimp.tempSelectBitmap.size()
-                                    + "/"+num+")");
+                            okButton.setText("完成" + "(" + Bimp.tempSelectBitmap.size()
+                                    + "/" + num + ")");
                         } else {
                             Bimp.tempSelectBitmap.remove(dataList.get(position));
                             chooseBt.setVisibility(View.GONE);
-                            okButton.setText("完成"+"(" + Bimp.tempSelectBitmap.size()
-                                    + "/"+num+")");
+                            okButton.setText("完成" + "(" + Bimp.tempSelectBitmap.size()
+                                    + "/" + num + ")");
                         }
-                        isShowOkBt();
                     }
                 });
 
@@ -180,38 +171,23 @@ public class AlbumActivity extends Activity {
     private boolean removeOneData(ImageItem imageItem) {
         if (Bimp.tempSelectBitmap.contains(imageItem)) {
             Bimp.tempSelectBitmap.remove(imageItem);
-            okButton.setText("完成"+"(" + Bimp.tempSelectBitmap.size()
-                    + "/"+num+")");
+            okButton.setText("完成" + "(" + Bimp.tempSelectBitmap.size()
+                    + "/" + num + ")");
             return true;
         }
         return false;
     }
 
-    public void isShowOkBt() {
-        if (Bimp.tempSelectBitmap.size() > 0) {
-            okButton.setText("完成"+"(" + Bimp.tempSelectBitmap.size()
-                    + "/"+num+")");
-            preview.setPressed(true);
-            okButton.setPressed(true);
-            preview.setClickable(true);
-            okButton.setClickable(true);
-            okButton.setTextColor(Color.WHITE);
-            preview.setTextColor(Color.WHITE);
-        } else {
-            okButton.setText("完成"+"(" + Bimp.tempSelectBitmap.size()
-                    + "/"+num+")");
-            preview.setPressed(false);
-            preview.setClickable(false);
-            okButton.setPressed(false);
-            okButton.setClickable(false);
-            okButton.setTextColor(Color.parseColor("#E1E0DE"));
-            preview.setTextColor(Color.parseColor("#E1E0DE"));
-        }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
     }
 
-    @Override
-    protected void onRestart() {
-        isShowOkBt();
-        super.onRestart();
-    }
+
+//    @Override
+//    protected  void onRestart(){
+//        super.onRestart();
+//        gridImageAdapter.notifyDataSetChanged();
+//    }
 }
