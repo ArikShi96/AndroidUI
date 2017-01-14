@@ -45,4 +45,6 @@ dependencies {
 
     //图片加载
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    //图表库helloCharts
+    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
 }

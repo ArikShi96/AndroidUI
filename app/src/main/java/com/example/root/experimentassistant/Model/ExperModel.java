@@ -85,9 +85,8 @@ public class ExperModel {
             }
             JSONArray questions=item.getJSONArray("question_list");
             for(int j=0;j<questions.length();j++){
-                Question question=new photoQuestion();
+                Question question=new Question();
                 question.setId(question_count++);
-                question.setAnswer_type(Question.PHOTOQUESTION);
                 question.setQuestion(questions.getString(j));
                 step.getQuestion_list().add(question);
                 question_list.add(question);

@@ -10,13 +10,14 @@ public class Question {
     private String answer;
     private boolean answered=false;
 
-    public static int TEXTQUESTION=0;
+    public static int NOTYPE=0;
     public static int PHOTOQUESTION=1;
+    public static int CHARTQUESTION=2;
 
     public Question(){
         question="";
         answer="";
-        answer_type=TEXTQUESTION;
+        answer_type=NOTYPE;
     }
 
     public int getId() {

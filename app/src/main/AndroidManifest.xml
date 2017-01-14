@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_OWNER_DATA" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
 
     <application
         android:allowBackup="true"
@@ -17,15 +17,13 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".FirstLevel.Experiment"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan|stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
-
-
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".SecondLevel.LoginActivity" />
         <activity android:name=".SecondLevel.RegisterActivity" />
@@ -42,17 +40,27 @@
         <activity android:name=".SecondLevel.HistoryCourseActivity" />
         <activity android:name=".SecondLevel.MyScoreActivity" />
         <activity android:name=".ThirdLevel.PhotoAnswer">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity android:name=".ThirdLevel.AlbumActivity" />
+        <activity android:name=".ThirdLevel.PhotoPreviewActivity" />
+        <activity android:name=".MyView.ImageShowActivity" />
+        <activity android:name=".MyView.SuccessActivity" />
+        <activity android:name=".ThirdLevel.LineChatAnswer"
+            android:windowSoftInputMode="adjustPan|stateHidden">
+
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
 
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name=".ThirdLevel.AlbumActivity" />
-        <activity android:name=".ThirdLevel.PhotoPreviewActivity"></activity>
-        <activity android:name=".MyView.ImageShowActivity"></activity>
-        <activity android:name=".MyView.SuccessActivity"></activity>
-
     </application>
 
 </manifest>

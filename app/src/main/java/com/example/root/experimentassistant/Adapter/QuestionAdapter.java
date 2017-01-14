@@ -94,6 +94,17 @@ public class QuestionAdapter extends BaseAdapter {
         if (null != question) {
             holder.question_content.setText(question.getQuestion());
             holder.question_state.setText(question.isAnswered() ? "状态：已完成" : "状态：未完成");
+
+            if(question.getAnswer_type()==Question.NOTYPE){
+                holder.question_type.setText("答案类型：未选择");
+            }
+            else if(question.getAnswer_type()==Question.PHOTOQUESTION){
+                holder.question_type.setText("答案类型：图片");
+            }
+            else if(question.getAnswer_type()==Question.CHARTQUESTION){
+                holder.question_type.setText("答案类型：折线图");
+            }
+
             holder.question_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

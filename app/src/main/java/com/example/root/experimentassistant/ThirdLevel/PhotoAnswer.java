@@ -70,6 +70,8 @@ public class PhotoAnswer extends AppCompatActivity {
 
     private TextView upload;
 
+    private TextView questionText;
+
     private Dialog loading_dialog;
 
     private int questionId;
@@ -86,6 +88,7 @@ public class PhotoAnswer extends AppCompatActivity {
         back=(ImageView)findViewById(R.id.Cancle);
         answerText=(EditText)findViewById(R.id.answerText);
         upload=(TextView)findViewById(R.id.answerUpload);
+        questionText=(TextView)findViewById(R.id.question);
         questionId=getIntent().getExtras().getInt("questionId");
         question=User.getInstance().getExperiment().getQuestions().get(questionId);
 
@@ -103,6 +106,9 @@ public class PhotoAnswer extends AppCompatActivity {
             Bimp.tempSelectBitmap=((photoQuestion)question).getBitmap();
             answerText.setText(question.getAnswer());
         }
+
+        //初始化问题
+        questionText.setText(question.getQuestion());
 
         //初始化弹出菜单
         popupWindow=new PopupWindow(this);
@@ -251,6 +257,9 @@ public class PhotoAnswer extends AppCompatActivity {
                     ((photoQuestion)question).setBitmap(tmp);
                 }
 
+                Intent res=new Intent();
+                res.putExtra("questionId",questionId);
+                setResult(RESULT_OK,res);
                 finish();
                 Bimp.tempSelectBitmap.clear();
             }

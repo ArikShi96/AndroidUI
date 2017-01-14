@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.root.experimentassistant.Adapter.QuestionAdapter;
@@ -21,14 +22,18 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
+import com.example.root.experimentassistant.ViewModel.*;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +70,12 @@ public class StepActivity extends AppCompatActivity implements QuestionAdapter.O
 
     public static final int EDITANSWER=1;
 
+    private PopupWindow popupWindow;
+
+    private View parentView;
+
+    private LinearLayout layout;
+
     //倒计时
     Handler handler_start=new Handler();
     Handler handler_stop=new Handler(){
@@ -100,7 +111,8 @@ public class StepActivity extends AppCompatActivity implements QuestionAdapter.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_step);
+        parentView=getLayoutInflater().inflate(R.layout.activity_step, null);
+        setContentView(parentView);
 
         title          = (TextView)    findViewById(R.id.step_title);
         back           = (ImageButton) findViewById(R.id.step_back);
@@ -178,6 +190,79 @@ public class StepActivity extends AppCompatActivity implements QuestionAdapter.O
             User.getInstance().getExperiment().beginCountDown();
         }
         handler_start.post(runnable);
+
+        //popUp初始化
+        popupWindow=new PopupWindow(this);
+        View view = getLayoutInflater().inflate(R.layout.activity_take_photo,null);
+        layout=(LinearLayout)view.findViewById(R.id.pop_layout);
+
+        popupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
+        popupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setContentView(view);
+
+        Button editPhoto=(Button)view.findViewById(R.id.btn_take_photo);
+        Button editChart=(Button)view.findViewById(R.id.btn_pick_photo);
+        Button cancle=(Button)view.findViewById(R.id.btn_cancel);
+
+        editPhoto.setText("编辑图片");
+        editChart.setText("编辑折线图");
+
+        //图片作答
+        editPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Question question= User.getInstance().getExperiment().getQuestions().get(questionId);
+                photoQuestion photo=new photoQuestion();
+                photo.setAnswer_type(Question.PHOTOQUESTION);
+                photo.setId(questionId);
+                photo.setQuestion(question.getQuestion());
+                photo.setAnswered(false);
+                User.getInstance().getExperiment().getQuestions().remove(questionId);
+                User.getInstance().getExperiment().getQuestions().add(questionId,photo);
+
+                onEditBtnClick(questionId);
+                popupWindow.dismiss();
+                layout.clearAnimation();
+            }
+        });
+        // 折现图作答
+        editChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Question question= User.getInstance().getExperiment().getQuestions().get(questionId);
+                chartQuestion chart=new chartQuestion();
+                chart.setAnswer_type(Question.CHARTQUESTION);
+                chart.setId(questionId);
+                chart.setQuestion(question.getQuestion());
+                chart.setAnswered(false);
+                User.getInstance().getExperiment().getQuestions().remove(questionId);
+                User.getInstance().getExperiment().getQuestions().add(questionId,chart);
+
+                onEditBtnClick(questionId);
+                popupWindow.dismiss();
+                layout.clearAnimation();
+            }
+        });
+        //取消
+        cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.startAnimation(AnimationUtils.loadAnimation(StepActivity.this,R.anim.trans_out));
+
+                new Handler().postDelayed(new Runnable(){
+
+                    public void run() {
+                        popupWindow.dismiss();
+                        layout.clearAnimation();
+                    }
+
+                }, 300);
+            }
+        });
+
     }
 
 
@@ -191,43 +276,25 @@ public class StepActivity extends AppCompatActivity implements QuestionAdapter.O
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("onActResult","req "+requestCode+" res "+resultCode);
         switch (requestCode) {
-//            case 0:       //take photo complete
-//                if (resultCode == RESULT_OK) {
-//                    try {
-//                        Bundle result = data.getExtras();
-//                        if(result.getString("path").isEmpty()) return;
-//                        ExperModel exper = User.getInstance().getExperiment();
-//                        Question question = exper.getQuestions().get(result.getInt("id"));
-//                        question.setAnswer_type(Question.PHOTOQUESTION);
-//                        question.setAnswer(result.getString("path"));
-//                        if (tmp_answer_type != null) {
-//                            tmp_answer_type.setText("问题类型:图片");
-//                        }
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                } else if (resultCode == RESULT_CANCELED) {
-//                    tmp_answer_type = null;
-//                }
-//                break;
-//
-//            case 1:
-//                if(resultCode==RESULT_OK) {
-//                    if(step!=0) {
-//                        setResult(RESULT_OK);
-//                        finish();
-//                    }else {
-//                        finish();
-//                    }
-//                }
-
             case EDITANSWER:
-                step_item=User.getInstance().getExperiment().getSteps().get(step);
-                QuestionAdapter adapter=new QuestionAdapter(step_item.getQuestion_list(),this,exper_id);
-                adapter.setmListerner(this);
-                questions.setAdapter(adapter);
-                break;
+                if(resultCode==RESULT_OK) {
+                    questionId=data.getExtras().getInt("questionId");
+                    step_item = User.getInstance().getExperiment().getSteps().get(step);
+                    for (Question question : step_item.getQuestion_list()) {
+                        if (question.getId() == questionId) {
+                            Log.d("onActResult", "id" + questionId);
+                            question.setAnswered(User.getInstance().getExperiment().getQuestions().get(questionId).isAnswered());
+                            question.setAnswer_type(User.getInstance().getExperiment().getQuestions().get(questionId).getAnswer_type());
+                        }
+                    }
+
+                    QuestionAdapter adapter = new QuestionAdapter(step_item.getQuestion_list(), this, exper_id);
+                    adapter.setmListerner(this);
+                    questions.setAdapter(adapter);
+                    break;
+                }
         }
     }
 
@@ -311,10 +378,30 @@ public class StepActivity extends AppCompatActivity implements QuestionAdapter.O
         });
     }
 
+    private int questionId;
+
     @Override
     public void onEditBtnClick(int questionId){
-        Intent intent=new Intent(this,PhotoAnswer.class);
-        intent.putExtra("questionId",questionId);
-        startActivityForResult(intent,EDITANSWER);
+        this.questionId=questionId;
+        Question question=User.getInstance().getExperiment().getQuestions().get(questionId);
+        if(question.getAnswer_type()==1) {
+            Intent intent = new Intent(this, PhotoAnswer.class);
+            intent.putExtra("questionId", questionId);
+            startActivityForResult(intent, EDITANSWER);
+        }
+        else if(question.getAnswer_type()==2){
+            Intent intent=new Intent(this,LineChatAnswer.class);
+            Bundle bundle=new Bundle();
+            bundle.putInt("minY",0);
+            bundle.putInt("maxY",100);
+            bundle.putInt("offset",5);
+            bundle.putInt("questionId",questionId);
+            intent.putExtras(bundle);
+            startActivityForResult(intent, EDITANSWER);
+        }
+        else{
+            layout.startAnimation(AnimationUtils.loadAnimation(this,R.anim.trans_in));
+            popupWindow.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
+        }
     }
 }
