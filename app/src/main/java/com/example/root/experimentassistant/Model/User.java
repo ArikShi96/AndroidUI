@@ -2,7 +2,6 @@ package com.example.root.experimentassistant.Model;
 
 import com.example.root.experimentassistant.ViewModel.*;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 
 import java.util.ArrayList;
@@ -10,15 +9,11 @@ import java.util.Calendar;
 import android.util.Log;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import android.util.Log;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.TimeZone;
 
-import com.example.root.experimentassistant.FirstLevel.Experiment;
 import com.example.root.experimentassistant.Internet.*;
+import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -33,6 +28,12 @@ import cz.msebera.android.httpclient.Header;
  * Created by root on 2016/12/18.
  */
 public class User {
+    /*--------------常量定义----------------*/
+    public static String STORE_NAME_KEY = "userId";
+    public static String STORE_PHONE_KEY = "userPhoneNum";
+    public static String STORE_TOKEN_KEY = "userName";
+    public static String STORE_ID_KEY = "token";
+
     /*--------------属性定义----------------*/
     private String id;
 
@@ -42,6 +43,8 @@ public class User {
 
     private int currentWeek;
 
+    private String token;
+
     private ExperModel model;
 
     public String getId(){return id;}
@@ -49,6 +52,8 @@ public class User {
     public String getName(){return name;}
 
     public String getPhoneNum(){return phoneNum;}
+
+    public String getToken(){return token;}
 
     public ExperModel getExperiment(){
         return model;
@@ -172,9 +177,10 @@ public class User {
     }
 
     public void Init(SharedPreferences preferences) {
-        id = preferences.getString("userId", "");
-        phoneNum = preferences.getString("userPhoneNum", "");
-        name = preferences.getString("userName", "");
+        id = preferences.getString(STORE_ID_KEY, "");
+        phoneNum = preferences.getString(STORE_PHONE_KEY, "");
+        name = preferences.getString(STORE_NAME_KEY, "");
+        token = preferences.getString(STORE_TOKEN_KEY, "");
     }
 
     /*--------------对外方法----------------*/
@@ -197,24 +203,15 @@ public class User {
         params.put("password", Pass);
 
         Log.d("Login", "id" + Id + " pass" + Pass);
-        ExperimentHttpClient.getInstance().post("user/login", params, new JsonHttpResponseHandler() {
+        ExperimentHttpClient.getInstance().post("api/sessions", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 if (statusCode == 200) {
                     try {
-                        int status=response.getInt("status");
-                        if(status!=0){
-                            Log.d("loginStatus",""+status);
-                            if(callBack!=null){
-                                callBack.onRequestFailure(status);
-                            }
-                            return;
-                        }
-
-                        id = response.getString("identify");
-                        name = response.getString("name");
-
-                        Log.d("login", "id " + id + " name " + name + " num " + phoneNum);
+                        JSONObject data = response.getJSONObject("data");
+                        id = data.getString("identify");
+                        name = data.getString("name");
+                        token = response.getString("token");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -223,14 +220,12 @@ public class User {
             }
 
             @Override
-            public void onFailure(int v1, Header[] v2, String v3, Throwable v4) {
-                Log.d("Login", "status" + v1);
-                if (callBack != null) callBack.onRequestFailure(null);
-            }
-
-            @Override
-            public void onFailure(int v1, Header[] v2, Throwable v3, JSONObject v4){
-                Log.d("Login", "status" + v1);
+            public void onFailure(int v1, Header[] v2, Throwable v3, JSONObject errorResponse){
+                String message = errorResponse.optString("message");
+                if (message.isEmpty()) {
+                    message = "未知原因，登录失败";
+                }
+                if(callBack!=null) callBack.onRequestFailure(message);
             }
         });
 
@@ -240,11 +235,11 @@ public class User {
     //发送验证码
     public void getVertifyCode(String phoneNum) {
         RequestParams params = new RequestParams();
-        params.put("phoneNum", phoneNum);
+        params.put("phoneNumber", phoneNum);
 
         Log.d("UserVer", "phone " + phoneNum);
 
-        ExperimentHttpClient.getInstance().post("user/getvertifycode", params, new AsyncHttpResponseHandler() {
+        ExperimentHttpClient.getInstance().get("api/users/code", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.d("getVer", "success");
@@ -263,56 +258,27 @@ public class User {
     public int Register(String Id, String Name, String PhoneNum, String VertifyCode, String Pass, final RequestCallBack callBack) {
         RequestParams params = new RequestParams();
 
-        params.put("id", Id);
+        params.put("identify", Id);
         params.put("name", Name);
         params.put("password", Pass);
-        params.put("vertifyCode", VertifyCode);
-        params.put("phoneNum", PhoneNum);
+        params.put("code", VertifyCode);
+        params.put("phoneNumber", PhoneNum);
         params.put("role", "student");
 
-        ExperimentHttpClient.getInstance().post("user/register", params, new TextHttpResponseHandler() {
+        ExperimentHttpClient.getInstance().post("api/users", params, new JsonHttpResponseHandler() {
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                if(callBack!=null) callBack.onRequestFailure(null);
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                String message = errorResponse.optString("message");
+                if (message.isEmpty()) {
+                    message = "未知原因，注册失败";
+                }
+                if(callBack!=null) callBack.onRequestFailure(message);
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                int sender=Integer.valueOf(responseString);
-
-                if(callBack!=null) callBack.onRequestSuccess(sender);
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                if(callBack!=null) callBack.onRequestSuccess(null);
             }
-
-//        {
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                Log.d("reg", "fail statusCode" + statusCode);
-//                if (callBack != null) {
-//                    callBack.onRequestFailure(null);
-//                }
-//                Log.d("regist response",responseString);
-//                flag = -1;
-//            }
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                if (statusCode == 200) {
-//                    try {
-//                        int status = response.getInt("status");
-//                        if(status==0) {
-//                            if (callBack != null) {
-//                                callBack.onRequestSuccess(status);
-//                            }
-//                        }
-//                        else{
-//                            callBack.onRequestSuccess(status);
-//                        }
-//
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
         });
         return flag;
     }
@@ -324,15 +290,17 @@ public class User {
         id = "";
         name = "";
         phoneNum = "";
+        token = "";
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("userId", User.getInstance().getId());
-        editor.putString("userPhoneNum", User.getInstance().getPhoneNum());
-        editor.putString("userName", User.getInstance().getName());
+        editor.putString(STORE_ID_KEY, User.getInstance().getId());
+        editor.putString(STORE_PHONE_KEY, User.getInstance().getPhoneNum());
+        editor.putString(STORE_NAME_KEY, User.getInstance().getName());
+        editor.putString(STORE_TOKEN_KEY, User.getInstance().getToken());
         editor.putInt("weekCnt",0);
-        editor.commit();
+        editor.apply();
 
-        ExperimentHttpClient.getInstance().post("user/logout", null, new AsyncHttpResponseHandler() {
+        ExperimentHttpClient.getInstance().post("api/sessions/signout", null, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
             }

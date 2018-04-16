@@ -7,6 +7,8 @@ import java.net.URI;
 import java.util.List;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.json.JSONObject;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 
@@ -20,7 +22,7 @@ import cz.msebera.android.httpclient.protocol.HttpContext;
  * Created by root on 2016/12/15.
  */
 public class ExperimentHttpClient  {
-    private static final String url="http://101.200.61.252:8080/";
+    private static final String url="http://111.231.83.220:8088/";
 
     private static AsyncHttpClient myClient;
 
@@ -52,11 +54,15 @@ public class ExperimentHttpClient  {
 
     public void get(String rPath, RequestParams params, AsyncHttpResponseHandler responseHandler){
         bindCookie();
-        myClient.get(getAbsoluteUrl(rPath),params,responseHandler);
+        myClient.addHeader("content-type", "application/json");
+        myClient.get(getAbsoluteUrl(rPath), params, responseHandler);
     }
 
     public void post(String rPath, RequestParams params, AsyncHttpResponseHandler responseHandler){
         bindCookie();
+        if (null != params) {
+            params.setUseJsonStreamer(true);
+        }
         myClient.post(getAbsoluteUrl(rPath),params,responseHandler);
     }
 }

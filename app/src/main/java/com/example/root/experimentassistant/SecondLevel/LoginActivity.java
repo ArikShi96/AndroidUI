@@ -19,8 +19,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 public class LoginActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
@@ -88,29 +86,20 @@ public class LoginActivity extends AppCompatActivity {
         public void onRequestSuccess(Object sender){
             SharedPreferences preferences= getSharedPreferences("user", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("userId",User.getInstance().getId());
-            editor.putString("userPhoneNum",User.getInstance().getPhoneNum());
-            editor.putString("userName",User.getInstance().getName());
-            editor.commit();
+            editor.putString(User.STORE_ID_KEY, User.getInstance().getId());
+            editor.putString(User.STORE_PHONE_KEY, User.getInstance().getPhoneNum());
+            editor.putString(User.STORE_NAME_KEY, User.getInstance().getName());
+            editor.putString(User.STORE_TOKEN_KEY, User.getInstance().getToken());
+            editor.apply();
+
+            Toast.makeText(LoginActivity.this, "成功登录", Toast.LENGTH_LONG).show();
             setResult(RESULT_OK);
             finish();
         }
 
         public void onRequestFailure(Object sender){
-            int status=((Integer)sender).intValue();
-            String mess="";
-//            switch(status){
-//                case 1:mess="用户不存在";
-//                    break;
-//                case 2:mess="密码错误";
-//                    break;
-//                default:
-//                    break;
-//            }
-
-            id.setText("");
-            pass.setText("");
-            Toast.makeText(LoginActivity.this,"登录失败 "+mess,Toast.LENGTH_SHORT).show();
+            String message = (String)sender;
+            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
         }
     }
 }

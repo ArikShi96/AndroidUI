@@ -15,10 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.root.experimentassistant.Internet.ExperimentHttpClient;
+import com.example.root.experimentassistant.Model.User;
 import com.example.root.experimentassistant.R;
 import com.example.root.experimentassistant.StaticSetting.StaticConfig;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.json.JSONObject;
 
 import java.io.File;
 
@@ -29,7 +33,7 @@ import cz.msebera.android.httpclient.Header;
  * Created by Json on 2016/12/26.
  */
 public class ModifyPasswordActivity extends AppCompatActivity {
-    private static final String mdf_pw_url="user/modify_password";
+    private static final String mdf_pw_url="api/users/ModifyPassword";
     private String user_id;
     private EditText old_password;
     private EditText new_password;
@@ -94,37 +98,33 @@ public class ModifyPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 RequestParams params=new RequestParams();
-                params.put("identify",user_id);
-                params.put("old_password",old_password);
-                params.put("new_password",new_password);
+                params.put("identify", User.getInstance().getId());
+                params.put("oldPassword", old_password.getText().toString());
+                params.put("newPassword", new_password.getText().toString());
                 waitting_dialog=StaticConfig.createLoadingDialog(ModifyPasswordActivity.this,"处理中...");
-                ExperimentHttpClient.getInstance().post(mdf_pw_url,params,new TextHttpResponseHandler()
+                ExperimentHttpClient.getInstance().post(mdf_pw_url,params,new JsonHttpResponseHandler()
                 {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, String response) {
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         StaticConfig.closeDialog(waitting_dialog);
                         if(statusCode==200){
-                            try{
-                                if(response.equals("success")){
-                                    Toast.makeText(ModifyPasswordActivity.this,"修改成功",Toast.LENGTH_LONG).show();
-                                }
-                                else if(response.equals("fail")){
-                                    Toast.makeText(ModifyPasswordActivity.this,"修改失败",Toast.LENGTH_LONG).show();
-                                }
-                            }
-                            catch(Exception e){
-                                Toast.makeText(ModifyPasswordActivity.this,"未知返回码:"+response,Toast.LENGTH_LONG).show();
-                                Log.d("Request:Exper_detail",e.getMessage());
-                            }
+                            Toast.makeText(ModifyPasswordActivity.this,
+                                    "修改成功",
+                                    Toast.LENGTH_LONG).show();
+                            finish();
                         }
                         else{
                             Toast.makeText(ModifyPasswordActivity.this,"服务器未知错误:"+statusCode,Toast.LENGTH_LONG).show();
                         }
                     }
                     @Override
-                    public void onFailure(int v1, Header[] v2, String v3, Throwable v4){
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse){
                         StaticConfig.closeDialog(waitting_dialog);
-                        Toast.makeText(ModifyPasswordActivity.this,"连接失败",Toast.LENGTH_LONG).show();
+                        String message = errorResponse.optString("message");
+                        if (message.isEmpty()) {
+                            message = "未知原因,修改失败";
+                        }
+                        Toast.makeText(ModifyPasswordActivity.this, message, Toast.LENGTH_LONG).show();
                     }
                 });
             }

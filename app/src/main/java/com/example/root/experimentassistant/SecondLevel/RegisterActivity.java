@@ -377,34 +377,13 @@ public class RegisterActivity extends AppCompatActivity {
 
     private class RegisterCallBack implements RequestCallBack {
         public void onRequestSuccess(Object sender) {
-            int status = ((Integer) sender).intValue();
-            switch (status) {
-                case 0:
-                    //注册成功
-                    Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-                    setResult(RESULT_OK);
-                    finish();
-                    break;
-                //参数不匹配
-                case 1:
-                    Toast.makeText(RegisterActivity.this, "网络参数错误", Toast.LENGTH_SHORT).show();
-                    break;
-                //手机号重复使用
-                case 2:
-                    Toast.makeText(RegisterActivity.this, "手机号已被注册", Toast.LENGTH_SHORT).show();
-                    regPhone.setText("");
-                    break;
-                //验证码错误
-                case 3:
-                    Toast.makeText(RegisterActivity.this,"验证码错误",Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    break;
-            }
+            Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_LONG).show();
+            RegisterActivity.this.finish();
         }
 
         public void onRequestFailure(Object sender){
-            Toast.makeText(RegisterActivity.this,"网络错误 ",Toast.LENGTH_SHORT).show();
+            String message = (String)sender;
+            Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
         }
     }
 }

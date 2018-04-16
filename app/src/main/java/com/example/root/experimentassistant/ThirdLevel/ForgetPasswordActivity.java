@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.root.experimentassistant.Internet.ExperimentHttpClient;
+import com.example.root.experimentassistant.Model.User;
 import com.example.root.experimentassistant.R;
 import com.example.root.experimentassistant.StaticSetting.StaticConfig;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -28,11 +29,12 @@ import org.json.JSONObject;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.xml.datatype.Duration;
+
 import cz.msebera.android.httpclient.Header;
 
 public class ForgetPasswordActivity extends AppCompatActivity {
-    private static final String vcode_url = "/user/getvetifycode";
-    private static final String send_url = "/user/forget_password";
+    private static final String send_url = "api/users/ForgetPassword";
 
     private EditText identify;
     private EditText phone_number;
@@ -126,19 +128,15 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         vcode_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RequestParams params = new RequestParams();
-                params.add("phoneNum", phone_number.getText().toString());
-                ExperimentHttpClient.getInstance().post(vcode_url, params, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Toast.makeText(ForgetPasswordActivity.this, "发送成功", Toast.LENGTH_LONG).show();
-                    }
+                String phone = phone_number.getText().toString();
+                if (phone.isEmpty()) {
+                    Toast.makeText(ForgetPasswordActivity.this,
+                            "请先输入手机号",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                User.getInstance().getVertifyCode(phone);
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Toast.makeText(ForgetPasswordActivity.this, "发送失败", Toast.LENGTH_LONG).show();
-                    }
-                });
                 vcode_button.setClickable(false);
                 TimerTask task=new TimerTask() {
                     private int count=60;
@@ -146,10 +144,10 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     public void run() {
                         Message mess=new Message();
                         mess.what=count;
+                        count--;
                         handler.sendMessage(mess);
 
-                        count--;
-                        if(count<-1){
+                        if(count <= -1){
                             cancel();
                         }
                     }
@@ -164,9 +162,9 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             public void onClick(View view) {
                 RequestParams params=new RequestParams();
                 params.add("identify", identify.getText().toString());
-                params.add("phone_number", phone_number.getText().toString());
-                params.add("new_password",new_password.getText().toString());
-                params.add("verify_code",vcode.getText().toString());
+                params.add("phoneNumber", phone_number.getText().toString());
+                params.add("newPassword",new_password.getText().toString());
+                params.add("code",vcode.getText().toString());
                 waitting_dialog= StaticConfig.createLoadingDialog(ForgetPasswordActivity.this,"处理中...");
                 ExperimentHttpClient.getInstance().post(send_url,params,new JsonHttpResponseHandler()
                 {
@@ -174,27 +172,22 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         StaticConfig.closeDialog(waitting_dialog);
                         if(statusCode==200){
-                            try{
-                                int code=response.getInt("status");
-                                if(code==0){
-                                    Toast.makeText(ForgetPasswordActivity.this, "修改成功", Toast.LENGTH_LONG).show();
-                                }
-                                else {
-                                    Toast.makeText(ForgetPasswordActivity.this, "修改失败", Toast.LENGTH_LONG).show();
-                                }
-                            }catch (Exception e){
-                                e.printStackTrace();
-                                Toast.makeText(ForgetPasswordActivity.this, "返回码异常", Toast.LENGTH_LONG).show();
-                            }
+                            Toast.makeText(ForgetPasswordActivity.this,
+                                    "修改成功",
+                                    Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(ForgetPasswordActivity.this, "错误的返回码"+statusCode, Toast.LENGTH_LONG).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                         StaticConfig.closeDialog(waitting_dialog);
-                        Toast.makeText(ForgetPasswordActivity.this, "发送失败"+statusCode, Toast.LENGTH_LONG).show();
+                        String message = errorResponse.optString("message");
+                        if (message.isEmpty()) {
+                            message = "未知原因,修改失败";
+                        }
+                        Toast.makeText(ForgetPasswordActivity.this, message, Toast.LENGTH_LONG).show();
                     }
                 });
             }
