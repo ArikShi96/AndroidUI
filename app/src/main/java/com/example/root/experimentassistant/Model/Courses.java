@@ -120,20 +120,23 @@ public class Courses {
 
     //获取初始20条数据
     public void getDefault(final RequestCallBack callBack) {
-        ExperimentHttpClient.getInstance().post("student/index", null, new JsonHttpResponseHandler() {
+        ExperimentHttpClient.getInstance().get("api/courses/search", null, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 defaultCourses.clear();
                 try {
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject object = response.getJSONObject(i);
-                        ViewCourse course = new ViewCourse();
+                    JSONArray courses = response.getJSONArray("data");
+                    if (null != courses) {
+                        for (int i =0; i < courses.length(); i++) {
+                            JSONObject course = courses.getJSONObject(i);
+                            ViewCourse viewCourse = new ViewCourse();
 
-                        course.setId(object.getString("id"));
-                        course.setCourseName(object.getString("courseName"));
-                        course.setTeacher(object.getString("teacher"));
-                        course.setTime(object.getString("time"));
-                        defaultCourses.add(course);
+                            viewCourse.setId(course.getString("id"));
+                            viewCourse.setCourseName(course.getString("name"));
+                            viewCourse.setTeacher(course.getString("teacher"));
+                            viewCourse.setTime(course.getString("time"));
+                            defaultCourses.add(viewCourse);
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -145,18 +148,10 @@ public class Courses {
             }
 
             @Override
-            public void onFailure(int v1, Header[] v2, String v3, Throwable v4){
-                Log.d("Courses default fail","status"+v1);
-                if(defaultCourses.size()==0){
-                    Log.d("Course","read cacheData");
-                    readRecentCourses();
-                }
-                if(callBack!=null) callBack.onRequestSuccess(defaultCourses);
-            }
-
-            @Override
-            public void onFailure(int v1, Header[] v2, Throwable v3, JSONObject v4){
-                Log.d("Courses default fail","status"+v1);
+            public void onFailure(int statusCode, Header[] headers,
+                                  Throwable throwable,
+                                  JSONObject errorResponse){
+                Log.d("Courses default fail","status" + statusCode);
                 if(defaultCourses.size()==0){
                     Log.d("Course","read cacheData");
                     readRecentCourses();
@@ -174,15 +169,19 @@ public class Courses {
     //获取建议列表
     public void getSuggest(String word,final RequestCallBack callBack) {
         RequestParams params=new RequestParams();
-        params.put("word",word);
+        params.put("q",word);
 
-        ExperimentHttpClient.getInstance().post("student/suggest",params,new JsonHttpResponseHandler(){
+        ExperimentHttpClient.getInstance().get("api/courses/suggest",params,new JsonHttpResponseHandler(){
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response){
-                List<String> suggest=new ArrayList<String>();
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+                JSONArray suggests = response.optJSONArray("data");
+                if (null == suggests) {
+                    return;
+                }
+                List<String> suggestList=new ArrayList<String>();
                 try{
-                    for(int i=0;i<response.length();i++){
-                        suggest.add(response.getString(i));
+                    for(int i=0; i < suggests.length(); i++){
+                        suggestList.add(suggests.getString(i));
                     }
                 }
                 catch (Exception e){
@@ -190,7 +189,7 @@ public class Courses {
                     Log.d("course suggest","error request params");
                 }
                 if(callBack!=null){
-                    callBack.onRequestSuccess(suggest);
+                    callBack.onRequestSuccess(suggestList);
                 }
             }
             @Override
@@ -204,18 +203,26 @@ public class Courses {
     public void search(String word,final RequestCallBack callBack) {
         searchResult = new ArrayList<ViewCourse>();
         RequestParams params=new RequestParams();
-        params.put("word",word);
+        params.put("q", word);
 
-        ExperimentHttpClient.getInstance().post("student/search",params,new JsonHttpResponseHandler(){
+        ExperimentHttpClient.getInstance().get("api/courses/search",params,new JsonHttpResponseHandler(){
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject object = response.getJSONObject(i);
+                    JSONArray courses = response.optJSONArray("data");
+                    if (null == courses) {
+                        if(callBack!=null){
+                            callBack.onRequestSuccess(searchResult);
+                        }
+                        return;
+                    }
+
+                    for (int i = 0; i < courses.length(); i++) {
+                        JSONObject object = courses.getJSONObject(i);
                         ViewCourse course = new ViewCourse();
 
                         course.setId(object.getString("id"));
-                        course.setCourseName(object.getString("courseName"));
+                        course.setCourseName(object.getString("name"));
                         course.setTeacher(object.getString("teacher"));
                         course.setTime(object.getString("time"));
                         searchResult.add(course);

@@ -30,13 +30,15 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by Json on 2016/12/26.
  */
 public class ExperDetailActivity extends AppCompatActivity{
-    private static final String detail_url="/student/experdetail";
     private Bundle bundle;
     private int exper_id;
     private ImageButton back_button;
@@ -80,50 +82,67 @@ public class ExperDetailActivity extends AppCompatActivity{
                 finish();
             }
         });
-        RequestParams params=new RequestParams();
-        params.put("exper_id",exper_id);
+
+        fetchData();
+    }
+
+    public void fetchData() {
+        String url = "api/experiments/" + exper_id + "/detail";
+
+        Map<String, String> heads = new HashMap<>();
+        heads.put("token", User.getInstance().getToken());
+
         loading_dialog = StaticConfig.createLoadingDialog(ExperDetailActivity.this,"加载中...");
-        ExperimentHttpClient.getInstance().get(detail_url,params,new JsonHttpResponseHandler(){
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        StaticConfig.closeDialog(loading_dialog);
-                        if(statusCode==200){
-                            try {
-                                init(response);
-                            }catch (Exception e){
-                                e.printStackTrace();
-                                Intent err=StaticConfig.errorPage(ExperDetailActivity.this,title.getText().toString(),"数据解析失败");
-                                startActivity(err);
-                                finish();
-                            }
-                        }
+        ExperimentHttpClient.getInstance().get(url, null, heads, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                StaticConfig.closeDialog(loading_dialog);
+                if(statusCode==200){
+                    try {
+                        init(response);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        Intent err=StaticConfig.errorPage(ExperDetailActivity.this,title.getText().toString(),"数据解析失败");
+                        startActivity(err);
+                        finish();
+                    }
+                }
                 else {
-                    Intent err=StaticConfig.errorPage(ExperDetailActivity.this,title.getText().toString(),"加载失败，返回码："+statusCode);
-                    startActivity(err);
-                    finish();
+                    badResponse("加载失败，返回码："+statusCode);
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject object) {
-                StaticConfig.closeDialog(loading_dialog);
-                Intent err=StaticConfig.errorPage(ExperDetailActivity.this,title.getText().toString(),"加载失败，网络走丢了："+statusCode);
-                startActivity(err);
-                finish();
+                String message = object.optString("message");
+                if (message.isEmpty()) {
+                    message = "网络故障，请稍候再试";
+                }
+
+                badResponse(message);
             }
         });
     }
 
+    public void badResponse(String message) {
+        StaticConfig.closeDialog(loading_dialog);
+        Intent err=StaticConfig.errorPage(ExperDetailActivity.this,title.getText().toString(), message);
+        startActivity(err);
+        finish();
+    }
+
     public void init(JSONObject response) throws org.json.JSONException{
-        expername.setText(response.getString("name"));
-        begin_time.setText(response.getString("time"));
-        desc = response.getString("descbibe");
-        attach_url = response.getString("attach_url");
+        JSONObject detail = response.getJSONObject("data");
+
+        expername.setText(detail.getString("name"));
+        begin_time.setText(detail.getString("startTime"));
+        desc = detail.getString("description");
+        attach_url = detail.getString("attachUrl");
         content.setText(desc);
 
         //image
         ImageLoader imageLoader=ImageLoader.getInstance();
-        imageLoader.displayImage(StaticConfig.BASE_URL+response.getString("pic_url"),exper_pic,StaticConfig.options);
+        imageLoader.displayImage(StaticConfig.BASE_URL+detail.getString("picUrl"),exper_pic,StaticConfig.options);
         exper_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,22 +153,25 @@ public class ExperDetailActivity extends AppCompatActivity{
         });
 
         //set begin button
-        if(/*response.getBoolean("enable")*/true){
+        if(true) {
             begin.setClickable(true);
             begin.setBackgroundResource(R.drawable.rec_btn_select);
             begin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    RequestParams params=new RequestParams();
-                    params.put("exper_id", exper_id);
+                    String url = "api/experiments/" + exper_id + "/stepList";
+
+                    Map<String, String> heads = new HashMap<>();
+                    heads.put("token", User.getInstance().getToken());
+
                     loading_dialog=StaticConfig.createLoadingDialog(ExperDetailActivity.this, "加载中");
-                    ExperimentHttpClient.getInstance().post("/student/enterexper",params,new JsonHttpResponseHandler(){
+                    ExperimentHttpClient.getInstance().get(url, null, heads, new JsonHttpResponseHandler(){
                         @Override
-                        public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             StaticConfig.closeDialog(loading_dialog);
                             if(statusCode==200){
                                 try{
-                                    ExperModel model=new ExperModel(exper_id,response);
+                                    ExperModel model=new ExperModel(exper_id, response.getJSONArray("data"));
                                     User.getInstance().setExperiment(model);
                                     Intent step=new Intent(ExperDetailActivity.this, StepActivity.class);
                                     step.putExtra("step",0);
@@ -167,7 +189,11 @@ public class ExperDetailActivity extends AppCompatActivity{
                         @Override
                         public void onFailure(int statusCode, Header[] headers, Throwable throwable,JSONObject response) {
                             StaticConfig.closeDialog(loading_dialog);
-                            Intent err=StaticConfig.errorPage(ExperDetailActivity.this,title.getText().toString(),"加载失败，网络走丢了："+statusCode);
+                            String message = response.optString("message");
+                            if (message.isEmpty()) {
+                                message = "网络错误，请稍候再试";
+                            }
+                            Intent err=StaticConfig.errorPage(ExperDetailActivity.this,title.getText().toString(),message);
                             startActivity(err);
                         }
                     });

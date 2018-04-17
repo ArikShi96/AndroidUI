@@ -134,28 +134,17 @@ public class ExperimentList extends Fragment {
             }
         });
 
-        return view;
-    }
+        if (User.getInstance().isLogin()) {
+            weekCnt = User.getInstance().getCurrentWeek(getContext().getSharedPreferences("user", Context.MODE_PRIVATE));
+            if (weekCnt < 1 || weekCnt > 25) weekCnt = 1;
 
-    @Override
-    public void onHiddenChanged(boolean hidden){
-        super.onHiddenChanged(hidden);
-
-        if(hidden==false){
-            //若登录初始化列表
-            if (User.getInstance().isLogin()) {
-                weekCnt = User.getInstance().getCurrentWeek(getContext().getSharedPreferences("user", Context.MODE_PRIVATE));
-                if (weekCnt < 1 || weekCnt > 25) weekCnt = 1;
-
-                if(adapter!=null) {
-                    spinnerText.setText(adapter.getItem(weekCnt - 1));
-                }
-                bindExperiment();
+            if(adapter!=null) {
+                spinnerText.setText(adapter.getItem(weekCnt - 1));
             }
-            else{
-                if(experimentList!=null&&experimentList.getAdapter()!=null) experimentList.setAdapter(null);
-            }
+            bindExperiment();
         }
+
+        return view;
     }
 
     private void showWindow(View v) {
@@ -198,7 +187,7 @@ public class ExperimentList extends Fragment {
     }
 
     private void bindExperiment() {
-        if (User.getInstance().isLogin() == false) return;
+        if (!User.getInstance().isLogin()) return;
         Log.d("bindExper", "week" + weekCnt);
         User.getInstance().getCntExper(weekCnt, new getExpersCallback());
     }
@@ -212,6 +201,9 @@ public class ExperimentList extends Fragment {
 
         public void onRequestFailure(Object sender) {
             myMaterialRefreshLayout.finishRefresh();
+
+            String message = (String) sender;
+            Toast.makeText(ExperimentList.this.getContext(), message, Toast.LENGTH_LONG).show();
         }
     }
 }

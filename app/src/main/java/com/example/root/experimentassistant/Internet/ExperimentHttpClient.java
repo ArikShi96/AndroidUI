@@ -5,6 +5,8 @@ import com.loopj.android.http.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.json.JSONObject;
@@ -53,16 +55,53 @@ public class ExperimentHttpClient  {
     }
 
     public void get(String rPath, RequestParams params, AsyncHttpResponseHandler responseHandler){
+        get(rPath, params, null, responseHandler);
+    }
+
+    public void get(String rPath, RequestParams params, Map<String, String> heads,
+                    AsyncHttpResponseHandler responseHandler){
+        myClient.removeAllHeaders();
+        if (null != heads) {
+            insertHeads(heads);
+        }
+
         bindCookie();
         myClient.addHeader("content-type", "application/json");
         myClient.get(getAbsoluteUrl(rPath), params, responseHandler);
     }
 
-    public void post(String rPath, RequestParams params, AsyncHttpResponseHandler responseHandler){
+    public void post(String rPath, RequestParams params, Map<String, String> heads,
+                     AsyncHttpResponseHandler responseHandler){
+        myClient.removeAllHeaders();
+        if (null != heads) {
+            insertHeads(heads);
+        }
+
         bindCookie();
         if (null != params) {
             params.setUseJsonStreamer(true);
         }
         myClient.post(getAbsoluteUrl(rPath),params,responseHandler);
+    }
+
+    public void postMultipart(String rPath, RequestParams params, Map<String, String> heads,
+                              AsyncHttpResponseHandler responseHandler) {
+        myClient.removeAllHeaders();
+        if (null != heads) {
+            insertHeads(heads);
+        }
+
+        bindCookie();
+        myClient.post(getAbsoluteUrl(rPath),params,responseHandler);
+    }
+
+    public void post(String rPath, RequestParams params, AsyncHttpResponseHandler responseHandler){
+        post(rPath, params, null, responseHandler);
+    }
+
+    public void insertHeads(Map<String, String> heads) {
+        for (Map.Entry<String, String> entry: heads.entrySet()) {
+            myClient.addHeader(entry.getKey(), entry.getValue());
+        }
     }
 }

@@ -8,10 +8,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,8 +55,20 @@ public class AlbumActivity extends Activity {
     public static List<ImageBucket> contentList;
     public static Bitmap bitmap;
 
+    private boolean init = false;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (ContextCompat.checkSelfPermission(this, "android.permission.READ_EXTERNAL_STORAGE")
+                == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[] {"android.permission.READ_EXTERNAL_STORAGE"},
+                    0);
+            finish();
+            return;
+        }
+        init = true;
         setContentView(R.layout.activity_album);
         //注册一个广播，这个广播主要是用于在GalleryActivity进行预览时，防止当所有图片都删除完后，再回到该页面时被取消选中的图片仍处于选中状态
         IntentFilter filter = new IntentFilter("data.broadcast.action");
@@ -181,13 +196,6 @@ public class AlbumActivity extends Activity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        unregisterReceiver(broadcastReceiver);
+        if (init) unregisterReceiver(broadcastReceiver);
     }
-
-
-//    @Override
-//    protected  void onRestart(){
-//        super.onRestart();
-//        gridImageAdapter.notifyDataSetChanged();
-//    }
 }

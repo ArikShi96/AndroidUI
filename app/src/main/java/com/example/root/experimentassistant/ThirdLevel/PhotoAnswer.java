@@ -42,13 +42,18 @@ import com.example.root.experimentassistant.ViewModel.ViewCourse;
 import com.example.root.experimentassistant.util.Bimp;
 import com.facebook.common.file.FileUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.Inflater;
 
 import cz.msebera.android.httpclient.Header;
@@ -216,14 +221,16 @@ public class PhotoAnswer extends AppCompatActivity {
     }
 
     private void Upload(){
-        Log.d("update","start");
         loading_dialog= StaticConfig.createLoadingDialog(PhotoAnswer.this,"上传中...");
+        String url = "api/experiments/" + User.getInstance().getExperiment().getId() + "/submitStep";
+
+        Map<String, String> heads = new HashMap<>();
+        heads.put("token", User.getInstance().getToken());
+
         RequestParams params=new RequestParams();
-        params.put("AnswerDes",answerText.getText().toString());
-        params.put("ImageNum",Bimp.tempSelectBitmap.size());
-        params.put("exper_id",User.getInstance().getExperiment().getId());
-        params.put("student_id",User.getInstance().getId());
-        params.put("step_index",questionId+1);
+        params.put("answer",answerText.getText().toString());
+        params.put("ImageCount",Bimp.tempSelectBitmap.size());
+        params.put("index",questionId+1);
 
         try{
             for (int i = 0; i < Bimp.tempSelectBitmap.size(); i++) {
@@ -234,7 +241,7 @@ public class PhotoAnswer extends AppCompatActivity {
                 bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);
                 bos.flush();
                 bos.close();
-                params.put("Image["+i+"]",file);
+                params.put("images["+i+"]",file);
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -242,9 +249,9 @@ public class PhotoAnswer extends AppCompatActivity {
         }
 
         Log.d("update","begin");
-        ExperimentHttpClient.getInstance().post("/student/submitstep", params, new AsyncHttpResponseHandler() {
+        ExperimentHttpClient.getInstance().postMultipart(url, params, heads, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("fileUpdate","success "+statusCode);
                 StaticConfig.closeDialog(loading_dialog);
 
@@ -265,11 +272,13 @@ public class PhotoAnswer extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.d("fileUpdate","failure "+statusCode);
-                StaticConfig.closeDialog(loading_dialog);
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                String message = errorResponse.optString("message");
+                if (message.isEmpty()) {
+                    message = "网络故障，请稍候再试";
+                }
 
-                Toast.makeText(PhotoAnswer.this,"上传失败",Toast.LENGTH_SHORT);
+                Toast.makeText(PhotoAnswer.this, message, Toast.LENGTH_SHORT).show();
             }
         });
     }

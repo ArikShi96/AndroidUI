@@ -72,7 +72,7 @@ public class ExperModel {
             step.setContent(item.getString("content"));
             step.setNote(item.getString("note"));
 
-            String suggest_time=item.getString("suggest_time");
+            String suggest_time=item.getString("suggestTime");
             String[] time_tmp=suggest_time.split(":");
             int step_time;
             if(time_tmp.length==2){
@@ -83,7 +83,7 @@ public class ExperModel {
             }else {
                 throw new JSONException("cannot parse the Suggest time in step");
             }
-            JSONArray questions=item.getJSONArray("question_list");
+            JSONArray questions=item.getJSONArray("questions");
             for(int j=0;j<questions.length();j++){
                 Question question=new Question();
                 question.setId(question_count++);
@@ -91,7 +91,7 @@ public class ExperModel {
                 step.getQuestion_list().add(question);
                 question_list.add(question);
             }
-            JSONArray images=item.getJSONArray("image_list");
+            JSONArray images=item.getJSONArray("images");
             for(int j=0;j<images.length();j++){
                 step.getImage_list().add(images.getString(j));
             }

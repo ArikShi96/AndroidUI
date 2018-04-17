@@ -42,7 +42,9 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -327,33 +329,24 @@ public class StepActivity extends AppCompatActivity implements QuestionAdapter.O
 
     public void submit(){
         //submit answer
-        RequestParams params=new RequestParams();
-        params.put("student_id",User.getInstance().getId());
-        params.put("exper_id",exper_id);
-        Log.d("submit","student_id "+User.getInstance().getId());
-        Log.d("submit","exper_id "+exper_id);
+        String url = "api/experiments/" + exper_id + "/submit2";
+
+        Map<String, String> heads = new HashMap<>();
+        heads.put("token", User.getInstance().getToken());
 
         loading_dialog=StaticConfig.createLoadingDialog(StepActivity.this,"发送中...");
-        ExperimentHttpClient.getInstance().post("/student/submit",params, new JsonHttpResponseHandler(){
+        ExperimentHttpClient.getInstance().post(url,null, heads, new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("submit","success "+statusCode);
                 StaticConfig.closeDialog(loading_dialog);
                 if(statusCode==200){
                     try {
-                        int code=response.getInt("status");
-                        Log.d("submit","statuc code "+code);
-                        if(code==0){
-                            Intent success= StaticConfig.successPage(StepActivity.this,title.getText().toString(),"提交成功");
-                            startActivity(success);
+                        Intent success= StaticConfig.successPage(StepActivity.this,title.getText().toString(),"提交成功");
+                        startActivity(success);
 
-                            setResult(RESULT_OK);
-                            finish();
-                        }
-                        else{
-                            Intent err=StaticConfig.errorPage(StepActivity.this,title.getText().toString(),"未知返回码:"+code);
-                            startActivity(err);
-                        }
+                        setResult(RESULT_OK);
+                        finish();
                     }catch (Exception e){
                         Intent err=StaticConfig.errorPage(StepActivity.this,title.getText().toString(),"返回值解析失败");
                         startActivity(err);
@@ -366,14 +359,13 @@ public class StepActivity extends AppCompatActivity implements QuestionAdapter.O
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
-                Log.d("submit","failure "+statusCode);
-                Log.d("submit","failure "+response.toString());
-                for(Header header:headers) {
-                    Log.d("submit", "failure " + headers.toString());
-                }
                 StaticConfig.closeDialog(loading_dialog);
-                Intent err=StaticConfig.errorPage(StepActivity.this,title.getText().toString(),"发送失败");
-                startActivity(err);
+                String message = response.optString("message");
+                if (message.isEmpty()) {
+                    message = "网络故障，请稍候再试";
+                }
+
+                Toast.makeText(StepActivity.this, message, Toast.LENGTH_SHORT).show();
             }
         });
     }

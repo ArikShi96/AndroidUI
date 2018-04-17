@@ -111,20 +111,16 @@ public class SearchView extends LinearLayout{
                     return;
                 }
 
-                if(s.length()<2){
+                if(s.length()==0){
                     searchList.setVisibility(GONE);
-                    if(s.length()==0){
-                        searchCancle.setVisibility(GONE);
-                    }
-                    else{
-                        searchCancle.setVisibility(VISIBLE);
-                    }
+                    searchCancle.setVisibility(GONE);
                 }
                 else{
-                    //获取匹配搜索项
-                    if(myListener!=null&&s.length()>=2){
-                        myListener.getMatching(s.toString());
-                    }
+                    searchCancle.setVisibility(VISIBLE);
+                }
+                //获取匹配搜索项
+                if(myListener!=null&&s.length()>=1){
+                    myListener.getMatching(s.toString());
                 }
             }
 

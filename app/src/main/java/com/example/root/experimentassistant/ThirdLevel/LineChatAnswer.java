@@ -19,12 +19,17 @@ import com.example.root.experimentassistant.Internet.ExperimentHttpClient;
 import com.example.root.experimentassistant.Model.User;
 import com.example.root.experimentassistant.R;
 import com.example.root.experimentassistant.ViewModel.Question;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
@@ -205,15 +210,18 @@ public class LineChatAnswer extends AppCompatActivity {
     }
 
     private void Upload(){
+        String url = "api/experiments/" + User.getInstance().getExperiment().getId() + "/submitStep";
+
+        Map<String, String> heads = new HashMap<>();
+        heads.put("token", User.getInstance().getToken());
+
         RequestParams params=new RequestParams();
-        params.put("ImageNum",-1);
-        params.put("exper_id",User.getInstance().getExperiment().getId());
-        params.put("student_id",User.getInstance().getId());
-        params.put("step_index",questionId+1);
-        params.put("x_count",pointValueList.size());
-        params.put("p_count",pointValueList.size());
-        params.put("x_name","x");
-        params.put("y_name","y");
+        params.put("ImageCount",-1);
+        params.put("index",questionId+1);
+        params.put("xCount",pointValueList.size());
+        params.put("pointCount",pointValueList.size());
+        params.put("xName","x");
+        params.put("yName","y");
 
         File file=new File(getFilesDir(),"tmp.txt");
         try {
@@ -225,18 +233,23 @@ public class LineChatAnswer extends AppCompatActivity {
         }
 
         for(int i=0;i<pointValueList.size();i++){
-            params.put("x["+i+"]",pointValueList.get(i).getX());
-            params.put("p["+i+"]",pointValueList.get(i).getY());
+            params.put("x["+i+"]", pointValueList.get(i).getX());
+            params.put("p["+i+"]", pointValueList.get(i).getY());
         }
 
-        ExperimentHttpClient.getInstance().post("/student/submitstep", params, new TextHttpResponseHandler() {
+        ExperimentHttpClient.getInstance().postMultipart(url, params, heads, new JsonHttpResponseHandler() {
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Toast.makeText(LineChatAnswer.this,"上传失败",Toast.LENGTH_SHORT);
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                String message = errorResponse.optString("message");
+                if (message.isEmpty()) {
+                    message = "网络故障，请稍候再试";
+                }
+
+                Toast.makeText(LineChatAnswer.this, message, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 question.setAnswered(true);
                 if(question.getAnswer_type()==Question.CHARTQUESTION){
                     chartQuestion chart=(chartQuestion)question;

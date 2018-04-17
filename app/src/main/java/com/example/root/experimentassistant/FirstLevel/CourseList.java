@@ -46,8 +46,6 @@ public class CourseList extends Fragment implements MySearchViewListener{
 
         searchView.bindListener(this);
 
-        getDefaultList();
-
         //刷新回调函数
         myMaterialRefreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
             @Override
@@ -73,6 +71,8 @@ public class CourseList extends Fragment implements MySearchViewListener{
                 startActivity(intent);
             }
         });
+
+        getDefaultList();
         return view;
     }
 
@@ -89,7 +89,9 @@ public class CourseList extends Fragment implements MySearchViewListener{
 
             @Override
             public void onRequestFailure(Object sender) {
-                Toast.makeText(CourseList.this.getContext(),"网络故障",Toast.LENGTH_SHORT).show();
+                String message = (String) sender;
+
+                Toast.makeText(CourseList.this.getContext(), message, Toast.LENGTH_SHORT).show();
                 myMaterialRefreshLayout.finishRefresh();
             }
         });

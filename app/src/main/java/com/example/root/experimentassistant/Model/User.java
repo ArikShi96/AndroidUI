@@ -9,7 +9,9 @@ import java.util.Calendar;
 import android.util.Log;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import com.example.root.experimentassistant.Internet.*;
@@ -315,29 +317,33 @@ public class User {
     private List<ViewExper> expers;
 
     public List<ViewExper> getCntExper(int week, final RequestCallBack callBack) {
-        if (isLogin() == false) return null;
+        if (!isLogin()) return null;
 
         RequestParams params = new RequestParams();
-        params.put("student_id", id);
         params.put("week", "第"+week+"周");
 
+        Map<String, String> heads = new HashMap<>();
+        heads.put("token", getToken());
+
         expers = new ArrayList<ViewExper>();
-        ExperimentHttpClient.getInstance().post("student/expers", params, new JsonHttpResponseHandler() {
+        ExperimentHttpClient.getInstance().get("api/experiments/week", params, heads,
+                new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                super.onSuccess(statusCode, headers, response);
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 if (statusCode != 200) {
                     Log.d("User get expers", "status " + statusCode);
                     return;
                 }
                 try {
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject object = response.getJSONObject(i);
+                    JSONArray experiments = response.getJSONArray("data");
+
+                    for (int i = 0; i < experiments.length(); i++) {
+                        JSONObject object = experiments.getJSONObject(i);
                         ViewExper exper = new ViewExper();
 
                         exper.setId(object.getString("id"));
                         exper.setCourseName(object.getString("courseName"));
-                        exper.setExperName(object.getString("experName"));
+                        exper.setExperName(object.getString("name"));
                         exper.setTime(object.getString("time"));
                         expers.add(exper);
                     }
@@ -351,7 +357,11 @@ public class User {
             @Override
             public void onFailure(int v1, Header[] v2, Throwable v3, JSONObject v4) {
                 Log.d("getExper", "failure" + v1);
-                if (callBack != null) callBack.onRequestFailure(null);
+                String message = v4.optString("message");
+                if (message.isEmpty()) {
+                    message = "网络错误，请稍候重试";
+                }
+                if (callBack != null) callBack.onRequestFailure(message);
             }
         });
 

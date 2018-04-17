@@ -30,7 +30,7 @@ import static com.example.root.experimentassistant.R.layout.dialog_loading;
  * Created by Json on 2016/12/26.
  */
 public class StaticConfig {
-    public static final String BASE_URL="http://101.200.61.252:8080";
+    public static final String BASE_URL="http://111.231.83.220:8088/";
     public static final String IMAGE_STORAGE_URL= Environment.getExternalStorageDirectory().toString()+ File.separator+"experiment/image/";
     public static final DisplayImageOptions options=new DisplayImageOptions.Builder()
             .showImageOnLoading(R.mipmap.progress_ing)
